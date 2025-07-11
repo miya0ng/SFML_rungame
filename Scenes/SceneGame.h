@@ -2,6 +2,8 @@
 #include "Scene.h"
 #include "SpriteGo.h"
 
+class Cookie;
+
 class SceneGame :
     public Scene
 {
@@ -10,8 +12,11 @@ protected:
 	float scrollSpeed = 0.f;
 	float backgroundWidth;
 	float scrollOffset =0.f;
+	float offsetX = 0;
+	sf::Sprite cookieOrigin;
+	sf::Texture cookieTexture;
 
-	Cookie* braveCookie;
+	Cookie* cookie=nullptr;
 
 	sf::Sprite background1;
 	sf::Sprite background2;

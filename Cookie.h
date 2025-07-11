@@ -1,10 +1,17 @@
 #pragma once
 #include "GameObject.h"
+
+class SpriteGo;
+
 class Cookie :
     public GameObject
 {
 protected:
-	sf::Sprite body;
+	sf::Sprite cookieOrigin;
+	SpriteGo* cookiePtr;
+	sf::Texture cookieTexture;
+
+	float speed;
 
 public:
 	Cookie(const std::string& name = "");

@@ -28,6 +28,19 @@ void SceneGame::Init()
 	background1.setTexture(backgroundTexture);
 	background2.setTexture(backgroundTexture);
 	backgroundWidth = backgroundTexture.getSize().x;
+
+
+	//-------------------------------------------------cookieSet
+
+	cookieTexture.loadFromFile("C:/Users/KGA/Desktop/cookie_run/sfml-project-bin/img/cookieimg/cookie1/player_attack.png");
+	cookieOrigin.setTexture(cookieTexture);
+	cookieOrigin.setPosition({ 0,0 });
+
+	cookie = new Cookie("braveCookie");
+
+	AddGameObject(cookie);
+	//cookie->sortingLayer = SortingLayers::Default;
+	//cookie->sortingOrder = 0;
 	Scene::Init();
 }
 
@@ -48,24 +61,20 @@ void SceneGame::Update(float dt)
 	Scene::Update(dt);
 
 	//-------------------------------------------------backgroundScroll
-	scrollSpeed = 200.0f;
+	scrollSpeed = 100.0f;
 	scrollOffset += dt * scrollSpeed;
 	
-	float offsetX = -fmod(scrollOffset, backgroundWidth);
-	background1.setPosition(offsetX, 0);
-	background2.setPosition(background1.getPosition().x +backgroundWidth, background1.getPosition().y);
+	background1.setPosition(-scrollOffset, 0);
+	background2.setPosition(-scrollOffset + backgroundWidth, 0);
 	
+
 	if (scrollOffset >= backgroundWidth)
 	{
-		scrollOffset -= backgroundWidth; 
+		scrollOffset -= backgroundWidth;
 	}
+	std::cout<< offsetX <<","<< scrollOffset + backgroundWidth << std::endl;
 
-	//-------------------------------------------------cookieSet
-
-	braveCookie.
-
-
-
+	////test
 
 	//-------------------------------------------------nextScene
 
@@ -80,4 +89,5 @@ void SceneGame::Draw(sf::RenderWindow& window)
 	Scene::Draw(window);
 	window.draw(background1);
 	window.draw(background2);
+	window.draw(cookieOrigin);
 }
