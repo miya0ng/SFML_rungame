@@ -24,15 +24,14 @@ void SceneGame::Init()
 	go->sortingOrder = 0;
 	AddGameObject(go);
 
-	backgroundTexture.loadFromFile("C:/Users/KGA/Desktop/cookie_run/sfml-project-bin/img/Objectimg/map1img/bg1.png");
+	backgroundTexture.loadFromFile("img/Objectimg/map1img/bg1.png");
 	background1.setTexture(backgroundTexture);
 	background2.setTexture(backgroundTexture);
 	backgroundWidth = backgroundTexture.getSize().x;
 
-
 	//-------------------------------------------------cookieSet
 
-	cookieTexture.loadFromFile("C:/Users/KGA/Desktop/cookie_run/sfml-project-bin/img/cookieimg/cookie1/player_attack.png");
+	cookieTexture.loadFromFile("img/cookieimg/cookie1/player_attack.png");
 	cookieOrigin.setTexture(cookieTexture);
 	cookieOrigin.setPosition({ 0,0 });
 

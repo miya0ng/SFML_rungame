@@ -42,9 +42,9 @@ void Cookie::SetOrigin(Origins preset)
 
 void Cookie::Init()
 {
-	cookiePtr= new SpriteGo("C:/Users/KGA/Desktop/cookie_run/sfml-project-bin/img/cookieimg/cookie1/player_attack.png", "cookie");
+	cookiePtr= new SpriteGo("img/cookieimg/cookie1/player_attack.png", "cookie");
 	
-	cookieTexture.loadFromFile("C:/Users/KGA/Desktop/cookie_run/sfml-project-bin/img/cookieimg/cookie1/player_attack.png");
+	cookieTexture.loadFromFile("img/cookieimg/cookie1/player_attack.png");
 	cookieOrigin.setTexture(cookieTexture);
 	cookieOrigin.setPosition({ 0,0 });
 	cookiePtr->sortingLayer = SortingLayers::Default;
