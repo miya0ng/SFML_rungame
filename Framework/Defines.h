@@ -21,6 +21,10 @@ enum class Origins
 enum class SceneIds
 {
 	None = -1,
+	Title,
+	Ready,
+	Game,
+	GameOver,
 	Dev1,
 	Dev2,
 	Count,

@@ -1,10 +1,20 @@
 #include "stdafx.h"
 #include "SceneMgr.h"
+#include "SceneTitle.h"
+#include "SceneReady.h"
+#include "SceneGame.h"
+#include "SceneGameOver.h"
 #include "SceneDev1.h"
 #include "SceneDev2.h"
 
+
 void SceneMgr::Init()
 {
+	scenes.push_back(new SceneTitle());
+	scenes.push_back(new SceneReady());
+	scenes.push_back(new SceneGame());
+	scenes.push_back(new SceneGameOver());
+	scenes.push_back(new SceneDev1());
 	scenes.push_back(new SceneDev1());
 	scenes.push_back(new SceneDev2());
 

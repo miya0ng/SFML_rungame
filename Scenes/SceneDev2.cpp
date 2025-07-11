@@ -14,7 +14,7 @@ void SceneDev2::Init()
 
 	ANI_CLIP_MGR.Load("animations/idle.csv");
 	ANI_CLIP_MGR.Load("animations/run.csv");
-	ANI_CLIP_MGR.Load("animations/jump.csv");//
+	ANI_CLIP_MGR.Load("animations/jump.csv");
 
 	TextGo* go = new TextGo("fonts/DS-DIGIT.ttf");
 	go->SetString("Dev 2");
