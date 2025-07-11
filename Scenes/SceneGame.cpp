@@ -14,7 +14,7 @@ SceneGame::SceneGame()
 void SceneGame::Init()
 {
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
-	//texIds.push_back("C:/Users/KGA/Desktop/cookie_run/sfml-project-bin/img/Objectimg/map1img/bg1.png"); 
+	texIds.push_back("img/Objectimg/map1img/bg1.png"); 
 
 	TextGo* go = new TextGo("fonts/DS-DIGIT.ttf", "Game");
 	go->SetString("Start");
@@ -31,13 +31,14 @@ void SceneGame::Init()
 
 	//-------------------------------------------------cookieSet
 
-	cookieTexture.loadFromFile("img/cookieimg/cookie1/player_attack.png");
+	/*cookieTexture.loadFromFile("img/cookieimg/cookie1/player_attack.png");
 	cookieOrigin.setTexture(cookieTexture);
-	cookieOrigin.setPosition({ 0,0 });
+	cookieOrigin.setPosition({ 0,0 });*/
 
-	cookie = new Cookie("braveCookie");
-
+	cookie = new Cookie("img/Objectimg/map1img/bg1.png", "braveCookie");
 	AddGameObject(cookie);
+	std::cout << cookie->GetPosition().x << std::endl;
+
 	//cookie->sortingLayer = SortingLayers::Default;
 	//cookie->sortingOrder = 0;
 	Scene::Init();
@@ -71,10 +72,7 @@ void SceneGame::Update(float dt)
 	{
 		scrollOffset -= backgroundWidth;
 	}
-	std::cout<< offsetX <<","<< scrollOffset + backgroundWidth << std::endl;
-
-	////test
-
+	
 	//-------------------------------------------------nextScene
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
@@ -86,6 +84,7 @@ void SceneGame::Update(float dt)
 void SceneGame::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
+
 	window.draw(background1);
 	window.draw(background2);
 	window.draw(cookieOrigin);

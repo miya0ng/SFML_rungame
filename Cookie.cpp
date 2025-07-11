@@ -2,8 +2,8 @@
 #include "Cookie.h"
 #include "SpriteGo.h"
 
-Cookie::Cookie(const std::string& name)
-	: GameObject(name)
+Cookie::Cookie(const std::string& texId, const std::string& name)
+	: GameObject(name),texId(texId)
 {
 }
 
@@ -42,14 +42,14 @@ void Cookie::SetOrigin(Origins preset)
 
 void Cookie::Init()
 {
+	std::cout << "ÄíÅ°µîÀå" << std::endl;
 	cookiePtr= new SpriteGo("img/cookieimg/cookie1/player_attack.png", "cookie");
 	
 	cookieTexture.loadFromFile("img/cookieimg/cookie1/player_attack.png");
 	cookieOrigin.setTexture(cookieTexture);
-	cookieOrigin.setPosition({ 0,0 });
-	cookiePtr->sortingLayer = SortingLayers::Default;
-	cookiePtr->sortingOrder = 0;
-	
+	position.x = 100;
+	SetPosition({ position.x , 0 });
+	std::cout << GetPosition().x << std::endl;
 }
 
 void Cookie::Release()
@@ -63,11 +63,17 @@ void Cookie::Reset()
 
 void Cookie::Update(float dt)
 {
+	/*velocity.y += gravity * dt;
+	position += velocity * dt;
+
+	SetPosition(position);
+
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
-		
-
-	}
+		 {
+			position.x += speed * dt;
+		}
+	}*/
 
 }
 
