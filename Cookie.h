@@ -14,7 +14,7 @@ protected:
 	sf::Vector2f velocity = { 0.f,0.f };
 	bool isBuffed = false;
 
-	float buffTimer = 10.f;
+	float buffTimer = 4.f;
 	float gravity = 0.f;
 	float speed = 100.f;
 
@@ -36,7 +36,10 @@ public:
 	{
 		return speed;
 	}
-	//sf::Vector2f GetPosition() { return position; }
+
+	bool BufferCheck(float dt);
+	bool cookieJump(float dt);
+
 	void Init() override;
 	void Release() override;
 	void Reset() override;

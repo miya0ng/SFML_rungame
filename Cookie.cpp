@@ -40,32 +40,13 @@ void Cookie::SetOrigin(Origins preset)
 	}
 }
 
-void Cookie::Init()
+bool Cookie::BufferCheck(float dt)
 {
-	texId = "img/cookieimg/cookie1/player_attack.png";
-}
-
-void Cookie::Release()
-{
-	
-}
-
-void Cookie::Reset()
-{
-	sortingLayer = SortingLayers::Foreground;
-	sortingOrder = 0;
-	SetOrigin(Origins::MC);
-	cookieOrigin.setTexture(TEXTURE_MGR.Get(texId));
-	SetPosition({ 100.f, 35.f });
-}
-
-void Cookie::Update(float dt)
-{
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)&&!isBuffed)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !isBuffed)
 	{
 		std::cout << "น๖วม" << std::endl;
 		isBuffed = true;
-	} 
+	}
 	if (isBuffed)
 	{
 		buffTimer -= dt;
@@ -79,8 +60,104 @@ void Cookie::Update(float dt)
 	}
 	std::cout << buffTimer << std::endl;
 
+	return false;
 }
 
+bool Cookie::cookieJump(float dt)
+{
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	{
+		return true;
+	}
+	return false;
+}
+
+void Cookie::Init()
+{
+	texId = "img/cookieimg/cookie1/player_attack.png";
+	/*
+	animator.SetTarget(&body);
+
+	animator.AddEvent("Idle", 0,
+		[]()
+		{
+			std::cout << "!!" << std::endl;
+		}
+	);
+	*/
+}
+
+void Cookie::Release()
+{
+	
+}
+
+void Cookie::Reset()
+{
+	sortingLayer = SortingLayers::Foreground;
+	sortingOrder = 0;
+	SetOrigin(Origins::MC);
+	cookieOrigin.setTexture(TEXTURE_MGR.Get(texId));
+	SetPosition({ 50.f, 20.f });
+
+	/*
+	animator.Play("animations/idle.csv");
+	*/
+}
+
+void Cookie::Update(float dt)
+{
+	BufferCheck(dt);
+
+	/* ddddddddddddddddddddddddddddddddddddddddddddd
+	if (isGrounded && InputMgr::GetKeyDown(sf::Keyboard::Space))
+	{
+		isGrounded = false;
+		velocity.y = -500.f;
+		animator.Play("animations/jump.csv");
+	}
+	if (!isGrounded)
+	{
+		velocity += gravity * dt;
+	}
+	position += velocity * dt;
+	if (position.y > 0.f)
+	{
+		velocity.y = 0.f;
+		position.y = 0.f;
+		isGrounded = true;
+	}
+	SetPosition(position);
+
+	*/
+
+	/* ddddddddddddddddddddddddddddddddddddddddddddd
+		animator.SetTarget(&body);
+
+	animator.AddEvent("Idle", 0,
+		[]()
+		{
+			std::cout << "!!" << std::endl;
+		}
+	);
+	*/
+
+	/*
+	 else if (animator.GetCurrentClipId()=="jump"&&isGrounded)
+	 {
+		if(h==0.f)
+		{
+		   animator.Play("animations/idle.csv");
+		}
+		else
+		{
+			animator.Play("animations/run/csv");
+	   }
+	 }
+	*/
+
+}
 
 void Cookie::Draw(sf::RenderWindow& window)
 {
