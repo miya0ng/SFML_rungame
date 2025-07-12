@@ -121,7 +121,7 @@ void AniPlayer::Update(float dt)
 	{
 		isGrounded = false;
 		velocity.y = -500.f;
-		//animator.Play("animations/cookiejump.csv");
+		animator.Play("animations/cookiejump.csv");
 	}
 	if (!isGrounded)
 	{
@@ -153,14 +153,7 @@ void AniPlayer::Update(float dt)
 	}
 	else if (animator.GetCurrentClipId() == "Jump" && isGrounded)
 	{
-		if (h == 0.f)
-		{
-			animator.Play("animations/idle.csv");
-		}
-		else
-		{
-			animator.Play("animations/cookierun.csv");
-		}
+		animator.Play("animations/cookierun.csv");
 	}
 }
 

@@ -15,7 +15,7 @@ protected:
 	bool isBuffed = false;
 	bool isGrounded = true;
 
-	float speed = 500.f;
+	float speed = 120.f;
 
 public:
 	AniPlayer(const std::string& name = "");
