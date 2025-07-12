@@ -117,7 +117,7 @@ void AniPlayer::Update(float dt)
 	h = dt;
 		velocity.x = h * speed;
 	//}
-	if (isGrounded && InputMgr::GetKeyDown(sf::Keyboard::Space))
+	if (isGrounded && InputMgr::GetKeyDown(sf::Keyboard::W))
 	{
 		isGrounded = false;
 		velocity.y = -500.f;
@@ -128,10 +128,10 @@ void AniPlayer::Update(float dt)
 		velocity += gravity * dt;
 	}
 	position += velocity * dt;
-	if (position.y > 370.f)  //bottom of the background image bottom
+	if (position.y > -280.f) 
 	{
 		velocity.y = 0.f;
-		position.y = 0.f;
+		position.y = -280.f; //bottom of the background image bottom
 		isGrounded = true;
 	}
 	SetPosition(position);

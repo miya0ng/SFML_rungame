@@ -2,7 +2,6 @@
 #include "SceneGame.h"
 #include "TextGo.h"
 #include "SpriteGo.h"
-#include "Cookie.h"
 #include "AniPlayer.h"
 #include <cmath>
 
@@ -37,8 +36,6 @@ void SceneGame::Init()
 	background2.setTexture(backgroundTexture);
 	backgroundWidth = backgroundTexture.getSize().x;
 	//-------------------------------------------------cookieSet
-	//cookie = (Cookie*)AddGameObject(new Cookie("img/cookieimg/cookie1/player_attack.png","brave cookie"));
-	//cookie = new Cookie("img/cookieimg/cookie1/player_attack.png","brave cookie");
 
 	aniPlayer=(AniPlayer*)AddGameObject(new AniPlayer());
 	
