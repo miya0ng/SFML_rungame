@@ -169,7 +169,6 @@ std::vector<GameObject*> Scene::FindGameObjects(const std::string& name)
 			results.push_back(obj);
 		}
 	}
-	
 	return results;
 }
 

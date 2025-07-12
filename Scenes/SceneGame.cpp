@@ -15,6 +15,7 @@ void SceneGame::Init()
 {
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 	texIds.push_back("img/Objectimg/map1img/bg1.png"); 
+	texIds.push_back("img/cookieimg/cookie1/player_attack.png");
 
 	TextGo* go = new TextGo("fonts/DS-DIGIT.ttf", "Game");
 	go->SetString("Start");
@@ -28,30 +29,21 @@ void SceneGame::Init()
 	background1.setTexture(backgroundTexture);
 	background2.setTexture(backgroundTexture);
 	backgroundWidth = backgroundTexture.getSize().x;
-
 	//-------------------------------------------------cookieSet
-
-	/*cookieTexture.loadFromFile("img/cookieimg/cookie1/player_attack.png");
-	cookieOrigin.setTexture(cookieTexture);
-	cookieOrigin.setPosition({ 0,0 });*/
-
-	cookie = new Cookie("img/Objectimg/map1img/bg1.png", "braveCookie");
-	AddGameObject(cookie);
-	std::cout << cookie->GetPosition().x << std::endl;
-
-	//cookie->sortingLayer = SortingLayers::Default;
-	//cookie->sortingOrder = 0;
+	cookie = (Cookie*)AddGameObject(new Cookie("img/cookieimg/cookie1/player_attack.png","brave cookie"));
+	
 	Scene::Init();
 }
 
 void SceneGame::Enter()
 {
 	auto size = FRAMEWORK.GetWindowSizeF();
+
 	sf::Vector2f center{ size.x * 0.5f, size.y * 0.5f };
 	uiView.setSize(size);
 	uiView.setCenter(center);
 	worldView.setSize(size);
-	worldView.setCenter({ 0.f, -200.f });
+	worldView.setCenter(size * 0.5f);
 
 	Scene::Enter();
 }
@@ -60,13 +52,18 @@ void SceneGame::Update(float dt)
 {
 	Scene::Update(dt);
 
+	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+	{
+		sf::Vector2i mouse = InputMgr::GetMousePosition();
+		std::cout << mouse.x << ", " << mouse.y << std::endl;
+	}
 	//-------------------------------------------------backgroundScroll
+
 	scrollSpeed = 100.0f;
 	scrollOffset += dt * scrollSpeed;
 	
 	background1.setPosition(-scrollOffset, 0);
 	background2.setPosition(-scrollOffset + backgroundWidth, 0);
-	
 
 	if (scrollOffset >= backgroundWidth)
 	{
@@ -83,9 +80,9 @@ void SceneGame::Update(float dt)
 
 void SceneGame::Draw(sf::RenderWindow& window)
 {
-	Scene::Draw(window);
-
 	window.draw(background1);
-	window.draw(background2);
-	window.draw(cookieOrigin);
+	window.draw(background2);	
+	
+	Scene::Draw(window);
+	
 }

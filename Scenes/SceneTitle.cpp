@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "SceneTitle.h"
 #include "TextGo.h"
-
+#include "Cookie.h"
 SceneTitle::SceneTitle()
 	: Scene(SceneIds::Title)
 {
@@ -17,10 +17,14 @@ void SceneTitle::Init()
 	go->SetFillColor(sf::Color::White);
 	go->sortingLayer = SortingLayers::UI;
 	go->sortingOrder = 0;
-	std::cout <<"xÁÂÇ¥:" << go->GetPosition().x << std::endl;
-	std::cout << "yÁÂÇ¥:" << go->GetPosition().y << std::endl;
-
 	AddGameObject(go);
+
+	cookie = (Cookie*)AddGameObject(new Cookie("brave cookie"));
+	cookie->sortingLayer = SortingLayers::Foreground;
+	cookie->sortingOrder = 5;
+	cookie->SetPosition({ 500.f, 500.f });
+	cookie->SetScale({ 1.f, 1.f });
+
 
 	Scene::Init();
 }
@@ -45,4 +49,8 @@ void SceneTitle::Update(float dt)
 	{
 		SCENE_MGR.ChangeScene(SceneIds::Ready);
 	}
+}
+void SceneTitle::Draw(sf::RenderWindow& window)
+{
+	Scene::Draw(window);
 }

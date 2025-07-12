@@ -42,14 +42,7 @@ void Cookie::SetOrigin(Origins preset)
 
 void Cookie::Init()
 {
-	std::cout << "ÄíÅ°µîÀå" << std::endl;
-	cookiePtr= new SpriteGo("img/cookieimg/cookie1/player_attack.png", "cookie");
-	
-	cookieTexture.loadFromFile("img/cookieimg/cookie1/player_attack.png");
-	cookieOrigin.setTexture(cookieTexture);
-	position.x = 100;
-	SetPosition({ position.x , 0 });
-	std::cout << GetPosition().x << std::endl;
+	texId = "img/cookieimg/cookie1/player_attack.png";
 }
 
 void Cookie::Release()
@@ -59,6 +52,11 @@ void Cookie::Release()
 
 void Cookie::Reset()
 {
+	sortingLayer = SortingLayers::Foreground;
+	sortingOrder = 0;
+	SetOrigin(Origins::MC);
+	cookieOrigin.setTexture(TEXTURE_MGR.Get(texId));
+	SetPosition({ 100.f, 35.f });
 }
 
 void Cookie::Update(float dt)
@@ -74,11 +72,9 @@ void Cookie::Update(float dt)
 			position.x += speed * dt;
 		}
 	}*/
-
 }
 
 void Cookie::Draw(sf::RenderWindow& window)
 {
 	window.draw(cookieOrigin);
-
 }

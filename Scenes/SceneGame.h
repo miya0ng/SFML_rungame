@@ -13,8 +13,13 @@ protected:
 	float backgroundWidth;
 	float scrollOffset =0.f;
 	float offsetX = 0;
+	
 	sf::Sprite cookieOrigin;
+	SpriteGo* cookiePtr;
 	sf::Texture cookieTexture;
+	std::string texId;
+
+
 
 	Cookie* cookie=nullptr;
 
