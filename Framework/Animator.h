@@ -77,7 +77,7 @@ public:
 
 	void Stop();
 
-	//void Pause(bool pause);
+	void Pause(bool pause);
 
 	void SetFrame(const AnimationFrame& frame);
 

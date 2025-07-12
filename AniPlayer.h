@@ -9,7 +9,12 @@ protected:
 
 	sf::Vector2f gravity = { 0.f, 300.f };
 	sf::Vector2f velocity = { 0.f, 0.f };
+
+	float buffTimer = 4.f;
+
+	bool isBuffed = false;
 	bool isGrounded = true;
+
 	float speed = 500.f;
 
 public:
@@ -22,6 +27,18 @@ public:
 
 	void SetOrigin(Origins preset) override;
 	void SetOrigin(const sf::Vector2f& newOrigin) override;
+
+	void SetSpeed(float s) {
+		speed = s;
+	}
+
+	float GetSpeed()
+	{
+		return speed;
+	}
+
+	bool BufferCheck(float dt);
+	bool cookieJump(float dt);
 
 	void Init() override;
 	void Release() override;

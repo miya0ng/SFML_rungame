@@ -10,11 +10,13 @@ SceneDev2::SceneDev2() : Scene(SceneIds::Dev2)
 void SceneDev2::Init()
 {
 	texIds.push_back("graphics/sprite_sheet.png");
+	texIds.push_back("graphics/player_origin.png");
+	//texIds.push_back("graphics/player_jump.png");
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 
 	ANI_CLIP_MGR.Load("animations/idle.csv");
-	ANI_CLIP_MGR.Load("animations/run.csv");
-	ANI_CLIP_MGR.Load("animations/jump.csv");
+	ANI_CLIP_MGR.Load("animations/cookierun.csv");
+	//ANI_CLIP_MGR.Load("animations/cookiejump.csv");
 
 	TextGo* go = new TextGo("fonts/DS-DIGIT.ttf");
 	go->SetString("Dev 2");
@@ -24,7 +26,6 @@ void SceneDev2::Init()
 	go->sortingOrder = 0;
 
 	AddGameObject(go);
-
 	AddGameObject(new AniPlayer());
 
 	Scene::Init();

@@ -3,6 +3,7 @@
 #include "TextGo.h"
 #include "SpriteGo.h"
 #include "Cookie.h"
+#include "AniPlayer.h"
 #include <cmath>
 
 SceneGame::SceneGame()
@@ -15,7 +16,13 @@ void SceneGame::Init()
 {
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 	texIds.push_back("img/Objectimg/map1img/bg1.png"); 
-	texIds.push_back("img/cookieimg/cookie1/player_attack.png");
+	//texIds.push_back("img/cookieimg/cookie1/player_attack.png");
+
+	texIds.push_back("graphics/sprite_sheet.png");
+	texIds.push_back("graphics/player_origin.png");
+
+	ANI_CLIP_MGR.Load("animations/idle.csv");
+	ANI_CLIP_MGR.Load("animations/cookierun.csv");
 
 	TextGo* go = new TextGo("fonts/DS-DIGIT.ttf", "Game");
 	go->SetString("Start");
@@ -30,7 +37,10 @@ void SceneGame::Init()
 	background2.setTexture(backgroundTexture);
 	backgroundWidth = backgroundTexture.getSize().x;
 	//-------------------------------------------------cookieSet
-	cookie = (Cookie*)AddGameObject(new Cookie("img/cookieimg/cookie1/player_attack.png","brave cookie"));
+	//cookie = (Cookie*)AddGameObject(new Cookie("img/cookieimg/cookie1/player_attack.png","brave cookie"));
+	//cookie = new Cookie("img/cookieimg/cookie1/player_attack.png","brave cookie");
+
+	aniPlayer=(AniPlayer*)AddGameObject(new AniPlayer());
 	
 	Scene::Init();
 }
@@ -38,12 +48,11 @@ void SceneGame::Init()
 void SceneGame::Enter()
 {
 	auto size = FRAMEWORK.GetWindowSizeF();
-
 	sf::Vector2f center{ size.x * 0.5f, size.y * 0.5f };
 	uiView.setSize(size);
 	uiView.setCenter(center);
 	worldView.setSize(size);
-	worldView.setCenter(size * 0.5f);
+	worldView.setCenter({ 0.f, -200.f });
 
 	Scene::Enter();
 }
@@ -59,7 +68,7 @@ void SceneGame::Update(float dt)
 	}
 	//-------------------------------------------------backgroundScroll
 
-	scrollOffset += dt * cookie->GetSpeed();
+	scrollOffset += dt * aniPlayer->GetSpeed();
 	
 	background1.setPosition(-scrollOffset, 0);
 	background2.setPosition(-scrollOffset + backgroundWidth, 0);

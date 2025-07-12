@@ -39,6 +39,39 @@ void AniPlayer::SetOrigin(const sf::Vector2f& newOrigin)
 	origin = Utils::SetOrigin(body, originPreset);
 }
 
+bool AniPlayer::BufferCheck(float dt)
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !isBuffed)
+	{
+		//std::cout << "버프" << std::endl;
+		isBuffed = true;
+	}
+	if (isBuffed)
+	{
+		buffTimer -= dt;
+		SetSpeed(2000);
+	}
+	if (buffTimer <= 0.f)
+	{
+		buffTimer = 0.f;
+		//std::cout << "버프 종료!!!" << std::endl;
+		isBuffed = false;
+		SetSpeed(100);
+	}
+	
+	return false;
+}
+
+bool  AniPlayer::cookieJump(float dt)
+{
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	{
+		return true;
+	}
+	return false;
+}
+
 void AniPlayer::Init()
 {
 	animator.SetTarget(&body);
@@ -66,7 +99,8 @@ void AniPlayer::Reset()
 {
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 0;
-
+	SetPosition({ -300.f, -280.f });//cookie position have to be changed because of the ground and viewoption
+	std::cout << GetPosition().x << GetPosition().y << std::endl;
 	animator.Play("animations/idle.csv");
 	SetOrigin(Origins::BC);
 }
@@ -74,18 +108,20 @@ void AniPlayer::Reset()
 void AniPlayer::Update(float dt)
 {
 	animator.Update(dt);
+	BufferCheck(dt);
 
 	float h = 0.f;
 	//if (isGrounded)
 	//{
-		h = InputMgr::GetAxis(Axis::Horizontal);
+		//h = InputMgr::GetAxis(Axis::Horizontal);
+	h = dt;
 		velocity.x = h * speed;
 	//}
 	if (isGrounded && InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
 		isGrounded = false;
 		velocity.y = -500.f;
-		animator.Play("animations/jump.csv");
+		//animator.Play("animations/cookiejump.csv");
 	}
 	if (!isGrounded)
 	{
@@ -110,7 +146,7 @@ void AniPlayer::Update(float dt)
 	{
 		if (h != 0.f)
 		{
-			animator.Play("animations/run.csv");
+			animator.Play("animations/cookierun.csv");
 		}
 	}
 	else if (animator.GetCurrentClipId() == "Run")
@@ -128,7 +164,7 @@ void AniPlayer::Update(float dt)
 		}
 		else
 		{
-			animator.Play("animations/run.csv");
+			animator.Play("animations/cookierun.csv");
 		}
 	}
 }

@@ -2,7 +2,7 @@
 #include "Scene.h"
 #include "SpriteGo.h"
 
-class Cookie;
+class AniPlayer;
 
 class SceneGame :
     public Scene
@@ -14,14 +14,7 @@ protected:
 	float scrollOffset =0.f;
 	float offsetX = 0;
 	
-	sf::Sprite cookieOrigin;
-	SpriteGo* cookiePtr;
-	sf::Texture cookieTexture;
-	std::string texId;
-
-
-
-	Cookie* cookie=nullptr;
+	AniPlayer* aniPlayer;
 
 	sf::Sprite background1;
 	sf::Sprite background2;
@@ -36,4 +29,3 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window);
 };
-
