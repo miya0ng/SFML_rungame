@@ -59,8 +59,7 @@ void SceneGame::Update(float dt)
 	}
 	//-------------------------------------------------backgroundScroll
 
-	scrollSpeed = 100.0f;
-	scrollOffset += dt * scrollSpeed;
+	scrollOffset += dt * cookie->GetSpeed();
 	
 	background1.setPosition(-scrollOffset, 0);
 	background2.setPosition(-scrollOffset + backgroundWidth, 0);
@@ -84,5 +83,4 @@ void SceneGame::Draw(sf::RenderWindow& window)
 	window.draw(background2);	
 	
 	Scene::Draw(window);
-	
 }

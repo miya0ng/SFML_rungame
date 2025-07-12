@@ -9,15 +9,14 @@ class Cookie :
 protected:
 	sf::Sprite cookieOrigin;
 	SpriteGo* cookiePtr;
-	//sf::Texture cookieTexture;
 
 	std::string texId;
 	sf::Vector2f velocity = { 0.f,0.f };
-	//sf::Vector2f position = { 0.f,0.f };
+	bool isBuffed = false;
 
+	float buffTimer = 10.f;
 	float gravity = 0.f;
-
-	float speed;
+	float speed = 100.f;
 
 public:
 	Cookie(const std::string& fontId = "", const std::string& name = "");
@@ -29,6 +28,14 @@ public:
 	void SetOrigin(const sf::Vector2f& o) override;
 	void SetOrigin(Origins preset) override;
 
+	void SetSpeed(float s) {
+		speed = s;
+	}
+
+	float GetSpeed()
+	{
+		return speed;
+	}
 	//sf::Vector2f GetPosition() { return position; }
 	void Init() override;
 	void Release() override;

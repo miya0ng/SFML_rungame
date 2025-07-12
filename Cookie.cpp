@@ -61,20 +61,29 @@ void Cookie::Reset()
 
 void Cookie::Update(float dt)
 {
-	/*velocity.y += gravity * dt;
-	position += velocity * dt;
-
-	SetPosition(position);
-
-	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)&&!isBuffed)
 	{
-		 {
-			position.x += speed * dt;
-		}
-	}*/
+		std::cout << "버프" << std::endl;
+		isBuffed = true;
+	} 
+	if (isBuffed)
+	{
+		buffTimer -= dt;
+		SetSpeed(2000);
+	}
+	if (buffTimer <= 0.f)
+	{
+		std::cout << "버프 종료!!!" << std::endl;
+		isBuffed = false;
+		SetSpeed(100);
+	}
+	std::cout << buffTimer << std::endl;
+
 }
+
 
 void Cookie::Draw(sf::RenderWindow& window)
 {
+	//window.clear(isBuffed ? sf::Color::Cyan : sf::Color::Black);
 	window.draw(cookieOrigin);
 }
