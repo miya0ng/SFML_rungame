@@ -62,10 +62,20 @@ bool AniPlayer::BufferCheck(float dt)
 	return false;
 }
 
-bool  AniPlayer::cookieJump(float dt)
+bool  AniPlayer::cookieJump()
 {
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	{
+		return true;
+	}
+	return false;
+}
+
+bool  AniPlayer::cookieSlide()
+{
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
 		return true;
 	}
@@ -117,7 +127,7 @@ void AniPlayer::Update(float dt)
 	h = dt;
 		velocity.x = h * speed;
 	//}
-	if (isGrounded && InputMgr::GetKeyDown(sf::Keyboard::W))
+	if (cookieJump())
 	{
 		isGrounded = false;
 		velocity.y = -500.f;
@@ -133,6 +143,11 @@ void AniPlayer::Update(float dt)
 		velocity.y = 0.f;
 		position.y = -280.f; //bottom of the background image bottom
 		isGrounded = true;
+	}
+
+	if (cookieSlide())
+	{
+		animator.Play("animations/cookieslide.csv");
 	}
 	SetPosition(position);
 

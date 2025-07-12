@@ -19,12 +19,13 @@ void SceneGame::Init()
 	texIds.push_back("graphics/sprite_sheet.png");
 	texIds.push_back("graphics/player_origin.png");
 	texIds.push_back("graphics/player_jump.png");
+	texIds.push_back("graphics/player_slide.png");
 
 	ANI_CLIP_MGR.Load("animations/idle.csv");
 	ANI_CLIP_MGR.Load("animations/cookierun.csv");
-	std::cout << "Load cookiejump: ÁøÀÔ"<< std::endl;
-	bool success = ANI_CLIP_MGR.Load("animations/cookiejump.csv");
-	std::cout << "Load cookiejump: " << (success ? "Success" : "Failed") << std::endl;
+	ANI_CLIP_MGR.Load("animations/cookiejump.csv");
+	ANI_CLIP_MGR.Load("animations/cookieslide.csv");
+	
 
 	TextGo* go = new TextGo("fonts/DS-DIGIT.ttf", "Game");
 	go->SetString("Start");

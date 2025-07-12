@@ -1,6 +1,6 @@
 ﻿ID,FPS,"LoopType (0: Single, 1: Loop)",,,
-Jump,30,0,,,
+Slide,30,0,,,
 ,,,,,
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
-graphics/player_jump.png,117,242,135,122,0
-graphics/player_jump.png,482,242,135,122,0
+graphics/player_slide.png,9,11,173,71,0
+graphics/player_slide.png,354,11,173,71,0

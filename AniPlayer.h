@@ -28,7 +28,8 @@ public:
 	void SetOrigin(Origins preset) override;
 	void SetOrigin(const sf::Vector2f& newOrigin) override;
 
-	void SetSpeed(float s) {
+	void SetSpeed(float s)
+	{
 		speed = s;
 	}
 
@@ -38,7 +39,8 @@ public:
 	}
 
 	bool BufferCheck(float dt);
-	bool cookieJump(float dt);
+	bool cookieJump();
+	bool cookieSlide();
 
 	void Init() override;
 	void Release() override;
