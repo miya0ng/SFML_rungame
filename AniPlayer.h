@@ -7,7 +7,7 @@ protected:
 	sf::Sprite body;
 	Animator animator;
 
-	sf::Vector2f gravity = { 0.f, 300.f };
+	sf::Vector2f gravity = { 0.f, 1300.f };
 	sf::Vector2f velocity = { 0.f, 0.f };
 
 	float buffTimer = 4.f;

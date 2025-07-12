@@ -61,11 +61,11 @@ void SceneGame::Update(float dt)
 {
 	Scene::Update(dt);
 
-	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
-	{
-		sf::Vector2i mouse = InputMgr::GetMousePosition();
-		std::cout << mouse.x << ", " << mouse.y << std::endl;
-	}
+	//if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+	//{
+	//	sf::Vector2i mouse = InputMgr::GetMousePosition();
+	//	std::cout << mouse.x << ", " << mouse.y << std::endl;
+	//}
 	//-------------------------------------------------backgroundScroll
 
 	scrollOffset += dt * aniPlayer->GetSpeed();

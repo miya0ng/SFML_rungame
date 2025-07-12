@@ -99,9 +99,9 @@ void AniPlayer::Reset()
 {
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 0;
-	SetPosition({ -300.f, -280.f });//cookie position have to be changed because of the ground and viewoption
+	SetPosition({ -300.f, -280.f });
 	std::cout << GetPosition().x << GetPosition().y << std::endl;
-	animator.Play("animations/idle.csv");
+	animator.Play("animations/cookierun.csv");
 	SetOrigin(Origins::BC);
 }
 
@@ -128,18 +128,13 @@ void AniPlayer::Update(float dt)
 		velocity += gravity * dt;
 	}
 	position += velocity * dt;
-	if (position.y > 0.f)
+	if (position.y > 370.f)  //bottom of the background image bottom
 	{
 		velocity.y = 0.f;
 		position.y = 0.f;
 		isGrounded = true;
 	}
 	SetPosition(position);
-
-	if (h != 0.f)
-	{
-		SetScale(h > 0.f ? sf::Vector2f(1.0f, 1.0) : sf::Vector2f(- 1.f, 1.0f));
-	}
 
 	// Ani
 	if (animator.GetCurrentClipId() == "Idle")
