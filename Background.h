@@ -13,13 +13,11 @@ protected:
 	float backgroundWidth;
 	float scrollOffset = 0.f;
 	float offsetX = 0;
-
 public:
 	Background();
 	virtual ~Background() = default;
 
 	void SetPlayer(AniPlayer* p) { aniPlayer = p; };
-
 	void Init();
 	void Enter();
 	void Update(float dt);

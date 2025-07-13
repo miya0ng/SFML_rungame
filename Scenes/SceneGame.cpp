@@ -4,6 +4,7 @@
 #include "SpriteGo.h"
 #include "AniPlayer.h"
 #include "Background.h"
+#include "StageManager.h"
 #include <cmath>
 
 SceneGame::SceneGame()
@@ -21,6 +22,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/player_origin.png");
 	texIds.push_back("graphics/player_jump.png");
 	texIds.push_back("graphics/player_slide.png");
+	texIds.push_back("img/Objectimg/map1img/platform1.png");
 
 	ANI_CLIP_MGR.Load("animations/idle.csv");
 	ANI_CLIP_MGR.Load("animations/cookierun.csv");
@@ -58,7 +60,7 @@ void SceneGame::Enter()
 void SceneGame::Update(float dt)
 {
 	Scene::Update(dt);
-	bg->Update(dt);
+
 	//if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 	//{
 	//	sf::Vector2i mouse = InputMgr::GetMousePosition();
@@ -66,6 +68,14 @@ void SceneGame::Update(float dt)
 	//}
 	//-------------------------------------------------backgroundScroll
 
+	bg->Update(dt);
+
+	//-------------------------------------------------stageManagerUpdate
+
+	stageManager = new StageManager();
+
+	stageManager->SpawnTile(TileType::Ground);
+	stageManager->Update(dt, aniPlayer->GetSpeed());
 
 	//--------------------------------------------------aniPlayerUpdate
 	
@@ -114,5 +124,6 @@ void SceneGame::Update(float dt)
 void SceneGame::Draw(sf::RenderWindow& window)
 {
 	bg->Draw(window);
+	stageManager->Draw(window);
 	Scene::Draw(window);
 }

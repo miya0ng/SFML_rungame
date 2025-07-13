@@ -1,7 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "SpriteGo.h"
-
+class StageManager;	
 class AniPlayer;
 class Background;
 class SceneGame :
@@ -16,6 +16,7 @@ protected:
 	
 	AniPlayer* aniPlayer;
 	Background* bg;
+	StageManager* stageManager;	
 
 	sf::Sprite background1;
 	sf::Sprite background2;

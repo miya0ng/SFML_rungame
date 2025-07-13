@@ -154,6 +154,7 @@
     <ClCompile Include="Jelly.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Obstacle.cpp" />
+    <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Scenes\SceneGame.cpp" />
     <ClCompile Include="Scenes\SceneGameOver.cpp" />
     <ClCompile Include="Scenes\SceneReady.cpp" />
@@ -163,6 +164,7 @@
     <ClCompile Include="Framework\SoundMgr.cpp" />
     <ClCompile Include="Scenes\SceneTitle.cpp" />
     <ClCompile Include="Spikes.cpp" />
+    <ClCompile Include="StageManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
@@ -189,6 +191,7 @@
     <ClInclude Include="item.h" />
     <ClInclude Include="Jelly.h" />
     <ClInclude Include="Obstacle.h" />
+    <ClInclude Include="Platform.h" />
     <ClInclude Include="Scenes\SceneGame.h" />
     <ClInclude Include="Scenes\SceneGameOver.h" />
     <ClInclude Include="Scenes\SceneReady.h" />
@@ -198,6 +201,7 @@
     <ClInclude Include="Framework\SoundMgr.h" />
     <ClInclude Include="Scenes\SceneTitle.h" />
     <ClInclude Include="Spikes.h" />
+    <ClInclude Include="StageManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Framework\TextGo.h" />
     <ClInclude Include="Framework\Utils.h" />

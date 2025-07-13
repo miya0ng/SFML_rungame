@@ -36,3 +36,10 @@ enum class Sides
 	Right,
 	None,
 };
+
+enum class TileType
+{ 
+	Ground, 
+	Floating,
+	Moving
+};
