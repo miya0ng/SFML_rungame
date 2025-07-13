@@ -21,4 +21,3 @@ public:
 	void Update(float dt, float playerSpeed);
 	void Draw(sf::RenderWindow& window);
 };
-

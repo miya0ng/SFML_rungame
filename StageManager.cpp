@@ -3,67 +3,46 @@
 
 void StageManager::Init()
 {
-    
+	intervalX = basicTile.getSize().x;
 }
 
 Platform* StageManager::SpawnTile(TileType type)
 {
-    float startX = activeTiles.empty()
-        ? 1000.f                                  // 첫 타일이면 0
-        : activeTiles.back()->GetPosition().x  // 마지막 타일 x
-        + intervalX;                         // 그 오른쪽에 붙이기
-
-    // 2️⃣ 풀에서 꺼내거나 새로 생성
-    Platform* tile = nullptr;
-    if (!pooledTiles.empty())
-    {
-        tile = pooledTiles.back();
-        pooledTiles.pop_back();
-        tile->SetActive(true);
-    }
-    else
-    {
-        tile = new Platform();
-        tile->SetScale({ 1.f, 1.f });
-        activeTiles.push_back(tile);
-    }
-    // 3️⃣ 공통 초기화
-    tile->Init();
-    tile->SetType(type);
-    float tileWidth = tile->GetGlobalBounds().width;
-    for (auto it : activeTiles)
-    {
-        it->SetPosition({ startX, 0 });
-        startX += tileWidth;
-    }
-    return tile;
+	Platform* newTile = nullptr;
+	switch (type)
+	{
+	case TileType::Ground:
+		newTile = new Platform();
+		break;
+		/*  case TileType::Moving:
+			  newTile = new MovingPlatform();
+			  break;
+		  case TileType::Floating:
+			  newTile = new Floating();
+			  break;
+		  */
+	default:
+		return nullptr;
+	}
+	activeTiles.push_back(newTile);
+	return newTile;
 }
 
 void StageManager::Update(float dt, float playerSpeed)
 {
-    for (auto it = activeTiles.begin(); it != activeTiles.end();)
-    {
-        if ((*it)->GetPosition().x < basicTile.getSize().x)
-        {
-            (*it)->SetActive(false);
-            pooledTiles.push_back(*it);
-            it = activeTiles.erase(it);
-        }
-        else
-        {
-            sf::Vector2f pos = (*it)->GetPosition();
-            pos.x -= 100.f * dt;
-            (*it)->SetPosition(pos);
-            (*it)->Update(dt);
-           
-			std::cout << (*it)->GetPosition().x << std::endl;
-            ++it;
-        }
-    }
+	sf::FloatRect rect = tile->GetLocalBounds();
+	for (int i = 0; i < 50; i++)
+	{
+		sf::Vector2f pos = activeTiles[i]->GetPosition();
+		pos.x -= playerSpeed * dt;
+		activeTiles[i]->SetPosition(pos);
+	}
+	std::cout << "StageManager::Update called with dt: " << dt << " and playerSpeed: " << playerSpeed << std::endl;
 }
+
 
 void StageManager::Draw(sf::RenderWindow& win)
 {
-    for (auto* t : activeTiles)
-        t->Draw(win);
+	for (auto* t : activeTiles)
+		t->Draw(win);
 }

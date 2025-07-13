@@ -47,7 +47,7 @@ void Platform::SetType(TileType t)
 	sprite.setTexture(*texMap[type]);
 }
 
-void Platform::Init()
+void Platform::Init(sf::Texture tex, sf::Vector2f pos)
 {
 	auto& mgr = TEXTURE_MGR;
 	texMap[TileType::Ground] = &mgr.Get("img/Objectimg/map1img/platform1.png");

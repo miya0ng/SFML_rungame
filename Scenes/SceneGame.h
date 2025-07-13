@@ -9,7 +9,7 @@ class SceneGame :
 {
 protected:
 	//SpriteGo* backgrounds;
-	float scrollSpeed = 0.f;
+	float scrollSpeed = 100.f;
 	float backgroundWidth;
 	float scrollOffset =0.f;
 	float offsetX = 0;

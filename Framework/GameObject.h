@@ -21,6 +21,10 @@ public:
 	GameObject(const std::string& name = "");
 	virtual ~GameObject();
 
+	virtual void Move(const sf::Vector2f& delta)
+	{
+		position += delta;
+	}
 	const std::string& GetName() const { return name; }
 	void SetName(const std::string& n) { name = n; }
 
