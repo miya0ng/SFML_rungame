@@ -42,6 +42,9 @@ void SceneGame::Init()
 	aniPlayer=(AniPlayer*)AddGameObject(new AniPlayer());
 	bg->SetPlayer(aniPlayer);	
 	bg->Init();
+
+	stageManager = new StageManager();
+	stageManager->Init();
 	Scene::Init();
 }
 
@@ -71,8 +74,6 @@ void SceneGame::Update(float dt)
 	bg->Update(dt);
 
 	//-------------------------------------------------stageManagerUpdate
-
-	stageManager = new StageManager();
 
 	stageManager->SpawnTile(TileType::Ground);
 	stageManager->Update(dt, aniPlayer->GetSpeed());

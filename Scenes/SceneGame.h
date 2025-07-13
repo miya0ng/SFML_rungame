@@ -1,7 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "SpriteGo.h"
-class StageManager;	
+class StageManager;
 class AniPlayer;
 class Background;
 class SceneGame :

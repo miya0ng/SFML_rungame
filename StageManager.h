@@ -11,7 +11,8 @@ protected:
 	sf::Texture basicTile;
 	Platform* tile = nullptr;
 	AniPlayer* aniPlayer = nullptr;
-
+	float intervalX = 0.f;
+	float nextTileX = 0.f;
 	sf::Vector2f tilePos = { 0,0 };	
 
 public:
