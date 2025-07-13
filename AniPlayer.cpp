@@ -148,6 +148,7 @@ void AniPlayer::Update(float dt)
 	if (cookieSlide())
 	{
 		animator.Play("animations/cookieslide.csv");
+		position.y = -280.f;//bottom of the background image bottom
 	}
 	SetPosition(position);
 

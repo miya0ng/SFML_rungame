@@ -3,7 +3,7 @@
 #include "SpriteGo.h"
 
 class AniPlayer;
-
+class Background;
 class SceneGame :
     public Scene
 {
@@ -15,6 +15,7 @@ protected:
 	float offsetX = 0;
 	
 	AniPlayer* aniPlayer;
+	Background* bg;
 
 	sf::Sprite background1;
 	sf::Sprite background2;
