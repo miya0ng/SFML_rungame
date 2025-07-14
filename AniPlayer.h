@@ -42,6 +42,7 @@ public:
 
 	bool BufferCheck(float dt);
 	bool cookieJump();
+	bool cookieDoubleJump();
 	bool cookieSlide();
 
 	void Init() override;

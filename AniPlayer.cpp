@@ -62,27 +62,41 @@ bool AniPlayer::BufferCheck(float dt)
 	return false;
 }
 
-bool  AniPlayer::cookieJump()
+bool AniPlayer::cookieJump()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	if (InputMgr::GetKeyDown(sf::Keyboard::W)&&isGrounded)
 	{
-		jumpCount = 1;
-		if (!isGrounded)
-		{
-			jumpCount = 2;
-		}
+		jumpCount++;
+		velocity.y = -500.f;
+		animator.Play("animations/cookiejump.csv");
+		isGrounded = false;
 		return true;
 	}
-	
-	//바닥에 닿기전에 한번 더 누르면 더블점프
+	return false;
+}
+
+bool AniPlayer::cookieDoubleJump()
+{
+	if (InputMgr::GetKeyDown(sf::Keyboard::W) && jumpCount == 1)
+	{
+		jumpCount = 0;
+		velocity.y = -500.f;
+		animator.Play("animations/doublejump.csv");
+		return true;
+	}
 	return false;
 }
 
 bool  AniPlayer::cookieSlide()
 {
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	
+	if (InputMgr::GetKeyDown(sf::Keyboard::S))
 	{
+		animator.Play("animations/cookieslide.csv");
+		if (InputMgr::GetKeyUp(sf::Keyboard::S))
+		{
+			animator.Play("animations/cookierun.csv");
+		}
 		return true;
 	}
 	return false;
@@ -116,7 +130,6 @@ void AniPlayer::Reset()
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 0;
 	SetPosition({ -300.f, -280.f });
-	std::cout << GetPosition().x << GetPosition().y << std::endl;
 	animator.Play("animations/cookierun.csv");
 	SetOrigin(Origins::BC);
 	SetScale({ 0.7f, 0.7f });
@@ -127,59 +140,47 @@ void AniPlayer::Update(float dt)
 	animator.Update(dt);
 	BufferCheck(dt);
 	SetOrigin(Origins::BC);
-	float h = 0.f;
-	//if (isGrounded)
-	//{
-		//h = InputMgr::GetAxis(Axis::Horizontal);
-		h = dt;
-		velocity.x = h * speed;
-	//}
-	if (cookieJump())
+
+	velocity.x = dt * speed;
+
+	cookieDoubleJump();
+	cookieJump();
+	cookieSlide();	
+	if (InputMgr::GetKeyUp(sf::Keyboard::S))
 	{
-		isGrounded = false;
-		velocity.y = -500.f;
-		animator.Play("animations/cookiejump.csv");
+		animator.Play("animations/cookierun.csv");
 	}
-	if (jumpCount == 2)
+	if (position.y > -280.f) 
 	{
-		jumpCount = 0;
-		animator.Play("animations/doublejump.csv");
+		velocity.y = 0.f;
+		position.y = -280.f;
+		isGrounded = true;
 	}
+
 	if (!isGrounded)
 	{
 		velocity += gravity * dt;
 	}
 	position += velocity * dt;
-	if (position.y > -280.f) 
-	{
-		velocity.y = 0.f;
-		position.y = -280.f; //bottom of the background image bottom
-		isGrounded = true;
-	}
-
-	if (cookieSlide())
-	{
-		animator.Play("animations/cookieslide.csv");
-		position.y = -280.f;//bottom of the background image bottom
-	}
 	SetPosition(position);
 
 	// Ani
 	if (animator.GetCurrentClipId() == "Idle")
 	{
-		if (h != 0.f)
+		if (dt != 0.f)
 		{
 			animator.Play("animations/cookierun.csv");
 		}
 	}
 	else if (animator.GetCurrentClipId() == "Run")
 	{
-		if (h == 0.f)
+		if (dt == 0.f)
 		{
 			animator.Play("animations/idle.csv");
 		}
 	}
-	else if (animator.GetCurrentClipId() == "Jump" && isGrounded)
+	else if (animator.GetCurrentClipId() == "Jump" && isGrounded
+		|| animator.GetCurrentClipId() == "DoubleJump"&& isGrounded)
 	{
 		animator.Play("animations/cookierun.csv");
 	}
