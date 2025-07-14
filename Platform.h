@@ -25,7 +25,9 @@ public:
 	void SetScale(const sf::Vector2f& s) override;
 	void SetOrigin(const sf::Vector2f& o) override;
 	void SetOrigin(Origins preset) override;
-
+	sf::FloatRect GetGlobalBounds() const override {
+		return sprite.getGlobalBounds();
+	}
 	void SetType(TileType t);
 	TileType GetType() const { return type; }
 

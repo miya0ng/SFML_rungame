@@ -12,7 +12,9 @@ protected:
 	float dir = -1.f;
 	Platform* newTile = nullptr;
 	AniPlayer* aniPlayer = nullptr;
-
+	sf::Texture tileTexture;
+	sf::Sprite tileSprite;
+	
 public:
 	StageManager();
 

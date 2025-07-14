@@ -7,7 +7,8 @@ StageManager::StageManager()
 
 void StageManager::Init()
 {
-	
+	tileTexture.loadFromFile("img/Objectimg/map1img/platform1.png");
+	tileSprite.setTexture(tileTexture);
 }
 
 Platform* StageManager::SpawnTile(TileType type)
@@ -28,7 +29,6 @@ Platform* StageManager::SpawnTile(TileType type)
 	newTile->Init();
 	newTile->SetType(type);
 
-	//float startX = activeTiles.empty() ? 1000.f : activeTiles.back()->GetPosition().x + activeTiles.back()->GetGlobalBounds().width;
 	float startX = activeTiles.empty() ? 0.f : activeTiles.back()->GetPosition().x + 124.f;
 
 	newTile->SetPosition({ startX, 300 });
@@ -39,8 +39,7 @@ Platform* StageManager::SpawnTile(TileType type)
 
 void StageManager::Update(float dt, float playerSpeed)
 {
-	//float tileWidth= newTile->GetGlobalBounds().width;
-	float tileWidth= 124.f;
+	float tileWidth = tileSprite.getLocalBounds().width;
 	float tileSpawnTriggerX = FRAMEWORK.GetWindowBounds().width - tileWidth;
 
 	for (auto it = activeTiles.begin(); it != activeTiles.end(); )
@@ -49,7 +48,7 @@ void StageManager::Update(float dt, float playerSpeed)
 		 pos = tile->GetPosition();
 		pos.x += dt * playerSpeed * dir;
 		tile->SetPosition({ pos.x, newTile->GetPosition().y});
-		if (pos.x < -tileWidth)
+		if (pos.x < -tileWidth)//------------------------------------tile->SetActive(false)
 		{
 			tile->SetActive(false);
 			pooledTiles.push_back(tile);
@@ -65,9 +64,7 @@ void StageManager::Update(float dt, float playerSpeed)
 	{
 		SpawnTile(TileType::Ground);
 	}
-	
 }
-
 
 void StageManager::Draw(sf::RenderWindow& win)
 {
