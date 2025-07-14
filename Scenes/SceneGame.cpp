@@ -22,7 +22,8 @@ void SceneGame::Init()
 	texIds.push_back("graphics/player_origin.png");
 	texIds.push_back("graphics/player_jump.png");
 	texIds.push_back("graphics/player_slide.png");
-	texIds.push_back("img/Objectimg/map1img/platform1.png");
+	//texIds.push_back("img/Objectimg/map1img/platform1.png");
+
 	std::cout << "sceneGame init()" << std::endl;
 	ANI_CLIP_MGR.Load("animations/idle.csv");
 	ANI_CLIP_MGR.Load("animations/cookierun.csv");
@@ -76,7 +77,7 @@ void SceneGame::Update(float dt)
 	//-------------------------------------------------stageManagerUpdate
 
 	stageManager->SpawnTile(TileType::Ground);
-	stageManager->Update(dt, scrollSpeed);
+	//stageManager->Update(dt, scrollSpeed);
 
 	//--------------------------------------------------aniPlayerUpdate
 	

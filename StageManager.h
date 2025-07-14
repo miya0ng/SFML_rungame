@@ -9,13 +9,12 @@ protected:
 	std::vector<Platform*> activeTiles;
 	std::vector<Platform*> pooledTiles;
 	sf::Texture basicTile;
-	Platform* tile = nullptr;
+	Platform* newTile = nullptr;
 	AniPlayer* aniPlayer = nullptr;
-	float intervalX = 0.f;
-	float nextTileX = 0.f;
-	sf::Vector2f tilePos = { 0,0 };	
 
 public:
+	StageManager();
+
 	Platform* SpawnTile(TileType type);
 	void Init();
 	void Update(float dt, float playerSpeed);

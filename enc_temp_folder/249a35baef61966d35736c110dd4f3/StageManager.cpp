@@ -21,6 +21,7 @@ Platform* StageManager::SpawnTile(TileType type)
 	}
 	else
 	{
+
 		newTile = new Platform();
 	}
 
