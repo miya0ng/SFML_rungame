@@ -39,11 +39,11 @@ Platform* StageManager::SpawnTile(TileType type)
 void StageManager::Update(float dt, float playerSpeed)
 {
 	float tileWidth= newTile->GetGlobalBounds().width;
-	float tileSpawnTriggerX = newTile->GetPosition().x + tileWidth;
+	float tileSpawnTriggerX = FRAMEWORK.GetWindowBounds().width - tileWidth;
 	if (!activeTiles.empty())
 	{
 		float lastTileX = activeTiles.back()->GetPosition().x;
-		lastTileX += dt * playerSpeed*dir;
+		lastTileX += dt * playerSpeed * dir;
 		newTile->SetPosition({ lastTileX,newTile->GetPosition().y });
 		
 		if (lastTileX < tileSpawnTriggerX)
