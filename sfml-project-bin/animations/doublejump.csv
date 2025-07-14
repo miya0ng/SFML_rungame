@@ -1,5 +1,5 @@
 ID,FPS,"LoopType (0: Single, 1: Loop)",,,
-DoubleJump,30,5,,,
+DoubleJump,30,1,,,
 ,,,,,
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
 graphics/player_double_jump.png,111,200,130,164,0

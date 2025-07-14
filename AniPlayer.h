@@ -1,11 +1,13 @@
 #pragma once
 #include "Animator.h"
-
+class platform;
 class AniPlayer : public GameObject
 {
 protected:
 	sf::Sprite body;
 	Animator animator;
+
+	platform* platform = nullptr;
 
 	sf::Vector2f gravity = { 0.f, 1300.f };
 	sf::Vector2f velocity = { 0.f, 0.f };
