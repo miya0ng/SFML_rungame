@@ -25,8 +25,8 @@ Platform* StageManager::SpawnTile(TileType type)
 	}
 
 	newTile->SetActive(true);
-	newTile->SetType(type);
 	newTile->Init();
+	newTile->SetType(type);
 
 	float startX = activeTiles.empty() ? 1000.f : activeTiles.back()->GetPosition().x + activeTiles.back()->GetGlobalBounds().width;
 
