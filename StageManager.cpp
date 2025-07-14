@@ -44,7 +44,8 @@ void StageManager::Update(float dt, float playerSpeed)
 	{
 		float lastTileX = activeTiles.back()->GetPosition().x;
 		lastTileX += dt * playerSpeed*dir;
-
+		newTile->SetPosition({ lastTileX,newTile->GetPosition().y });
+		
 		if (lastTileX < tileSpawnTriggerX)
 		{
 			SpawnTile(TileType::Ground);
