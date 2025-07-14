@@ -29,7 +29,7 @@ Platform* StageManager::SpawnTile(TileType type)
 	newTile->SetType(type);
 
 	//float startX = activeTiles.empty() ? 1000.f : activeTiles.back()->GetPosition().x + activeTiles.back()->GetGlobalBounds().width;
-	float startX = activeTiles.empty() ? 0.f : activeTiles.back()->GetPosition().x +124.f;
+	float startX = activeTiles.empty() ? 0.f : activeTiles.back()->GetPosition().x + 124.f;
 
 	newTile->SetPosition({ startX, 300 });
 	activeTiles.push_back(newTile);
@@ -43,19 +43,29 @@ void StageManager::Update(float dt, float playerSpeed)
 	float tileWidth= 124.f;
 	float tileSpawnTriggerX = FRAMEWORK.GetWindowBounds().width - tileWidth;
 
-	if (!activeTiles.empty())
+	for (auto it = activeTiles.begin(); it != activeTiles.end(); )
 	{
-		for (auto tile : activeTiles)
+		auto tile = *it;
+		 pos = tile->GetPosition();
+		pos.x += dt * playerSpeed * dir;
+		tile->SetPosition({ pos.x, newTile->GetPosition().y});
+		if (pos.x < -tileWidth)
 		{
-			float lastTileX = activeTiles.back()->GetPosition().x;
-			lastTileX += dt * playerSpeed * dir;
-			newTile->SetPosition({ lastTileX,newTile->GetPosition().y });
+			tile->SetActive(false);
+			pooledTiles.push_back(tile);
+			it = activeTiles.erase(it);
+		}
+		else
+		{
+			++it;
 		}
 	}
-	else
+
+	if (pos.x < tileSpawnTriggerX)
 	{
 		SpawnTile(TileType::Ground);
 	}
+	
 }
 
 

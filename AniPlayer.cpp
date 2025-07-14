@@ -89,14 +89,14 @@ void AniPlayer::Init()
 	animator.AddEvent("Idle", 0,
 		[]()
 		{
-			std::cout << "!!" << std::endl;
+			//std::cout << "!!" << std::endl;
 		}
 	);
 
 	animator.AddEvent("Run", 0,
 		[]()
 		{
-			std::cout << "??" << std::endl;
+			//std::cout << "??" << std::endl;
 		}
 	);
 }
@@ -124,7 +124,7 @@ void AniPlayer::Update(float dt)
 	//if (isGrounded)
 	//{
 		//h = InputMgr::GetAxis(Axis::Horizontal);
-	h = dt;
+		h = dt;
 		velocity.x = h * speed;
 	//}
 	if (cookieJump())

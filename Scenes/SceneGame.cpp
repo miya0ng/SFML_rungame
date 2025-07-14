@@ -76,8 +76,7 @@ void SceneGame::Update(float dt)
 
 	//-------------------------------------------------stageManagerUpdate
 
-	stageManager->SpawnTile(TileType::Ground);
-	stageManager->Update(dt, scrollSpeed);
+	stageManager->Update(dt, aniPlayer->GetSpeed());
 
 	//--------------------------------------------------aniPlayerUpdate
 	
