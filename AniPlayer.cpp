@@ -140,7 +140,7 @@ void AniPlayer::Update(float dt)
 		velocity.y = -500.f;
 		animator.Play("animations/cookiejump.csv");
 	}
-	if (jumpCount = 2)
+	if (jumpCount == 2)
 	{
 		jumpCount = 0;
 		animator.Play("animations/doublejump.csv");
