@@ -41,5 +41,5 @@ enum class TileType
 { 
 	Ground, 
 	Floating,
-	Moving
+	Gap
 };

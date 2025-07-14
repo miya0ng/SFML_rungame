@@ -79,6 +79,10 @@ void SceneGame::Update(float dt)
 
 	stageManager->Update(dt, aniPlayer->GetSpeed());
 
+	//--------------------------------------------------stageManagerPatternUpdate
+	 
+
+
 	//--------------------------------------------------aniPlayerUpdate
 	
 	//sf::Image maskImage;	

@@ -1,6 +1,37 @@
 ﻿#include "stdafx.h"
 #include "StageManager.h"
 
+inline StageManager::TilePattern MakeFlat(int n)
+{
+	return [n](StageManager& mgr)
+		{
+			for (int i = 0; i < n; ++i)
+				mgr.SpawnTile(TileType::Ground);
+		};
+}
+
+inline StageManager::TilePattern MakeGap(int g)
+{
+	return [g](StageManager& mgr)
+		{
+			mgr.lastX += mgr.tileW * g;
+		};
+}
+
+inline StageManager::TilePattern MakeStair(int n, float step)
+{
+	return [n, step](StageManager& mgr)
+		{
+			float y = mgr.baseY;
+			for (int i = 0; i < n; ++i)
+			{
+				auto t = mgr.SpawnTile(TileType::Ground);
+				t->SetPosition({ mgr.lastX, y });
+				mgr.lastX += mgr.tileW;
+				y -= step;
+			}
+		};
+}
 StageManager::StageManager()
 {
 }
@@ -10,6 +41,7 @@ void StageManager::Init()
 	tileTexture.loadFromFile("img/Objectimg/map1img/platform1.png");
 	tileSprite.setTexture(tileTexture);
 	tileSprite.setScale(0.7f, 0.7f);
+	SetPattern(MakeFlat(5));
 }
 
 Platform* StageManager::SpawnTile(TileType type)
@@ -36,11 +68,16 @@ Platform* StageManager::SpawnTile(TileType type)
 	newTile->SetScale({ 0.7f, 0.7f });
 	activeTiles.push_back(newTile);
 
+	float tileWidth = tileSprite.getGlobalBounds().width;
+	lastX = startX + tileWidth;
+	tileW = tileWidth;
+
 	return newTile;
 }
 
 void StageManager::Update(float dt, float playerSpeed)
 {
+	//--------------------------------default platform spawn-----------------------------------
 	float tileWidth = tileSprite.getGlobalBounds().width;
 	float tileSpawnTriggerX = FRAMEWORK.GetWindowBounds().width - tileWidth;
 
@@ -49,8 +86,8 @@ void StageManager::Update(float dt, float playerSpeed)
 		auto tile = *it;
 		pos = tile->GetPosition();
 		pos.x += dt * playerSpeed * dir;
-		tile->SetPosition({ pos.x, newTile->GetPosition().y});
-		if (pos.x < -tileWidth)//------------------------------------tile->SetActive(false)
+		tile->SetPosition({ pos.x, baseY });
+		if (pos.x < -tileWidth)//-----------------------------------------tile->SetActive(false)
 		{
 			tile->SetActive(false);
 			pooledTiles.push_back(tile);
@@ -62,10 +99,13 @@ void StageManager::Update(float dt, float playerSpeed)
 		}
 	}
 
-	if (pos.x < tileSpawnTriggerX)
+	if (lastX < tileSpawnTriggerX)
 	{
 		SpawnTile(TileType::Ground);
 	}
+
+	if (NeedNewTiles() && currentPattern)
+		currentPattern(*this);
 }
 
 void StageManager::Draw(sf::RenderWindow& win)
@@ -73,3 +113,41 @@ void StageManager::Draw(sf::RenderWindow& win)
 	for (auto* t : activeTiles)
 		t->Draw(win);
 }
+
+bool StageManager::NeedNewTiles() const
+{
+	float rightEdge = FRAMEWORK.GetWindowBounds().width;
+	return lastX < rightEdge;
+}
+
+//void StageManager::SpawnPattern(TileType type)
+//{
+//	switch (type)
+//	{
+//	case TileType::Ground:       SpawnFlat();      break;
+//	case TileType::Gap:			 SpawnGap();       break;
+//	case TileType::Floating:     SpawnFloating();  break;
+//	}
+//}
+//
+//void StageManager::SpawnFlat()
+//{
+//	for (int i = 0; i < 5; ++i)
+//	SpawnTile(TileType::Ground);
+//}
+//void StageManager::SpawnGap()
+//{
+//	SpawnTile(TileType::Ground);
+//	lastX += tileWidth * 2;
+//}
+//
+//void StageManager::SpawnStair()
+//{
+//	float y = 300;
+//	for (int step = 0; step < 4; ++step)
+//	{
+//		SpawnTile(TileType::Ground)->SetPosition({ lastX, y });
+//		lastX += tileWidth;
+//		y = 100; // 한 칸씩 위로
+//	}
+//}
