@@ -28,27 +28,28 @@ Platform* StageManager::SpawnTile(TileType type)
 	newTile->Init();
 	newTile->SetType(type);
 
-	float startX = activeTiles.empty() ? 1000.f : activeTiles.back()->GetPosition().x + activeTiles.back()->GetGlobalBounds().width;
+	//float startX = activeTiles.empty() ? 1000.f : activeTiles.back()->GetPosition().x + activeTiles.back()->GetGlobalBounds().width;
+	float startX = activeTiles.empty() ? 0.f : activeTiles.back()->GetPosition().x +124.f;
 
 	newTile->SetPosition({ startX, 300 });
-
 	activeTiles.push_back(newTile);
+
 	return newTile;
 }
 
 void StageManager::Update(float dt, float playerSpeed)
 {
-	float tileWidth= newTile->GetGlobalBounds().width;
+	//float tileWidth= newTile->GetGlobalBounds().width;
+	float tileWidth= 124.f;
 	float tileSpawnTriggerX = FRAMEWORK.GetWindowBounds().width - tileWidth;
+
 	if (!activeTiles.empty())
 	{
-		float lastTileX = activeTiles.back()->GetPosition().x;
-		lastTileX += dt * playerSpeed * dir;
-		newTile->SetPosition({ lastTileX,newTile->GetPosition().y });
-		
-		if (lastTileX < tileSpawnTriggerX)
+		for (auto tile : activeTiles)
 		{
-			SpawnTile(TileType::Ground);
+			float lastTileX = activeTiles.back()->GetPosition().x;
+			lastTileX += dt * playerSpeed * dir;
+			newTile->SetPosition({ lastTileX,newTile->GetPosition().y });
 		}
 	}
 	else

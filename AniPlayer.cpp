@@ -119,7 +119,7 @@ void AniPlayer::Update(float dt)
 {
 	animator.Update(dt);
 	BufferCheck(dt);
-
+	SetOrigin(Origins::BC);
 	float h = 0.f;
 	//if (isGrounded)
 	//{
