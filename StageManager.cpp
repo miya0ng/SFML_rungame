@@ -38,12 +38,12 @@ Platform* StageManager::SpawnTile(TileType type)
 
 void StageManager::Update(float dt, float playerSpeed)
 {
-	float tileSpawnTriggerX = newTile->GetPosition().x + 800.f;
-
+	float tileWidth= newTile->GetGlobalBounds().width;
+	float tileSpawnTriggerX = newTile->GetPosition().x + tileWidth;
 	if (!activeTiles.empty())
 	{
 		float lastTileX = activeTiles.back()->GetPosition().x;
-		float lastTileWidth = activeTiles.back()->GetGlobalBounds().width;
+		lastTileX += dt * playerSpeed*dir;
 
 		if (lastTileX < tileSpawnTriggerX)
 		{

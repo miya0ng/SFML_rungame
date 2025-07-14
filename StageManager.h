@@ -8,7 +8,8 @@ class StageManager
 protected:
 	std::vector<Platform*> activeTiles;
 	std::vector<Platform*> pooledTiles;
-	sf::Texture basicTile;
+
+	float dir = -1.f;
 	Platform* newTile = nullptr;
 	AniPlayer* aniPlayer = nullptr;
 
