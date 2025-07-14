@@ -16,11 +16,11 @@ SceneGame::SceneGame()
 void SceneGame::Init()
 {
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
-	//texIds.push_back("img/Objectimg/map1img/bg1.png");
 
 	texIds.push_back("graphics/sprite_sheet.png");
 	texIds.push_back("graphics/player_origin.png");
 	texIds.push_back("graphics/player_jump.png");
+	texIds.push_back("graphics/player_double_jump.png");
 	texIds.push_back("graphics/player_slide.png");
 	texIds.push_back("img/Objectimg/map1img/platform1.png");
 
@@ -28,8 +28,9 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/idle.csv");
 	ANI_CLIP_MGR.Load("animations/cookierun.csv");
 	ANI_CLIP_MGR.Load("animations/cookiejump.csv");
+	ANI_CLIP_MGR.Load("animations/doublejump.csv");
 	ANI_CLIP_MGR.Load("animations/cookieslide.csv");
-	
+	std::cout << "sceneGame init()" << std::endl;
 	TextGo* go = new TextGo("fonts/DS-DIGIT.ttf", "Game");
 	go->SetString("Start");
 	go->SetCharacterSize(30);

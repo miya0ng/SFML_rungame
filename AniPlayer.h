@@ -14,7 +14,7 @@ protected:
 
 	bool isBuffed = false;
 	bool isGrounded = true;
-
+	int jumpCount = 0;
 	float speed = 120.f;
 
 public:

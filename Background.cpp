@@ -22,8 +22,8 @@ void Background::Enter()
 
 void Background::Update(float dt)
 {
-	scrollOffset += dt * aniPlayer->GetSpeed();
-
+	scrollOffset += dt * aniPlayer->GetSpeed()*0.1;
+	
 	background1.setPosition(-scrollOffset, 0);
 	background2.setPosition(-scrollOffset + backgroundWidth, 0);
 

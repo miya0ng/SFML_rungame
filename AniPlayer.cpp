@@ -49,7 +49,7 @@ bool AniPlayer::BufferCheck(float dt)
 	if (isBuffed)
 	{
 		buffTimer -= dt;
-		SetSpeed(2000);
+		SetSpeed(1500);
 	}
 	if (buffTimer <= 0.f)
 	{
@@ -64,11 +64,17 @@ bool AniPlayer::BufferCheck(float dt)
 
 bool  AniPlayer::cookieJump()
 {
-
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
+		jumpCount = 1;
+		if (!isGrounded)
+		{
+			jumpCount = 2;
+		}
 		return true;
 	}
+	
+	//바닥에 닿기전에 한번 더 누르면 더블점프
 	return false;
 }
 
@@ -113,6 +119,7 @@ void AniPlayer::Reset()
 	std::cout << GetPosition().x << GetPosition().y << std::endl;
 	animator.Play("animations/cookierun.csv");
 	SetOrigin(Origins::BC);
+	SetScale({ 0.7f, 0.7f });
 }
 
 void AniPlayer::Update(float dt)
@@ -132,6 +139,11 @@ void AniPlayer::Update(float dt)
 		isGrounded = false;
 		velocity.y = -500.f;
 		animator.Play("animations/cookiejump.csv");
+	}
+	if (jumpCount = 2)
+	{
+		jumpCount = 0;
+		animator.Play("animations/doublejump.csv");
 	}
 	if (!isGrounded)
 	{
