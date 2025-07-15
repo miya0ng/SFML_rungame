@@ -115,7 +115,6 @@ void StageManager::MoveTiles(float dt, float playerSpeed)
 {
 	//--------------------------------default platform spawn-----------------------------------
 	float tileWidth = tileSprite.getGlobalBounds().width;
-	float tileSpawnTriggerX = FRAMEWORK.GetWindowBounds().width - tileWidth;
 
 	for (auto it = activeTiles.begin(); it != activeTiles.end(); )
 	{
@@ -134,13 +133,12 @@ void StageManager::MoveTiles(float dt, float playerSpeed)
 			++it;
 		}
 	}
-
-	if (lastX < tileSpawnTriggerX)
+	//std::cout <<"lastX<tileSpawnTriggerX 전: " << elapsedTime << std::endl;
+	if (NeedNewTiles())
 	{
-		//SpawnTile(TileType::Ground);
 		for (const auto& tp : patternTimeline)
 		{
-			std::cout << elapsedTime << std::endl;
+			//std::cout << elapsedTime << std::endl;
 			if (elapsedTime >= tp.startTime && elapsedTime < tp.endTime)
 			{
 				SetPattern(tp.pattern);
