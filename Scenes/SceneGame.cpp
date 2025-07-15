@@ -77,49 +77,21 @@ void SceneGame::Update(float dt)
 	bg->Update(dt);
 
 	//-------------------------------------------------stageManagerUpdate
+	//-----------------jellySpawn / platformSpawn
 
 	stageManager->Update(dt, aniPlayer->GetSpeed());
 
-	//--------------------------------------------------jellySpawn
-
+	//--------------------------------------------------collisionCheck
+	if (jellyPtr && aniPlayer)
+	{
+		if (Utils::CheckCollision(jellyPtr->GetSprite(), aniPlayer->GetSprite()))
+		{
+			jellyScore++;
+			jellyPtr->SetActive(false);
+			it = stageManager->GetActiveJellyList().erase(it);
+		}
+	}
 	
-
-	//--------------------------------------------------aniPlayerUpdate
-	
-	//sf::Image maskImage;	
-	//sf::Vector2f characterPos;
-	//sf::Vector2u maskSize;
-	//void Player::Init()
-	//{
-	//	maskImage.loadFromFile("graphics/stage1/back_Hit_Mask.png");
-	//}
-	
-	// player Update
-	// player Scale = { 4.f, 3.f }
-	// mask size { 480, 360 };
-
-	//scaleX = 1.f / character.getScale().x; // 0.25
-	//scaleY = 1.f / character.getScale().y; // 0.333
-
-	//// 월드좌표 가져오기
-	//characterPos = character.getPosition();
-
-	//// Vector2u는 부호가 없는 정수 Vector2u == Vector2<unsigned int>
-	//sf::Vector2u maskCoord(characterPos.x * scaleX, characterPos.y * scaleY);
-
-	//// 플레이어의 현재 좌표에 픽셀을 저장
-	//sf::Color pixelColor = maskImage.getPixel(maskCoord.x, maskCoord.y);
-
-	//// 픽셀 충돌검사
-	//if (pixelColor == sf::Color::Blue)
-	//{
-	//	std::cout << "벽 충돌!" << std::endl;
-	//}
-	//if (pixelColor == sf::Color::Black)
-	//{
-	//	std::cout << "착지 충돌!" << std::endl;
-	//}
-
 	//-------------------------------------------------nextScene
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))

@@ -45,6 +45,8 @@ public:
 	float baseY = 300.f;
 	using TilePattern = std::function<void(StageManager&)>;
 
+	std::vector<Jelly*> GetActiveJellyList();
+
 	bool NeedNewTiles() const;
 	Jelly* SpawnJelly();
 	Platform* SpawnTile(TileType type);

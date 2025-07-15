@@ -37,7 +37,7 @@ Jelly* StageManager::SpawnJelly()
 	jellys->SetPosition({ startJellyX, 300 });
 	activeJellyList.push_back(jellys);
 
-	std::cout << jellyPos.x << ", " << jellyPos.y << std::endl;
+	//std::cout << jellyPos.x << ", " << jellyPos.y << std::endl;
 	return jellys;
 }
 
@@ -97,7 +97,7 @@ void StageManager::Update(float dt, float playerSpeed)
 		SpawnTile(TileType::Ground);
 	}
 
-	std::cout << activeJellyList.size() << std::endl;
+	//std::cout << activeJellyList.size() << std::endl;
 	//====================================================================================SpawnJelly
 	for (auto it = activeJellyList.begin(); it != activeJellyList.end(); )
 	{
@@ -106,7 +106,7 @@ void StageManager::Update(float dt, float playerSpeed)
 		jellyPos.x += dt * jellySpeed;
 		jellyPos.y = 250.f;
 		jelly->SetPosition(jellyPos);
-		std::cout << jelly->GetPosition().x << ", " << jelly->GetPosition().y << std::endl;
+		//std::cout << jelly->GetPosition().x << ", " << jelly->GetPosition().y << std::endl;
 		if (jellyPos.x < -jellys->sprite.getGlobalBounds().width)//------------------------------------jelly->SetActive(false)
 		{
 			jelly->SetActive(false);

@@ -4,7 +4,6 @@ class platform;
 class AniPlayer : public GameObject
 {
 protected:
-	sf::Sprite body;
 	Animator animator;
 
 	platform* platform = nullptr;
@@ -19,6 +18,7 @@ protected:
 	int jumpCount = 0;
 	float speed = 120.f;
 
+	sf::Sprite body;
 public:
 	AniPlayer(const std::string& name = "");
 	~AniPlayer() = default;
@@ -44,6 +44,8 @@ public:
 	bool cookieJump();
 	bool cookieDoubleJump();
 	bool cookieSlide();
+
+	sf::Sprite GetSprite() { return body; }
 
 	void Init() override;
 	void Release() override;

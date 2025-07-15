@@ -17,6 +17,8 @@ protected:
 	float scrollOffset =0.f;
 	float offsetX = 0;
 
+	int jellyScore = 0;
+
 	Jelly* jellyPtr;
 	Obstacle* obstacle;
 	AniPlayer* aniPlayer;
