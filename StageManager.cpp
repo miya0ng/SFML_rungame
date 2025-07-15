@@ -1,5 +1,6 @@
 ﻿#include "stdafx.h"
 #include "StageManager.h"
+#include "Jelly.h"
 
 StageManager::StageManager()
 {
@@ -10,7 +11,36 @@ void StageManager::Init()
 	tileTexture.loadFromFile("img/Objectimg/map1img/platform1.png");
 	tileSprite.setTexture(tileTexture);
 	tileSprite.setScale(0.7f, 0.7f);
+
+	jellySpawnTriggerX = FRAMEWORK.GetWindowBounds().width + 100.f;
 }
+
+Jelly* StageManager::SpawnJelly()
+{
+	if (!pooledJellyList.empty())
+	{
+		jellys = pooledJellyList.back();
+		pooledJellyList.pop_back();
+	}
+	else
+	{
+		jellys = new Jelly();
+	}
+
+	jellys->SetActive(true);
+	jellys->Init();
+	jellys->SetPosition({ startX, 300 });
+
+	float startJellyX = activeJellyList.empty() ? 0.f : activeJellyList.back()->GetPosition().x + jellys->sprite.getGlobalBounds().width;
+	jellys->SetActive(true);
+	jellys->Init();
+	jellys->SetPosition({ startJellyX, 300 });
+	activeJellyList.push_back(jellys);
+
+	std::cout << jellyPos.x << ", " << jellyPos.y << std::endl;
+	return jellys;
+}
+
 
 Platform* StageManager::SpawnTile(TileType type)
 {
@@ -41,6 +71,7 @@ Platform* StageManager::SpawnTile(TileType type)
 
 void StageManager::Update(float dt, float playerSpeed)
 {
+	//====================================================================================SpawnTile
 	float tileWidth = tileSprite.getGlobalBounds().width;
 	float tileSpawnTriggerX = FRAMEWORK.GetWindowBounds().width - tileWidth;
 
@@ -61,15 +92,45 @@ void StageManager::Update(float dt, float playerSpeed)
 			++it;
 		}
 	}
-
 	if (pos.x < tileSpawnTriggerX)
 	{
 		SpawnTile(TileType::Ground);
+	}
+
+	std::cout << activeJellyList.size() << std::endl;
+	//====================================================================================SpawnJelly
+	for (auto it = activeJellyList.begin(); it != activeJellyList.end(); )
+	{
+		auto jelly = *it;
+		jellyPos = jelly->GetPosition();
+		jellyPos.x += dt * jellySpeed;
+		jelly->SetPosition(jellyPos);
+		if (jellyPos.x < -jellys->sprite.getGlobalBounds().width)//------------------------------------jelly->SetActive(false)
+		{
+			jelly->SetActive(false);
+			pooledJellyList.push_back(jelly);
+			it = activeJellyList.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+	if (jellyPos.x < jellySpawnTriggerX)
+	{
+		SpawnJelly();
 	}
 }
 
 void StageManager::Draw(sf::RenderWindow& win)
 {
 	for (auto* t : activeTiles)
+	{
 		t->Draw(win);
+	}
+
+	for (auto* t : activeJellyList)
+	{
+		t->Draw(win);
+	}
 }

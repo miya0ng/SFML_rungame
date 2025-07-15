@@ -1,6 +1,9 @@
 #pragma once
 #include "Scene.h"
 #include "SpriteGo.h"
+
+class Jelly;
+class Obstacle;
 class StageManager;
 class AniPlayer;
 class Background;
@@ -13,7 +16,9 @@ protected:
 	float backgroundWidth;
 	float scrollOffset =0.f;
 	float offsetX = 0;
-	
+
+	Jelly* jellyPtr;
+	Obstacle* obstacle;
 	AniPlayer* aniPlayer;
 	Background* bg;
 	StageManager* stageManager;	

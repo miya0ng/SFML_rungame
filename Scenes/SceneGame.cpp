@@ -5,6 +5,8 @@
 #include "AniPlayer.h"
 #include "Background.h"
 #include "StageManager.h"
+#include "Obstacle.h"
+#include "Jelly.h"
 #include <cmath>
 
 SceneGame::SceneGame()
@@ -23,8 +25,8 @@ void SceneGame::Init()
 	texIds.push_back("graphics/player_double_jump.png");
 	texIds.push_back("graphics/player_slide.png");
 	texIds.push_back("img/Objectimg/map1img/platform1.png");
+	texIds.push_back("img/Objectimg/map1img/jelly2.png");
 
-	std::cout << "sceneGame init()" << std::endl;
 	ANI_CLIP_MGR.Load("animations/idle.csv");
 	ANI_CLIP_MGR.Load("animations/cookierun.csv");
 	ANI_CLIP_MGR.Load("animations/cookiejump.csv");
@@ -44,7 +46,6 @@ void SceneGame::Init()
 	aniPlayer=(AniPlayer*)AddGameObject(new AniPlayer());
 	bg->SetPlayer(aniPlayer);	
 	bg->Init();
-
 	stageManager = new StageManager();
 	stageManager->Init();
 	Scene::Init();
@@ -79,9 +80,9 @@ void SceneGame::Update(float dt)
 
 	stageManager->Update(dt, aniPlayer->GetSpeed());
 
-	//--------------------------------------------------stageManagerPatternUpdate
-	 
+	//--------------------------------------------------jellySpawn
 
+	
 
 	//--------------------------------------------------aniPlayerUpdate
 	
@@ -131,5 +132,5 @@ void SceneGame::Draw(sf::RenderWindow& window)
 {
 	bg->Draw(window);
 	stageManager->Draw(window);
-	Scene::Draw(window);
+		Scene::Draw(window);
 }

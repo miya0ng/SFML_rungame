@@ -1,6 +1,7 @@
 #pragma once
 #include "Platform.h"
 
+class Jelly;
 class Platform;
 class AniPlayer;
 class StageManager;	
@@ -27,6 +28,15 @@ protected:
 	Platform* newTile = nullptr;
 	AniPlayer* aniPlayer = nullptr;
 
+	std::vector<Jelly*> activeJellyList;
+	std::vector<Jelly*> pooledJellyList;
+
+	Jelly* jellys = nullptr;
+	float jellySpeed = -100.f;
+	float jellySpawnTriggerX = 0.f;
+	bool jellySpawned = false;
+	sf::Vector2f jellyPos = { 0.f,100.f };
+
 public:
 	StageManager();
 	float startX = 0.f;
@@ -36,7 +46,7 @@ public:
 	using TilePattern = std::function<void(StageManager&)>;
 
 	bool NeedNewTiles() const;
-
+	Jelly* SpawnJelly();
 	Platform* SpawnTile(TileType type);
 	void Init();
 	void Update(float dt, float playerSpeed);
