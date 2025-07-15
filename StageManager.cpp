@@ -3,7 +3,7 @@
 
 inline StageManager::TilePattern MakeFlat(TileType type, int n)
 {
-	return [n,type](StageManager& mgr)
+	return [n, type](StageManager& mgr)
 		{
 			for (int i = 0; i < n; ++i)
 				mgr.SpawnTile(type);
@@ -12,7 +12,7 @@ inline StageManager::TilePattern MakeFlat(TileType type, int n)
 
 inline StageManager::TilePattern MakeGap(TileType type, int g)
 {
-	return [g,type](StageManager& mgr)
+	return [g, type](StageManager& mgr)
 		{
 			mgr.lastX += mgr.tileW * g;
 		};
@@ -35,9 +35,9 @@ inline StageManager::TilePattern MakeStair(TileType type, int n, float step)
 
 std::vector<TimedPattern> patternTimeline =
 {
-	{ 0.f,   1.f,  MakeFlat(TileType::Ground, 10) },
+	{ 0.f,   3.f,  MakeFlat(TileType::Ground, 10) },
 	{ 3.f,  5.f,  MakeGap(TileType::Ground, 3) },
-	{5.f,  7.f,  MakeStair(TileType::Ground, 3, 40.f) },
+	{5.f,  10.f,  MakeStair(TileType::Ground, 3, 40.f) },
 };
 
 StageManager::StageManager()
@@ -49,7 +49,6 @@ void StageManager::Init()
 	tileTexture.loadFromFile("img/Objectimg/map1img/platform1.png");
 	tileSprite.setTexture(tileTexture);
 	tileSprite.setScale(0.7f, 0.7f);
-	//SetPattern(MakeFlat(TileType::Ground, 10));
 }
 
 Platform* StageManager::SpawnTile(TileType type)
@@ -70,28 +69,23 @@ Platform* StageManager::SpawnTile(TileType type)
 	newTile->Init();
 	newTile->SetType(type);
 
-	startX = activeTiles.empty() ? 0.f : activeTiles.back()->GetPosition().x + tileSprite.getGlobalBounds().width;
+	startX = activeTiles.empty() ? 0.f : activeTiles.back()->GetPosition().x;
 
 	newTile->SetPosition({ startX, 300 });
 	newTile->SetScale({ 0.7f, 0.7f });
 	activeTiles.push_back(newTile);
 
-	float tileWidth = tileSprite.getGlobalBounds().width;
-	lastX = startX + tileWidth;
-	tileW = tileWidth;
-
+	lastX = startX + tileW;
 	return newTile;
 }
 
 void StageManager::Update(float dt, float playerSpeed)
 {
-	
-	MoveTiles(dt, playerSpeed);
+	for (const auto& tp : patternTimeline)
+	{
+	}
 
-	if (NeedNewTiles() && currentPattern)
-		currentPattern(*this);
-	/*std::cout << "Tile x=" << startX << ", lastX=" << lastX << std::endl;
-	std::cout << "Tile y=" << baseY << std::endl;*/
+	MoveTiles(dt, playerSpeed);
 }
 
 void StageManager::Draw(sf::RenderWindow& win)
@@ -100,19 +94,21 @@ void StageManager::Draw(sf::RenderWindow& win)
 		t->Draw(win);
 }
 
+Platform* StageManager::SpawnPattern(TileType type)
+{
+
+	return SpawnTile(type);
+}
+
 void StageManager::MoveTiles(float dt, float playerSpeed)
 {
-	elapsedTime += dt;
-	//--------------------------------default platform spawn-----------------------------------
-	float tileWidth = tileSprite.getGlobalBounds().width;
-
 	for (auto it = activeTiles.begin(); it != activeTiles.end(); )
 	{
 		auto tile = *it;
 		pos = tile->GetPosition();
 		pos.x += dt * playerSpeed * dir;
 		tile->SetPosition({ pos.x, baseY });
-		if (pos.x < -tileWidth)//-----------------------------------------tile->SetActive(false)
+		if (pos.x < -tileW)//-----------------------------------------tile->SetActive(false)
 		{
 			tile->SetActive(false);
 			pooledTiles.push_back(tile);
@@ -123,15 +119,12 @@ void StageManager::MoveTiles(float dt, float playerSpeed)
 			++it;
 		}
 	}
-	//std::cout <<"lastX<tileSpawnTriggerX 전: " << elapsedTime << std::endl;
 	if (NeedNewTiles())
 	{
 		for (const auto& tp : patternTimeline)
 		{
-			std::cout << elapsedTime << std::endl;
-			if (elapsedTime >= tp.startTime && elapsedTime < tp.endTime)
+			if ()
 			{
-				SetPattern(tp.pattern);
 				break;
 			}
 		}
@@ -140,8 +133,7 @@ void StageManager::MoveTiles(float dt, float playerSpeed)
 
 bool StageManager::NeedNewTiles() const
 {
-	float rightEdge = FRAMEWORK.GetWindowBounds().width;
-	return lastX < rightEdge;
+	return lastX < FRAMEWORK.GetWindowBounds().width;
 }
 
 //void StageManager::SpawnPattern(TileType type)
