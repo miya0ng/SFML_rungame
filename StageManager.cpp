@@ -104,7 +104,9 @@ void StageManager::Update(float dt, float playerSpeed)
 		auto jelly = *it;
 		jellyPos = jelly->GetPosition();
 		jellyPos.x += dt * jellySpeed;
+		jellyPos.y = 250.f;
 		jelly->SetPosition(jellyPos);
+		std::cout << jelly->GetPosition().x << ", " << jelly->GetPosition().y << std::endl;
 		if (jellyPos.x < -jellys->sprite.getGlobalBounds().width)//------------------------------------jelly->SetActive(false)
 		{
 			jelly->SetActive(false);
