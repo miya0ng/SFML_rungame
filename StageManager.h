@@ -19,15 +19,15 @@ protected:
 	std::vector<Platform*> activeTiles;
 	std::vector<Platform*> pooledTiles;
 	sf::Vector2f pos;
-	float dir = -1.f;
-	Platform* newTile = nullptr;
-	AniPlayer* aniPlayer = nullptr;
 	sf::Texture tileTexture;
 	sf::Sprite tileSprite;
 	
-	TilePattern currentPattern;
+	float dir = -1.f;
 	float elapsedTime = 0.f;
+	TilePattern currentPattern;
 
+	Platform* newTile = nullptr;
+	AniPlayer* aniPlayer = nullptr;
 public:
 	StageManager();
 	float startX = 0.f;

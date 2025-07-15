@@ -35,9 +35,9 @@ inline StageManager::TilePattern MakeStair(TileType type, int n, float step)
 
 std::vector<TimedPattern> patternTimeline =
 {
-	{ 0.f,   3.f,  MakeFlat(TileType::Ground, 10) },
+	{ 0.f,   1.f,  MakeFlat(TileType::Ground, 10) },
 	{ 3.f,  5.f,  MakeGap(TileType::Ground, 3) },
-	{5.f,  10.f,  MakeStair(TileType::Ground, 3, 40.f) },
+	{5.f,  7.f,  MakeStair(TileType::Ground, 3, 40.f) },
 };
 
 StageManager::StageManager()
@@ -83,20 +83,9 @@ Platform* StageManager::SpawnTile(TileType type)
 	return newTile;
 }
 
-
 void StageManager::Update(float dt, float playerSpeed)
 {
-	elapsedTime += dt;
-
-	for (const auto& tp : patternTimeline)
-	{
-		if (elapsedTime >= tp.startTime && elapsedTime < tp.endTime)
-		{
-			//SetPattern(tp.pattern);
-			break;
-		}
-	}
-
+	
 	MoveTiles(dt, playerSpeed);
 
 	if (NeedNewTiles() && currentPattern)
@@ -113,6 +102,7 @@ void StageManager::Draw(sf::RenderWindow& win)
 
 void StageManager::MoveTiles(float dt, float playerSpeed)
 {
+	elapsedTime += dt;
 	//--------------------------------default platform spawn-----------------------------------
 	float tileWidth = tileSprite.getGlobalBounds().width;
 
@@ -138,7 +128,7 @@ void StageManager::MoveTiles(float dt, float playerSpeed)
 	{
 		for (const auto& tp : patternTimeline)
 		{
-			//std::cout << elapsedTime << std::endl;
+			std::cout << elapsedTime << std::endl;
 			if (elapsedTime >= tp.startTime && elapsedTime < tp.endTime)
 			{
 				SetPattern(tp.pattern);
