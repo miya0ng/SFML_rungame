@@ -8,8 +8,8 @@ using TilePattern = std::function<void(StageManager&)>;
 
 struct TimedPattern
 {
-	float startTime;
-	float endTime;
+	float startTime=0.f;
+	float endTime=0.f;
 	TilePattern pattern;
 };
 
