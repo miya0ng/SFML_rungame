@@ -5,6 +5,14 @@ class Platform;
 class AniPlayer;
 class StageManager;	
 using TilePattern = std::function<void(StageManager&)>;
+
+struct TimedPattern
+{
+	float startTime;
+	float endTime;
+	TilePattern pattern;
+};
+
 class StageManager
 {
 protected:
@@ -16,16 +24,18 @@ protected:
 	AniPlayer* aniPlayer = nullptr;
 	sf::Texture tileTexture;
 	sf::Sprite tileSprite;
-
+	
 	TilePattern currentPattern;
+	float elapsedTime = 0.f;
 
 public:
 	StageManager();
+	float startX = 0.f;
 	float lastX = 0.f;
 	float tileW = 0.f;
 	float baseY = 300.f;
+	using TilePattern = std::function<void(StageManager&)>;
 
-	using TilePattern = ::TilePattern;
 	bool NeedNewTiles() const;
 	void SetPattern(TilePattern p) { currentPattern = std::move(p); }
 

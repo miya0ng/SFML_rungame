@@ -89,7 +89,6 @@ bool AniPlayer::cookieDoubleJump()
 
 bool  AniPlayer::cookieSlide()
 {
-	
 	if (InputMgr::GetKeyDown(sf::Keyboard::S))
 	{
 		animator.Play("animations/cookieslide.csv");
@@ -146,6 +145,7 @@ void AniPlayer::Update(float dt)
 	cookieDoubleJump();
 	cookieJump();
 	cookieSlide();	
+
 	if (InputMgr::GetKeyUp(sf::Keyboard::S))
 	{
 		animator.Play("animations/cookierun.csv");
