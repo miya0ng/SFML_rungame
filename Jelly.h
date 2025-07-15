@@ -7,7 +7,7 @@ protected:
 	
 	sf::Texture spriteTexture;
 	sf::Vector2f pos;
-
+	int jellyValue = 0;
 public:
 	sf::Sprite sprite;
 	Jelly(const std::string& name = "");
@@ -20,6 +20,7 @@ public:
 	void SetOrigin(Origins preset) override;
 
 	sf::Sprite& GetSprite() { return sprite; }
+	int GetScore() { return jellyValue=10; }
 
 	void Init() override;
 	void Release() override;

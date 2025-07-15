@@ -2,7 +2,9 @@
 #include "StageManager.h"
 #include "Jelly.h"
 
-StageManager::StageManager()
+StageManager::StageManager(std::vector<Jelly*>& active, std::vector<Jelly*>& pooled)
+	:startX(0.f), jellys(nullptr), newTile(nullptr), jellySpeed(100.f), dir(1), activeJellyList(active),
+	pooledJellyList(pooled)
 {
 }
 
@@ -14,6 +16,8 @@ void StageManager::Init()
 
 	jellySpawnTriggerX = FRAMEWORK.GetWindowBounds().width + 100.f;
 }
+
+
 
 Jelly* StageManager::SpawnJelly()
 {
@@ -79,8 +83,9 @@ void StageManager::Update(float dt, float playerSpeed)
 	{
 		auto tile = *it;
 		pos = tile->GetPosition();
-		pos.x += dt * playerSpeed * dir;
+		pos.x += dt * playerSpeed * -dir;
 		tile->SetPosition({ pos.x, newTile->GetPosition().y });
+	
 		if (pos.x < -tileWidth)//------------------------------------tile->SetActive(false)
 		{
 			tile->SetActive(false);
@@ -103,9 +108,10 @@ void StageManager::Update(float dt, float playerSpeed)
 	{
 		auto jelly = *it;
 		jellyPos = jelly->GetPosition();
-		jellyPos.x += dt * jellySpeed;
+		jellyPos.x += dt * playerSpeed*-dir;
 		jellyPos.y = 250.f;
 		jelly->SetPosition(jellyPos);
+		jelly->SetScale({ 1.2f,1.2f });
 		//std::cout << jelly->GetPosition().x << ", " << jelly->GetPosition().y << std::endl;
 		if (jellyPos.x < -jellys->sprite.getGlobalBounds().width)//------------------------------------jelly->SetActive(false)
 		{

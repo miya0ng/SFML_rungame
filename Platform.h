@@ -9,7 +9,6 @@ protected:
 	AniPlayer* aniPlayer;
 	TileType type = TileType::Ground;
 	sf::Sprite sprite;
-
 	sf::Vector2f position = { 0.f, 0.f };	
 	static std::unordered_map<TileType, const sf::Texture*> texMap;
 

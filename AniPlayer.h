@@ -16,7 +16,8 @@ protected:
 	bool isBuffed = false;
 	bool isGrounded = true;
 	int jumpCount = 0;
-	float speed = 120.f;
+	
+	float speed = 320.f;
 
 	sf::Sprite body;
 public:

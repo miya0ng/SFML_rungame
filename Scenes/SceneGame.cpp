@@ -46,8 +46,8 @@ void SceneGame::Init()
 	aniPlayer=(AniPlayer*)AddGameObject(new AniPlayer());
 	bg->SetPlayer(aniPlayer);	
 	bg->Init();
-	stageManager = new StageManager();
-	stageManager->Init();
+	stageManager = new StageManager(activeJellyList, pooledJellyList);
+	stageManager->Init();			
 	Scene::Init();
 }
 
@@ -82,13 +82,19 @@ void SceneGame::Update(float dt)
 	stageManager->Update(dt, aniPlayer->GetSpeed());
 
 	//--------------------------------------------------collisionCheck
-	if (jellyPtr && aniPlayer)
+	auto& jellyList = activeJellyList;
+	for (auto it = jellyList.begin(); it != jellyList.end(); )
 	{
-		if (Utils::CheckCollision(jellyPtr->GetSprite(), aniPlayer->GetSprite()))
+		if (Utils::CheckCollision((*it)->GetSprite(), aniPlayer->GetSprite()))
 		{
-			jellyScore++;
-			jellyPtr->SetActive(false);
-			it = stageManager->GetActiveJellyList().erase(it);
+			jellyScore += (*it)->GetScore();
+			(*it)->SetActive(false);
+			it = jellyList.erase(it);
+			std::cout << "Jelly Score: " << jellyScore << std::endl;
+		}
+		else
+		{
+			++it;
 		}
 	}
 	
