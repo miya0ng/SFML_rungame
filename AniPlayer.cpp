@@ -127,8 +127,8 @@ void AniPlayer::Release()
 void AniPlayer::Reset()
 {
 	sortingLayer = SortingLayers::Foreground;
-	sortingOrder = 0;
-	SetPosition({ -300.f, -280.f });
+	sortingOrder = 0;	
+	SetPosition({ 150.f, 300.f });
 	animator.Play("animations/cookierun.csv");
 	SetOrigin(Origins::BC);
 	SetScale({ 0.7f, 0.7f });
@@ -150,10 +150,10 @@ void AniPlayer::Update(float dt)
 	{
 		animator.Play("animations/cookierun.csv");
 	}
-	if (position.y > -280.f) 
+	if (position.y > 300.f)
 	{
 		velocity.y = 0.f;
-		position.y = -280.f;
+		position.y = 300.f;
 		isGrounded = true;
 	}
 

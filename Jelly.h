@@ -6,8 +6,8 @@ class Jelly :
 protected:
 	
 	sf::Texture spriteTexture;
-	sf::Vector2f pos;
 	int jellyValue = 0;
+
 public:
 	sf::Sprite sprite;
 	Jelly(const std::string& name = "");
@@ -22,9 +22,13 @@ public:
 	sf::Sprite& GetSprite() { return sprite; }
 	int GetScore() { return jellyValue=10; }
 
+	bool GetActive() const { return active; }
+	void SetActive(bool a) { active = a; }
+
 	void Init() override;
 	void Release() override;
 	void Reset() override;
+	void Reset(sf::Vector2f pos);
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 };

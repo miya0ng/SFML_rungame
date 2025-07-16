@@ -53,11 +53,17 @@ void Jelly::Reset()
 {
 }
 
+void Jelly::Reset(sf::Vector2f spawnPos)
+{
+	position = { spawnPos.x, spawnPos.y };
+}
+
 void Jelly::Update(float dt)
 {
 }
 
 void Jelly::Draw(sf::RenderWindow& window)
 {
+	if (GetActive())
 	window.draw(sprite);
 }

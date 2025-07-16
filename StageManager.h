@@ -20,6 +20,7 @@ protected:
 	std::vector<Platform*> activeTiles;
 	std::vector<Platform*> pooledTiles;
 	sf::Vector2f pos;
+	sf::Vector2f jellyPos;
 	sf::Texture tileTexture;
 	sf::Sprite tileSprite;
 	
@@ -28,21 +29,26 @@ protected:
 	Platform* newTile = nullptr;
 	AniPlayer* aniPlayer = nullptr;
 
-	std::vector<Jelly*>& activeJellyList;
-	std::vector<Jelly*>& pooledJellyList;
 
 	Jelly* jellys = nullptr;
+	int jellyCount = 400;
 	float jellySpeed = -0.f;
-	float jellySpawnTriggerX = 0.f;
-	bool jellySpawned = false;
-	sf::Vector2f jellyPos = { 0.f,100.f };
+	//float jellySpawnX = FRAMEWORK.GetWindowSizeF().x + 100.f;
+	float jellySpawnX =0.f;
+	float jellySpawnY = 300.f;
+	float jellySpacing = 15.f;
 
 public:
+	std::vector<Jelly*> activeJellyList;
+	std::vector<Jelly*> pooledJellyList;
+
 	StageManager(std::vector<Jelly*>& active, std::vector<Jelly*>& pooled);
+	~StageManager();
 	float startX = 0.f;
 	float lastX = 0.f;
 	float tileW = tileSprite.getGlobalBounds().width;
 	float baseY = 300.f;
+
 	using TilePattern = std::function<void(StageManager&)>;
 
 	std::vector<Jelly*>& GetActiveJellyList()
@@ -54,6 +60,7 @@ public:
 	void Init();
 	void Update(float dt, float playerSpeed);
 	void Draw(sf::RenderWindow& window);
-	Platform* SpawnPattern(TileType type);
-	void MoveTiles(float dt, float playerSpeed);
+	//Platform* SpawnPattern(TileType type);
+
+	const std::vector<Jelly*>& GetActiveJellies() const { return activeJellyList; }
 };

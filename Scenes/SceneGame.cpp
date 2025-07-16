@@ -58,7 +58,7 @@ void SceneGame::Enter()
 	uiView.setSize(size);
 	uiView.setCenter(center);
 	worldView.setSize(size);
-	worldView.setCenter({ 0.f, -200.f });
+	worldView.setCenter({center});
 	
 	Scene::Enter();
 }
@@ -82,14 +82,15 @@ void SceneGame::Update(float dt)
 	stageManager->Update(dt, aniPlayer->GetSpeed());
 
 	//--------------------------------------------------collisionCheck
-	auto& jellyList = activeJellyList;
-	for (auto it = jellyList.begin(); it != jellyList.end(); )
+	
+	for (auto it = stageManager->activeJellyList.begin(); it != stageManager->activeJellyList.end(); )
 	{
 		if (Utils::CheckCollision((*it)->GetSprite(), aniPlayer->GetSprite()))
 		{
+			std::cout << "Ãæµ¹" << std::endl;
 			jellyScore += (*it)->GetScore();
 			(*it)->SetActive(false);
-			it = jellyList.erase(it);
+			it = stageManager->activeJellyList.erase(it);
 			std::cout << "Jelly Score: " << jellyScore << std::endl;
 		}
 		else
