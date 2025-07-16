@@ -42,11 +42,11 @@ void StageManager::Update(float dt, float playerSpeed)
 	for (auto it = activeTiles.begin(); it != activeTiles.end(); )
 	{
 		auto tile = *it;
-		pos = tile->GetPosition();
-		pos.x += dt * playerSpeed *-dir;
-		tile->SetPosition({ pos.x, newTile->GetPosition().y });
+		tilePos = tile->GetPosition();
+		tilePos.x += dt * playerSpeed *-dir;
+		tile->SetPosition({ tilePos.x, tile->GetPosition().y });
 	
-		if (pos.x < -tileWidth)//------------------------------------tile->SetActive(false)
+		if (tilePos.x < -tileWidth)//------------------------------------tile->SetActive(false)
 		{
 			tile->SetActive(false);
 			pooledTiles.push_back(tile);
@@ -57,7 +57,7 @@ void StageManager::Update(float dt, float playerSpeed)
 			++it;
 		}
 	}
-	if (pos.x < tileSpawnTriggerX)
+	if (tilePos.x < tileSpawnTriggerX)
 	{
 		SpawnTile(TileType::Ground);
 	}
@@ -75,7 +75,6 @@ void StageManager::Update(float dt, float playerSpeed)
 		jellyPos.y = 250.f;
 		jelly->SetPosition(jellyPos);
 
-		std::cout << jelly->GetPosition().x << ", " << jelly->GetPosition().y << std::endl;
 		if (jellyPos.x < -jellys->sprite.getGlobalBounds().width)//------------------------------------jelly->SetActive(false)
 		{
 			jelly->SetActive(false);
@@ -148,11 +147,112 @@ Jelly* StageManager::SpawnJelly()
 	jellys->SetActive(true);
 	jellys->Init();
 
-	float startJellyX = activeJellyList.empty() ? 0.f : activeJellyList.back()->GetPosition().x + jellys->sprite.getGlobalBounds().width+10.f;
+	float startJellyX = activeJellyList.empty() ? 300.f : activeJellyList.back()->GetPosition().x + jellys->sprite.getGlobalBounds().width+10.f;
 	jellys->SetActive(true);
 	jellys->Init();
 	jellys->SetPosition({ startJellyX, 300 });
 	activeJellyList.push_back(jellys);
 
 	return jellys;
+}
+
+void StageManager::SetTile(float dt, float playerSpeed)
+{
+	float tileWidth = tileSprite.getGlobalBounds().width;
+	float SpawnTriggerX = FRAMEWORK.GetWindowBounds().left - tileWidth;
+
+	for (auto it = activeTiles.begin(); it != activeTiles.end(); )
+	{
+		auto tile = *it;
+		tilePos = tile->GetPosition();
+		tilePos.x += dt * playerSpeed * -dir;
+		tile->SetPosition({ tilePos.x, tile->GetPosition().y });
+
+		if (tilePos.x < -tileWidth)//------------------------------------tile->SetActive(false)
+		{
+			tile->SetActive(false);
+			pooledTiles.push_back(tile);
+			it = activeTiles.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+	if (tilePos.x < SpawnTriggerX)
+	{
+		SetP2(dt, playerSpeed);
+	}
+}
+
+void StageManager::SetP1(float dt, float playerSpeed)
+{
+	float tileWidth = tileSprite.getGlobalBounds().width;
+	float SpawnTriggerX = FRAMEWORK.GetWindowBounds().left - tileWidth;
+	int jellyCount = 40;
+	for (int i = 0; i < jellyCount; ++i)
+	{
+		jellys = new Jelly();
+		jellys->SetPosition({ jellySpawnX, jellySpawnY });
+		activeJellyList.push_back(jellys);
+	}
+	SetTile(dt, playerSpeed);
+	SpawnJelly();
+	float jellyWidth = jellys->GetSprite().getGlobalBounds().width;
+
+	for (auto it = activeJellyList.begin(); it != activeJellyList.end(); )
+	{
+		auto jelly = *it;
+
+		jellyPos = jelly->GetPosition();
+		jellyPos.x += dt * jellySpeed * -dir;
+		jellyPos.y = 250.f;
+		jelly->SetPosition(jellyPos);
+
+		if (jellyPos.x < -jellys->sprite.getGlobalBounds().width)//------------------------------------jelly->SetActive(false)
+		{
+			jelly->SetActive(false);
+			pooledJellyList.push_back(jelly);
+			it = activeJellyList.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+	if (tilePos.x < SpawnTriggerX)
+	{
+		SetP2(dt, playerSpeed);
+	}
+}
+void StageManager::SetP2(float dt, float playerSpeed)
+{
+	float tileWidth = tileSprite.getGlobalBounds().width;
+	float SpawnTriggerX = FRAMEWORK.GetWindowBounds().left - tileWidth;
+	SetTile(dt, playerSpeed);
+
+	if (tilePos.x < SpawnTriggerX)
+	{
+		SetP3(dt, playerSpeed);
+	}
+}
+void StageManager::SetP3(float dt, float playerSpeed)
+{
+	float tileWidth = tileSprite.getGlobalBounds().width;
+	float SpawnTriggerX = FRAMEWORK.GetWindowBounds().left - tileWidth;
+	SetTile(dt, playerSpeed);
+	if (tilePos.x < SpawnTriggerX)
+	{
+		SetP4(dt, playerSpeed);
+	}
+}
+void StageManager::SetP4(float dt, float playerSpeed)
+{
+	float tileWidth = tileSprite.getGlobalBounds().width;
+	float SpawnTriggerX = FRAMEWORK.GetWindowBounds().left - tileWidth;
+	SetTile(dt, playerSpeed);
+	if (tilePos.x < SpawnTriggerX)
+	{
+		SetP1(dt, playerSpeed);
+	}
 }

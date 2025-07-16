@@ -19,7 +19,7 @@ class StageManager
 protected:
 	std::vector<Platform*> activeTiles;
 	std::vector<Platform*> pooledTiles;
-	sf::Vector2f pos;
+	sf::Vector2f tilePos;
 	sf::Vector2f jellyPos;
 	sf::Texture tileTexture;
 	sf::Sprite tileSprite;
@@ -31,9 +31,8 @@ protected:
 
 
 	Jelly* jellys = nullptr;
-	int jellyCount = 400;
+
 	float jellySpeed = -0.f;
-	//float jellySpawnX = FRAMEWORK.GetWindowSizeF().x + 100.f;
 	float jellySpawnX =0.f;
 	float jellySpawnY = 300.f;
 	float jellySpacing = 15.f;
@@ -51,16 +50,22 @@ public:
 
 	using TilePattern = std::function<void(StageManager&)>;
 
+	const std::vector<Jelly*>& GetActiveJellies() const { return activeJellyList; }
 	std::vector<Jelly*>& GetActiveJellyList()
 	{
 		return activeJellyList;
 	}
-	Jelly* SpawnJelly();
+
 	Platform* SpawnTile(TileType type);
 	void Init();
 	void Update(float dt, float playerSpeed);
 	void Draw(sf::RenderWindow& window);
-	//Platform* SpawnPattern(TileType type);
 
-	const std::vector<Jelly*>& GetActiveJellies() const { return activeJellyList; }
+	Jelly* SpawnJelly();
+	void SetTile(float dt, float playerSpeed);
+	void SetP1(float dt, float playerSpeed);
+	void SetP2(float dt, float playerSpeed);
+	void SetP3(float dt, float playerSpeed);
+	void SetP4(float dt, float playerSpeed);
+
 };
