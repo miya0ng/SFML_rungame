@@ -81,13 +81,16 @@ void SceneGame::Update(float dt)
 
 	stageManager->Update(dt, aniPlayer->GetSpeed());
 
-	//--------------------------------------------------collisionCheck
+	//--------------------------------------------collisionCheck
 	
 	for (auto it = stageManager->activeJellyList.begin(); it != stageManager->activeJellyList.end(); )
 	{
 		if (Utils::CheckCollision((*it)->GetSprite(), aniPlayer->GetSprite()))
 		{
-			std::cout << "충돌" << std::endl;
+			/*if (!getMagnet)
+			{
+			    //나중에 해야지?
+			}*/
 			jellyScore += (*it)->GetScore();
 			(*it)->SetActive(false);
 			it = stageManager->activeJellyList.erase(it);

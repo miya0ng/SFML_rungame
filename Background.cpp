@@ -9,7 +9,7 @@ Background::Background()
 
 void Background::Init()
 {
-	backgroundTexture.loadFromFile("img/Objectimg/map1img/bg1.png");
+	backgroundTexture.loadFromFile("graphics/background.png");
 	background1.setTexture(backgroundTexture);
 	background2.setTexture(backgroundTexture);
 	backgroundWidth = backgroundTexture.getSize().x;
