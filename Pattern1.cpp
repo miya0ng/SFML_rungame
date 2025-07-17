@@ -1,16 +1,15 @@
-﻿#include "stdafx.h"
-#include "StageManager.h"
+#include "stdafx.h"
+#include "Pattern1.h"
 #include "Jelly.h"
 #include "Platform.h"
 #include "Obstacle.h"
 
-StageManager::StageManager(std::vector<Jelly*>& active, std::vector<Jelly*>& pooled)
-	:jellys(nullptr), tiles(nullptr), jellySpeed(200.f), dir(-1.f), activeJellyList(active),
-	pooledJellyList(pooled)
+Pattern1::Pattern1()
 {
+
 }
 
-StageManager::~StageManager()
+Pattern1::~Pattern1()
 {
 	for (auto it : pooledJellyList)
 		delete it;
@@ -25,21 +24,27 @@ StageManager::~StageManager()
 		delete it;
 	pooledTileList.clear();
 	activeTileList.clear();
+
+	for (auto it : pooledConeList)
+		delete it;
+	for (auto it : activeConeList)
+		delete it;
+	pooledConeList.clear();
+	activeConeList.clear();
 }
 
-
-void StageManager::Init()
+void Pattern1::Init()
 {
 	tileTexture.loadFromFile("graphics/platform.png");
 	tileSprite.setTexture(tileTexture);
 	tileSprite.setScale(0.7f, 0.7f);
 
-	int jellyCount = 40;
+	int jellyCount = 30;
 	for (int i = 0; i < jellyCount; ++i)
 	{
 		jellys = new Jelly();
 		jellySpawnX = activeJellyList.empty() ? 300.f :
-			activeJellyList.back()->GetPosition().x + jellys->sprite.getGlobalBounds().width + 50.f;
+			activeJellyList.back()->GetPosition().x + jellys->sprite.getGlobalBounds().width + jellySpacing;
 		jellys->SetActive(true);
 		jellys->Init();
 		jellys->SetPosition({ jellySpawnX,  jellySpawnY });
@@ -57,58 +62,43 @@ void StageManager::Init()
 		//tiles->SetScale({ 0.7f, 0.7f });
 		activeTileList.push_back(tiles);
 	}
-
-	int cornCount = 3;
-	for (int i = 0; i < cornCount; ++i)
+	float spacing = 415.f;
+	int coneCount = 3;
+	for (int i = 0; i < coneCount; ++i)
 	{
-		corns = new Obstacle("corn");
-		corns->SetActive(true);
-		corns->Init();
-		activeCornList.push_back(corns);
-	}
-	activeCornList[2]->SetPosition({ cornSpawnX, cornSpawnY });
-	activeCornList[1]->SetPosition({ cornSpawnX + 415.f, cornSpawnY });
-	activeCornList[0]->SetPosition({ cornSpawnX + 830.f, cornSpawnY });
-}
+		cones = new Obstacle("cone");
+		cones->SetActive(true);
+		cones->Init();
+		cones->SetPosition({ coneSpawnX + i * spacing, coneSpawnY });
 
-void StageManager::Update(float dt, float playerSpeed)
+		activeConeList.push_back(cones);
+	}
+}
+void Pattern1::Release()
 {
-	SetP1(dt, playerSpeed);
-}
 
-void StageManager::Draw(sf::RenderWindow& win)
+}
+void Pattern1::Reset()
 {
-	for (auto* t : activeTileList)
-	{
-		t->Draw(win);
-	}
 
-	for (auto* t : activeJellyList)
-	{
-		t->Draw(win);
-	}
-
-
-	for (auto* t : activeCornList)
-	{
-		t->Draw(win);
-	}
 }
+void Pattern1::Update(float dt)
+{
 
-void StageManager::SetP1(float dt, float playerSpeed)
+}
+void Pattern1::Update(float dt, float playerSpeed)
 {
 	float tileWidth = tileSprite.getGlobalBounds().width;
-	float tilePooledTriggerX = FRAMEWORK.GetWindowBounds().left - tileWidth;
+	float tilePooledTriggerX = FRAMEWORK.GetWindowBounds().width;
 
 	for (auto it = activeTileList.begin(); it != activeTileList.end(); )
 	{
 		auto tile = *it;
 		tilePos = tile->GetPosition();
 		tilePos.x += dt * playerSpeed * dir;
-		tilePos.y = 300.f;
 		tile->SetPosition({ tilePos.x, tile->GetPosition().y });
 
-		if (tilePos.x < -tileWidth)//------------------------------------tile->SetActive(false)
+		if (tilePos.x < -tileWidth)
 		{
 			tile->SetActive(false);
 			pooledTileList.push_back(tile);
@@ -119,14 +109,20 @@ void StageManager::SetP1(float dt, float playerSpeed)
 			++it;
 		}
 	}
+	//----------------------------------------------------------------------------NextPattern
+	if (tilePos.x < tilePooledTriggerX)
+	{
+		std::cout << "next pattern" << std::endl;
+	}
+	//----------------------------------------------------------------------------NextPattern
 	float jellyWidth = jellys->GetSprite().getGlobalBounds().width;
 	float jellyPooledTriggerX = FRAMEWORK.GetWindowBounds().left - jellyWidth;
 	for (auto it = activeJellyList.begin(); it != activeJellyList.end(); )
 	{
+
 		auto jelly = *it;
 		jellyPos = jelly->GetPosition();
-		jellyPos.x += dt * jellySpeed * dir;
-		jellyPos.y = 250.f;
+		jellyPos.x += dt * playerSpeed * dir;
 		jelly->SetPosition(jellyPos);
 
 		if (jellyPos.x < jellyPooledTriggerX)
@@ -141,43 +137,46 @@ void StageManager::SetP1(float dt, float playerSpeed)
 		}
 	}
 
-	for (auto it = activeCornList.begin(); it != activeCornList.end(); )
+	float coneWidth = cones->GetSprite().getGlobalBounds().width;
+	float conePooledTriggerX = FRAMEWORK.GetWindowBounds().left - coneWidth;
+	for (auto it = activeConeList.begin(); it != activeConeList.end(); )
 	{
-		auto corn = *it;
-		cornPos = corn->GetPosition();
-		cornPos.x += dt * playerSpeed * dir;
-		corn->SetPosition({ cornPos.x, corn->GetPosition().y });
+		auto cone = *it;
+		std::cout << cone->GetPosition().x << ", " << cone->GetPosition().y << std::endl;
+		conePos = cone->GetPosition();
+		conePos.x += dt * playerSpeed * dir;
+		cone->SetPosition(conePos);
 
-		if (cornPos.x < FRAMEWORK.GetWindowBounds().left-80.f)
+		if (conePos.x < -coneWidth)
 		{
-			corn->SetActive(false);
-			pooledCornList.push_back(corn);
-			it = activeCornList.erase(it);
+			cone->SetActive(false);
+			pooledConeList.push_back(cone);
+			it = activeConeList.erase(it);
 		}
 		else
 		{
 			++it;
 		}
 	}
+}
 
-
-
-
-	if (tilePos.x < tilePooledTriggerX)
+void Pattern1::Draw(sf::RenderWindow& win)
+{
+	for (auto* t : activeTileList)
 	{
-		std::cout << "next pattern" << std::endl;
-		//SetP2(dt, playerSpeed);
+		t->Draw(win);
 	}
-}
-void StageManager::SetP2(float dt, float playerSpeed)
-{
 
-}
-void StageManager::SetP3(float dt, float playerSpeed)
-{
+	for (auto* t : activeJellyList)
+	{
+		if (jellys->GetActive())
+		{
+			t->Draw(win);
+		}
+	}
 
-}
-void StageManager::SetP4(float dt, float playerSpeed)
-{
-
+	for (auto* t : activeConeList)
+	{
+		t->Draw(win);
+	}
 }

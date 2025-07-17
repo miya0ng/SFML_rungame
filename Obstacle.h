@@ -28,22 +28,11 @@ public:
 	bool GetActive() const { return active; }
 	void SetActive(bool a) { active = a; }
 
-	sf::Vector2f GetPosition() const { return position; }
-	void SetPosition(const sf::Vector2f& pos) { position = pos; }
-
-	float GetRotation() const { return rotation; }
-	void SetRotation(float rot) { rotation = rot; }
-
-	sf::Vector2f GetScale() const { return scale; }
-	void SetScale(const sf::Vector2f& s) { scale = s; }
-
-	sf::Vector2f GetOrigin() const { return origin; }
-	 void SetOrigin(const sf::Vector2f& o)
-	{
-		originPreset = Origins::Custom;
-		origin = o;
-	}
-	 void SetOrigin(Origins preset) { originPreset = preset; }
+	void SetPosition(const sf::Vector2f& pos) override;
+	void SetRotation(float rot) override;
+	void SetScale(const sf::Vector2f& s) override;
+	void SetOrigin(const sf::Vector2f& o) override;
+	void SetOrigin(Origins preset) override;
 
 	 sf::FloatRect GetLocalBounds() const
 	{
@@ -55,4 +44,5 @@ public:
 		 return obstacle.getGlobalBounds();
 	}
 
+	sf::Sprite GetSprite() { return obstacle; }
 };

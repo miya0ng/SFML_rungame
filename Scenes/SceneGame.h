@@ -4,7 +4,7 @@
 
 class Jelly;
 class Obstacle;
-class StageManager;
+class Pattern1;
 class AniPlayer;
 class Background;
 class SceneGame :
@@ -27,7 +27,7 @@ protected:
 	Obstacle* obstacle;
 	AniPlayer* aniPlayer;
 	Background* bg;
-	StageManager* stageManager;	
+	Pattern1* pattern1;
 
 	sf::Sprite background1;
 	sf::Sprite background2;

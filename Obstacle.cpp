@@ -6,6 +6,39 @@ Obstacle::Obstacle(const std::string& name)
 {
 }
 
+void Obstacle ::SetPosition(const sf::Vector2f& pos)
+{
+	GameObject::SetPosition(pos);
+	obstacle.setPosition(pos);
+}
+
+void Obstacle ::SetRotation(float rot)
+{
+	GameObject::SetRotation(rot);
+	obstacle.setRotation(rot);
+}
+
+void Obstacle ::SetScale(const sf::Vector2f& s)
+{
+	GameObject::SetScale(s);
+	obstacle.setScale(s);
+}
+
+void Obstacle ::SetOrigin(const sf::Vector2f& o)
+{
+	GameObject::SetOrigin(o);
+	obstacle.setOrigin(o);
+}
+
+void Obstacle ::SetOrigin(Origins preset)
+{
+	GameObject::SetOrigin(preset);
+	if (preset != Origins::Custom)
+	{
+		Utils::SetOrigin(obstacle, preset);
+	}
+}
+
 void Obstacle::Init()
 {	
 	texture.loadFromFile("graphics/corn.png");

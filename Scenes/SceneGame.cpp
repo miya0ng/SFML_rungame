@@ -4,9 +4,9 @@
 #include "SpriteGo.h"
 #include "AniPlayer.h"
 #include "Background.h"
-#include "StageManager.h"
 #include "Obstacle.h"
 #include "Jelly.h"
+#include "Pattern1.h"
 #include <cmath>
 
 SceneGame::SceneGame()
@@ -45,8 +45,9 @@ void SceneGame::Init()
 	aniPlayer=(AniPlayer*)AddGameObject(new AniPlayer());
 	bg->SetPlayer(aniPlayer);	
 	bg->Init();
-	stageManager = new StageManager(activeJellyList, pooledJellyList);
-	stageManager->Init();			
+	
+	pattern1 = new Pattern1();
+	AddGameObject(pattern1);
 	Scene::Init();
 }
 
@@ -66,11 +67,11 @@ void SceneGame::Update(float dt)
 {
 	Scene::Update(dt);
 
-	//if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
-	//{
-	//	sf::Vector2i mouse = InputMgr::GetMousePosition();
-	//	std::cout << mouse.x << ", " << mouse.y << std::endl;
-	//}
+	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+	{
+		sf::Vector2i mouse = InputMgr::GetMousePosition();
+		std::cout << mouse.x << ", " << mouse.y << std::endl;
+	}
 	//-------------------------------------------------backgroundScroll
 
 	bg->Update(dt);
@@ -78,11 +79,11 @@ void SceneGame::Update(float dt)
 	//-------------------------------------------------stageManagerUpdate
 	//-----------------jellySpawn / platformSpawn
 
-	stageManager->Update(dt, aniPlayer->GetSpeed());
+	pattern1->Update(dt, aniPlayer->GetSpeed());
 
 	//--------------------------------------------collisionCheck
 	
-	for (auto it = stageManager->activeJellyList.begin(); it != stageManager->activeJellyList.end(); )
+	for (auto it = pattern1->activeJellyList.begin(); it != pattern1->activeJellyList.end(); )
 	{
 		if (Utils::CheckCollision((*it)->GetSprite(), aniPlayer->GetSprite()))
 		{
@@ -92,7 +93,7 @@ void SceneGame::Update(float dt)
 			}*/
 			jellyScore += (*it)->GetScore();
 			(*it)->SetActive(false);
-			it = stageManager->activeJellyList.erase(it);
+			it = pattern1->activeJellyList.erase(it);
 			std::cout << "Jelly Score: " << jellyScore << std::endl;
 		}
 		else
@@ -112,6 +113,6 @@ void SceneGame::Update(float dt)
 void SceneGame::Draw(sf::RenderWindow& window)
 {
 	bg->Draw(window);
-	stageManager->Draw(window);
+	pattern1->Draw(window);
 	Scene::Draw(window);
 }
