@@ -40,7 +40,7 @@ void Pattern1::Init()
 	tileSprite.setTexture(tileTexture);
 	tileSprite.setScale(0.7f, 0.7f);
 
-	float amplitude = -44.f;
+	float amplitude = -48.f;
 	float frequency = 1.5f;
 	int jellyCount = 200;
 	int archStart = 18;
@@ -85,6 +85,7 @@ void Pattern1::Init()
 		//tiles->SetScale({ 0.7f, 0.7f });
 		activeTileList.push_back(tiles);
 	}
+
 	float spacing = 415.f;
 	int coneCount = 10;
 	for (int i = 0; i < coneCount; ++i)

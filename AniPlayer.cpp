@@ -55,11 +55,9 @@ bool AniPlayer::BufferCheck(float dt)
 	if (buffTimer <= 0.f)
 	{
 		buffTimer = 0.f;
-		//std::cout << "버프 종료!!!" << std::endl;
 		isBuffed = false;
 		SetSpeed(100);
 	}
-	
 	return false;
 }
 

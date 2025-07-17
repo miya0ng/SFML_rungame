@@ -15,6 +15,7 @@ protected:
 	float buffTimer = 4.f;
 	bool isBuffed = false;
 	bool isGrounded = true;
+	int hp = 1000;
 	int jumpCount = 0;
 	float speed = 320.f;
 
@@ -27,10 +28,8 @@ public:
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float angle) override;
 	void SetScale(const sf::Vector2f& scale) override;
-
 	void SetOrigin(Origins preset) override;
 	void SetOrigin(const sf::Vector2f& newOrigin) override;
-
 	void SetSpeed(float s)
 	{
 		speed = s;
@@ -40,6 +39,8 @@ public:
 	{
 		return speed;
 	}
+	void SetHp(int h) { hp = h; };
+	int GetHp() const { return hp;}
 
 	bool BufferCheck(float dt);
 	bool cookieJump();

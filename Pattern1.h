@@ -27,7 +27,7 @@ protected:
 	float jellySpawnY = 220.f;
 	float jellySpacing = 50.f;
 	float coneSpawnX = 1782.f;
-	float coneSpawnY = FRAMEWORK.GetWindowBounds().height - 80.f;
+	float coneSpawnY = FRAMEWORK.GetWindowBounds().height - 79.f;
 
 public:
 	std::vector<Platform*> activeTileList;

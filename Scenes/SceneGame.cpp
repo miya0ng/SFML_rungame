@@ -41,14 +41,14 @@ void SceneGame::Init()
 	AddGameObject(go);
 
 	//-------------------------------------------------cookieSet
-	bg = new Background();	
-	aniPlayer=(AniPlayer*)AddGameObject(new AniPlayer());
-	bg->SetPlayer(aniPlayer);	
+	bg = new Background();
+	aniPlayer = (AniPlayer*)AddGameObject(new AniPlayer());
+	bg->SetPlayer(aniPlayer);
 	bg->Init();
 	obstacle = new Obstacle("cone1");
 	pattern1 = new Pattern1();
 	AddGameObject(pattern1);
-
+	playerHp = aniPlayer->GetHp();
 	Scene::Init();
 }
 
@@ -59,15 +59,15 @@ void SceneGame::Enter()
 	uiView.setSize(size);
 	uiView.setCenter(center);
 	worldView.setSize(size);
-	worldView.setCenter({center});
-	
+	worldView.setCenter({ center });
+
 	Scene::Enter();
 }
 
 void SceneGame::Update(float dt)
 {
 	Scene::Update(dt);
-	
+
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 	{
 		sf::Vector2i mouse = InputMgr::GetMousePosition();
@@ -85,35 +85,19 @@ void SceneGame::Update(float dt)
 
 	//----------------------------------------------------collisionCheck
 
-	std::cout << pattern1->activeJellyList.size() << std::endl;
+	//std::cout << pattern1->activeJellyList.size() << std::endl;
 	for (auto it = pattern1->activeJellyList.begin(); it != pattern1->activeJellyList.end(); )
 	{
 		if (Utils::CheckCollision((*it)->GetSprite(), aniPlayer->GetSprite()))
 		{
 			if (!getMagnet)
 			{
-			    //나중에 해야지
+				//나중에 해야지
 			}
 			jellyScore += (*it)->GetScore();
 			(*it)->SetActive(false);
 			it = pattern1->activeJellyList.erase(it);
-			std::cout << "Jelly Score: " << jellyScore << std::endl;
-		}
-		else
-		{
-			++it;
-		}
-	}
-
-	std::cout << pattern1->activeConeList.size() << std::endl;
-	for (auto it = pattern1->activeConeList.begin(); it != pattern1->activeConeList.end();)
-	{
-		Obstacle* cone = *it;
-		if (Utils::CheckCollision(cone->GetHitBox().rect, aniPlayer->GetHitbox().rect))
-		{
-			std::cout << "GameOver" << std::endl;
-			isGameOver = true;
-			break;
+			//std::cout << "Jelly Score: " << jellyScore << std::endl;
 		}
 		else
 		{
@@ -121,9 +105,41 @@ void SceneGame::Update(float dt)
 		}
 	}
 	
+	//std::cout << pattern1->activeConeList.size() << std::endl;
+	for (auto it = pattern1->activeConeList.begin(); it != pattern1->activeConeList.end();)
+	{
+		Obstacle* cone = *it;
+	/*	if (Utils::CheckCollision(cone->GetHitBox().rect, aniPlayer->GetHitbox().rect))
+		{*/
+		sf::Vector2f coneOffset = { cone->GetSprite().getGlobalBounds().width * 0.5f, cone->GetSprite().getGlobalBounds().height * 0.5f };
+		sf::Vector2f playerOffset = { aniPlayer->GetSprite().getGlobalBounds().width * 0.5f, 0};
+		std::cout << Utils::Distance(cone->GetPosition() - coneOffset, aniPlayer->GetPosition() + playerOffset) << std::endl;
+		if (Utils::Distance(cone->GetPosition() + coneOffset, aniPlayer->GetPosition() + playerOffset) <= 50)
+		{
+			playerHp -= cone->GetDamage();
+			aniPlayer->SetSpeed(0);
+			if (playerHp <= 0)
+			{
+				isGameOver = true;
+				aniPlayer->SetActive(false);
+				aniPlayer->SetSpeed(0);
+				std::cout << "GameOver" << playerHp << std::endl;
+			}
+			else
+			{
+				aniPlayer->SetHp(playerHp);
+				std::cout << "Player Hp: " << playerHp << std::endl;
+			}
+		}
+		else
+		{
+			++it;
+		}
+	}
+
 	//-------------------------------------------------nextScene
 
-	if (InputMgr::GetKeyDown(sf::Keyboard::Enter)||isGameOver)
+	if (InputMgr::GetKeyDown(sf::Keyboard::Enter) || isGameOver)
 	{
 		isGameOver = false;
 		SCENE_MGR.ChangeScene(SceneIds::GameOver);

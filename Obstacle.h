@@ -9,6 +9,8 @@ protected:
 	sf::Sprite obstacle;
 	sf::Texture texture;
 
+	int damage = 10;
+
 public:
 	HitBox hitbox;
 
@@ -36,6 +38,7 @@ public:
 	void SetScale(const sf::Vector2f& s) override;
 	void SetOrigin(const sf::Vector2f& o) override;
 	void SetOrigin(Origins preset) override;
+	int GetDamage() { return damage; }
 
 	 sf::FloatRect GetLocalBounds() const
 	{

@@ -17,9 +17,9 @@ protected:
 	float backgroundWidth;
 	float scrollOffset =0.f;
 	float offsetX = 0;
-
 	bool getMagnet = false;
 
+	int playerHp = 1000;
 	int jellyScore = 0;
 
 	Jelly* jellyPtr;
