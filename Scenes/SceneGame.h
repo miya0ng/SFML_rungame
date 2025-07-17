@@ -22,7 +22,7 @@ protected:
 	bool getMagnet = false;
 	bool isCollision = false;
 	int playerHp = 1000;
-	int jellyScore = 0;
+	int jellyScore = 1000000;
 
 	Jelly* jellyPtr;
 	Obstacle* obstacle;

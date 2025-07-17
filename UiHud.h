@@ -18,6 +18,13 @@ protected:
 	std::vector<sf::Vector2f> scorePos;
 	std::vector<sf::String> scoreString;
 
+	sf::Sprite hpBarSprite;
+	sf::Sprite slideButton;
+	sf::Sprite jumpButton;
+	sf::Texture hpBarTexture;
+	sf::Texture slideTexture;
+	sf::Texture jumpTexture;
+
 	float scoreGuage = 0.f;
 	int hp;
 	int jellyScore = 0;

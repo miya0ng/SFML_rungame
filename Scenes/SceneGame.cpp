@@ -20,6 +20,9 @@ void SceneGame::Init()
 {
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 
+	texIds.push_back("graphics/lifeBar.png");
+	texIds.push_back("graphics/jumpno.png");
+	texIds.push_back("graphics/slideno.png");
 	texIds.push_back("graphics/sprite_sheet.png");
 	texIds.push_back("graphics/player_origin.png");
 	texIds.push_back("graphics/player_jump.png");

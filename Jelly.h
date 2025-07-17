@@ -20,7 +20,7 @@ public:
 	void SetOrigin(Origins preset) override;
 
 	sf::Sprite& GetSprite() { return sprite; }
-	int GetScore() { return jellyValue=10; }
+	int GetScore() { return jellyValue=105; }
 
 	bool GetActive() const { return active; }
 	void SetActive(bool a) { active = a; }
