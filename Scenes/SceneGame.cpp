@@ -7,6 +7,7 @@
 #include "Obstacle.h"
 #include "Jelly.h"
 #include "Pattern1.h"
+#include "UiHud.h"	
 #include <cmath>
 
 SceneGame::SceneGame()
@@ -39,7 +40,8 @@ void SceneGame::Init()
 	go->sortingLayer = SortingLayers::UI;
 	go->sortingOrder = 0;
 	AddGameObject(go);
-
+	uiHud = new UiHud();	
+	AddGameObject(uiHud);
 	//-------------------------------------------------cookieSet
 	bg = new Background();
 	aniPlayer = (AniPlayer*)AddGameObject(new AniPlayer());
@@ -67,6 +69,8 @@ void SceneGame::Enter()
 void SceneGame::Update(float dt)
 {
 	Scene::Update(dt);
+
+	uiHud->SetScoreText(jellyScore);
 
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 	{
@@ -104,6 +108,7 @@ void SceneGame::Update(float dt)
 			++it;
 		}
 	}
+
 	if (isCollision)
 	{
 		collisionTimer += dt;

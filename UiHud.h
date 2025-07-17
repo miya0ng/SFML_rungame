@@ -15,10 +15,12 @@ protected:
 	std::string fontId;
 	sf::Font font;
 	sf::Text scoreText;
+	std::vector<sf::Vector2f> scorePos;
+	std::vector<sf::String> scoreString;
 
 	float scoreGuage = 0.f;
 	int hp;
-	int score = 0;
+	int jellyScore = 0;
 	bool isShowMessage;
 	bool isShowScore;
 
@@ -36,8 +38,8 @@ public:
 	void AddFontId(const sf::String id);
 	void AddMessage(const sf::String Message);
 
+	void SetScoreText(int s);
 	void SetHpBar(int currentHp, int maxHp, const sf::Vector2f& pos);
-	void SetScore(int l) { score = l; };
 	void SetHp(int l) { hp = l; };
 	void Init() override;
 	void Release() override;

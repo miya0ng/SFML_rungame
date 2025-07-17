@@ -3,6 +3,7 @@
 #include "SpriteGo.h"
 #include "HitBox.h"
 
+class UiHud;
 class HitBox;	
 class Jelly;
 class Obstacle;
@@ -28,6 +29,7 @@ protected:
 	AniPlayer* aniPlayer;
 	Background* bg;
 	Pattern1* pattern1;
+	UiHud* uiHud;
 
 	bool isGameOver = false;
 
