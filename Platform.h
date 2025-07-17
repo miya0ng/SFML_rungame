@@ -7,8 +7,9 @@ class Platform :
 {
 protected:
 	AniPlayer* aniPlayer;
-	TileType type = TileType::Ground;
+	//TileType type = TileType::Ground;
 	sf::Sprite sprite;
+	sf::Texture texture;
 	sf::Vector2f position = { 0.f, 0.f };	
 	static std::unordered_map<TileType, const sf::Texture*> texMap;
 
@@ -27,8 +28,8 @@ public:
 	sf::FloatRect GetGlobalBounds() const override {
 		return sprite.getGlobalBounds();
 	}
-	void SetType(TileType t);
-	TileType GetType() const { return type; }
+
+	sf::Sprite& GetSprite() { return sprite; }
 
 	void Init() override;
 	void Release() override;

@@ -41,7 +41,7 @@ void Jelly::SetOrigin(Origins preset)
 
 void Jelly::Init()
 {
-	spriteTexture.loadFromFile("img/Objectimg/map1img/jelly2.png");
+	spriteTexture.loadFromFile("graphics/jelly2.png");
 	sprite.setTexture(spriteTexture);
 }
 

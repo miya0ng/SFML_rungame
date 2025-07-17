@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Platform.h"
 
-std::unordered_map<TileType, const sf::Texture*> Platform:: texMap;
 
 Platform::Platform(const std::string& name)
 	: GameObject(name)
@@ -41,18 +40,10 @@ void Platform::SetOrigin(Origins preset)
 	}
 }
 
-void Platform::SetType(TileType t)
-{
-	type = t;
-	sprite.setTexture(*texMap[type]);
-}
-
 void Platform::Init()
 {
-	auto& mgr = TEXTURE_MGR;
-	texMap[TileType::Ground] = &mgr.Get("img/Objectimg/map1img/platform1.png");
-	//texMap[TileType::Floating] = &mgr.Get("tile_float");
-	//texMap[TileType::Moving] = &mgr.Get("tile_move");
+	texture.loadFromFile("graphics/platform.png");
+	sprite.setTexture(texture);
 }
 
 void Platform::Release()

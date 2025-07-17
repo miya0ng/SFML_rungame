@@ -24,8 +24,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/player_jump.png");
 	texIds.push_back("graphics/player_double_jump.png");
 	texIds.push_back("graphics/player_slide.png");
-	texIds.push_back("img/Objectimg/map1img/platform1.png");
-	texIds.push_back("img/Objectimg/map1img/jelly2.png");
+	//texIds.push_back("graphics/platform.png");
 
 	ANI_CLIP_MGR.Load("animations/idle.csv");
 	ANI_CLIP_MGR.Load("animations/cookierun.csv");
@@ -89,7 +88,7 @@ void SceneGame::Update(float dt)
 		{
 			/*if (!getMagnet)
 			{
-			    //나중에 해야지?
+			    //나중에 해야지
 			}*/
 			jellyScore += (*it)->GetScore();
 			(*it)->SetActive(false);
@@ -114,5 +113,5 @@ void SceneGame::Draw(sf::RenderWindow& window)
 {
 	bg->Draw(window);
 	stageManager->Draw(window);
-		Scene::Draw(window);
+	Scene::Draw(window);
 }

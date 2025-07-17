@@ -14,7 +14,6 @@ protected:
 	std::vector<Jelly*> activeJellyList;
 	std::vector<Jelly*> pooledJellyList;
 
-	//SpriteGo* backgrounds;
 	float scrollSpeed = 100.f;
 	float backgroundWidth;
 	float scrollOffset =0.f;
