@@ -60,7 +60,7 @@ void SceneGame::Enter()
 	uiView.setCenter(center);
 	worldView.setSize(size);
 	worldView.setCenter({ center });
-
+	
 	Scene::Enter();
 }
 
@@ -104,20 +104,27 @@ void SceneGame::Update(float dt)
 			++it;
 		}
 	}
-	
-	//std::cout << pattern1->activeConeList.size() << std::endl;
+	if (isCollision)
+	{
+		collisionTimer += dt;
+	}
+
+	if (collisionTimer >= 1.2f)
+	{
+		isCollision = false;
+		collisionTimer = 0.f;
+	}
+
 	for (auto it = pattern1->activeConeList.begin(); it != pattern1->activeConeList.end();)
 	{
 		Obstacle* cone = *it;
-	/*	if (Utils::CheckCollision(cone->GetHitBox().rect, aniPlayer->GetHitbox().rect))
-		{*/
 		sf::Vector2f coneOffset = { cone->GetSprite().getGlobalBounds().width * 0.5f, cone->GetSprite().getGlobalBounds().height * 0.5f };
 		sf::Vector2f playerOffset = { aniPlayer->GetSprite().getGlobalBounds().width * 0.5f, 0};
-		std::cout << Utils::Distance(cone->GetPosition() - coneOffset, aniPlayer->GetPosition() + playerOffset) << std::endl;
-		if (Utils::Distance(cone->GetPosition() + coneOffset, aniPlayer->GetPosition() + playerOffset) <= 50)
+		if (Utils::Distance(cone->GetPosition() + coneOffset, aniPlayer->GetPosition() + playerOffset) <= 50 && !isCollision)
 		{
+			isCollision = true;
 			playerHp -= cone->GetDamage();
-			aniPlayer->SetSpeed(0);
+			std::cout << "Player Hp: " << playerHp << std::endl;
 			if (playerHp <= 0)
 			{
 				isGameOver = true;
@@ -128,7 +135,7 @@ void SceneGame::Update(float dt)
 			else
 			{
 				aniPlayer->SetHp(playerHp);
-				std::cout << "Player Hp: " << playerHp << std::endl;
+				std::cout << "Player Hp2: " << playerHp << std::endl;
 			}
 		}
 		else
