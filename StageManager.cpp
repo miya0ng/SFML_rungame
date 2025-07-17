@@ -1,6 +1,8 @@
 ﻿#include "stdafx.h"
 #include "StageManager.h"
 #include "Jelly.h"
+#include "Platform.h"
+#include "Obstacle.h"
 
 StageManager::StageManager(std::vector<Jelly*>& active, std::vector<Jelly*>& pooled)
 	:jellys(nullptr), tiles(nullptr), jellySpeed(200.f), dir(-1.f), activeJellyList(active),
@@ -55,6 +57,18 @@ void StageManager::Init()
 		//tiles->SetScale({ 0.7f, 0.7f });
 		activeTileList.push_back(tiles);
 	}
+
+	int cornCount = 3;
+	for (int i = 0; i < cornCount; ++i)
+	{
+		corns = new Obstacle("corn");
+		corns->SetActive(true);
+		corns->Init();
+		activeCornList.push_back(corns);
+	}
+	activeCornList[2]->SetPosition({ cornSpawnX, cornSpawnY });
+	activeCornList[1]->SetPosition({ cornSpawnX + 415.f, cornSpawnY });
+	activeCornList[0]->SetPosition({ cornSpawnX + 830.f, cornSpawnY });
 }
 
 void StageManager::Update(float dt, float playerSpeed)
@@ -70,6 +84,12 @@ void StageManager::Draw(sf::RenderWindow& win)
 	}
 
 	for (auto* t : activeJellyList)
+	{
+		t->Draw(win);
+	}
+
+
+	for (auto* t : activeCornList)
 	{
 		t->Draw(win);
 	}
@@ -109,7 +129,7 @@ void StageManager::SetP1(float dt, float playerSpeed)
 		jellyPos.y = 250.f;
 		jelly->SetPosition(jellyPos);
 
-		if (jellyPos.x < jellyPooledTriggerX)//------------------------------------jelly->SetActive(false)
+		if (jellyPos.x < jellyPooledTriggerX)
 		{
 			jelly->SetActive(false);
 			pooledJellyList.push_back(jelly);
@@ -121,7 +141,29 @@ void StageManager::SetP1(float dt, float playerSpeed)
 		}
 	}
 
-	if (tilePos.x < tilePooledTriggerX )
+	for (auto it = activeCornList.begin(); it != activeCornList.end(); )
+	{
+		auto corn = *it;
+		cornPos = corn->GetPosition();
+		cornPos.x += dt * playerSpeed * dir;
+		corn->SetPosition({ cornPos.x, corn->GetPosition().y });
+
+		if (cornPos.x < FRAMEWORK.GetWindowBounds().left-80.f)
+		{
+			corn->SetActive(false);
+			pooledCornList.push_back(corn);
+			it = activeCornList.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+
+
+
+
+	if (tilePos.x < tilePooledTriggerX)
 	{
 		std::cout << "next pattern" << std::endl;
 		//SetP2(dt, playerSpeed);
@@ -129,7 +171,7 @@ void StageManager::SetP1(float dt, float playerSpeed)
 }
 void StageManager::SetP2(float dt, float playerSpeed)
 {
-	
+
 }
 void StageManager::SetP3(float dt, float playerSpeed)
 {
@@ -137,5 +179,5 @@ void StageManager::SetP3(float dt, float playerSpeed)
 }
 void StageManager::SetP4(float dt, float playerSpeed)
 {
-	
+
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "Platform.h"
 
+class Obstacle;
 class Jelly;
 class Platform;
 class AniPlayer;
@@ -9,14 +10,20 @@ class StageManager
 protected:
 	std::vector<Platform*> activeTileList;
 	std::vector<Platform*> pooledTileList;
+
+	std::vector<Obstacle*> activeCornList;
+	std::vector<Obstacle*> pooledCornList;
+
 	sf::Vector2f tilePos;
 	sf::Vector2f jellyPos;
+	sf::Vector2f cornPos;
 	sf::Texture tileTexture;
 	sf::Sprite tileSprite;
 	
 	Platform* tiles = nullptr;
 	AniPlayer* aniPlayer = nullptr;
 	Jelly* jellys = nullptr;
+	Obstacle* corns = nullptr;
 
 	float dir = -1.f;
 	float tileSpawnX = 0.f;
@@ -25,6 +32,9 @@ protected:
 	float jellySpawnX = 300.f;
 	float jellySpawnY = 300.f;
 	float jellySpacing = 15.f;
+
+	float cornSpawnX = 5493.f;
+	float cornSpawnY = 350.f;
 
 public:
 	std::vector<Jelly*> activeJellyList;
