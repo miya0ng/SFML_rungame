@@ -1,3 +1,4 @@
+
 #include "stdafx.h"
 #include "Pattern1.h"
 #include "Jelly.h"
@@ -39,19 +40,32 @@ void Pattern1::Init()
 	tileSprite.setTexture(tileTexture);
 	tileSprite.setScale(0.7f, 0.7f);
 
-	int jellyCount = 30;
+	float amplitude = -30.f;
+	float frequency = 1.5f;
+	int jellyCount = 200;
+	int archStart = 40;
+	int archEnd = 48;
+	int archLength = archEnd - archStart;
 	for (int i = 0; i < jellyCount; ++i)
 	{
 		jellys = new Jelly();
-		jellySpawnX = activeJellyList.empty() ? 300.f :
-			activeJellyList.back()->GetPosition().x + jellys->sprite.getGlobalBounds().width + jellySpacing;
+		
+		jellySpawnX += jellySpacing;
 		jellys->SetActive(true);
 		jellys->Init();
-		jellys->SetPosition({ jellySpawnX,  jellySpawnY });
+
+		if (i >= archStart && i <= archEnd)
+		{
+			float t = static_cast<float>(i - archStart) / archLength; // 0 ~ 1
+			float angle = 3.14159265358979323846f * t;
+			jellySpawnY += amplitude * std::sin(frequency * (angle));
+		}
+		else jellySpawnY = 220.f;
+		jellys->SetPosition({ jellySpawnX, jellySpawnY });
 		activeJellyList.push_back(jellys);
 	}
 
-	int tileCount = 30;
+	int tileCount = 60;
 	for (int i = 0; i < tileCount; ++i)
 	{
 		tiles = new Platform();
@@ -112,7 +126,7 @@ void Pattern1::Update(float dt, float playerSpeed)
 	//----------------------------------------------------------------------------NextPattern
 	if (tilePos.x < tilePooledTriggerX)
 	{
-		std::cout << "next pattern" << std::endl;
+		//std::cout << "next pattern" << std::endl;
 	}
 	//----------------------------------------------------------------------------NextPattern
 	float jellyWidth = jellys->GetSprite().getGlobalBounds().width;
@@ -142,7 +156,7 @@ void Pattern1::Update(float dt, float playerSpeed)
 	for (auto it = activeConeList.begin(); it != activeConeList.end(); )
 	{
 		auto cone = *it;
-		std::cout << cone->GetPosition().x << ", " << cone->GetPosition().y << std::endl;
+		//std::cout << cone->GetPosition().x << ", " << cone->GetPosition().y << std::endl;
 		conePos = cone->GetPosition();
 		conePos.x += dt * playerSpeed * dir;
 		cone->SetPosition(conePos);

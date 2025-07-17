@@ -24,6 +24,16 @@ public:
 
 	bool GetActive() const { return active; }
 	void SetActive(bool a) { active = a; }
+	
+	sf::FloatRect GetLocalBounds() const
+	{
+		return sprite.getLocalBounds();
+	}
+
+	sf::FloatRect GetGlobalBounds() const
+	{
+		return sprite.getGlobalBounds();
+	}
 
 	void Init() override;
 	void Release() override;
