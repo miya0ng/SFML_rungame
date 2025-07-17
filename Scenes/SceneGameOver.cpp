@@ -19,8 +19,6 @@ void SceneGameOver::Init()
 	go->sortingOrder = 0;
 
 	AddGameObject(go);
-
-
 	Scene::Init();
 }
 

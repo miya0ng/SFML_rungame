@@ -1,7 +1,9 @@
 #pragma once
 #include "Scene.h"
 #include "SpriteGo.h"
+#include "HitBox.h"
 
+class HitBox;	
 class Jelly;
 class Obstacle;
 class Pattern1;
@@ -11,9 +13,6 @@ class SceneGame :
     public Scene
 {
 protected:
-	std::vector<Jelly*> activeJellyList;
-	std::vector<Jelly*> pooledJellyList;
-
 	float scrollSpeed = 100.f;
 	float backgroundWidth;
 	float scrollOffset =0.f;
@@ -28,6 +27,8 @@ protected:
 	AniPlayer* aniPlayer;
 	Background* bg;
 	Pattern1* pattern1;
+
+	bool isGameOver = false;
 
 	sf::Sprite background1;
 	sf::Sprite background2;

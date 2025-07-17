@@ -10,6 +10,7 @@ void Obstacle ::SetPosition(const sf::Vector2f& pos)
 {
 	GameObject::SetPosition(pos);
 	obstacle.setPosition(pos);
+	hitbox.UpdateTransform(obstacle, GetGlobalBounds());
 }
 
 void Obstacle ::SetRotation(float rot)
@@ -41,7 +42,7 @@ void Obstacle ::SetOrigin(Origins preset)
 
 void Obstacle::Init()
 {	
-	texture.loadFromFile("graphics/corn.png");
+	texture.loadFromFile("graphics/cone.png");
 	obstacle.setTexture(texture);
 }
 
@@ -57,10 +58,12 @@ void Obstacle::Reset()
 
 void Obstacle::Update(float dt)
 {
+
 }
 
 void Obstacle::Draw(sf::RenderWindow& window)
 {
 	window.draw(obstacle);
+	hitbox.Draw(window);
 }
 

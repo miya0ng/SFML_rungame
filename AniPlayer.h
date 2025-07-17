@@ -1,25 +1,25 @@
 #pragma once
 #include "Animator.h"
+#include "Hitbox.h"
+
 class platform;
 class AniPlayer : public GameObject
 {
 protected:
 	Animator animator;
-
-	platform* platform = nullptr;
+	sf::Sprite body;
 
 	sf::Vector2f gravity = { 0.f, 1300.f };
 	sf::Vector2f velocity = { 0.f, 0.f };
 
 	float buffTimer = 4.f;
-
 	bool isBuffed = false;
 	bool isGrounded = true;
 	int jumpCount = 0;
-	
 	float speed = 320.f;
 
-	sf::Sprite body;
+	HitBox hitbox;
+
 public:
 	AniPlayer(const std::string& name = "");
 	~AniPlayer() = default;
@@ -53,4 +53,15 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	sf::FloatRect GetLocalBounds() const
+	{
+		return body.getLocalBounds();
+	}
+
+	sf::FloatRect GetGlobalBounds() const
+	{
+		return body.getGlobalBounds();
+	}
+	HitBox& GetHitbox() { return hitbox; }
 };

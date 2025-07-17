@@ -10,6 +10,7 @@ void AniPlayer::SetPosition(const sf::Vector2f& pos)
 {
 	position = pos;
 	body.setPosition(position);
+	hitbox.UpdateTransform(body, GetGlobalBounds());
 }
 
 void AniPlayer::SetRotation(float angle)
@@ -189,4 +190,5 @@ void AniPlayer::Update(float dt)
 void AniPlayer::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
+	hitbox.Draw(window);
 }

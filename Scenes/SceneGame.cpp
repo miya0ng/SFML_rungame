@@ -45,9 +45,10 @@ void SceneGame::Init()
 	aniPlayer=(AniPlayer*)AddGameObject(new AniPlayer());
 	bg->SetPlayer(aniPlayer);	
 	bg->Init();
-	
+	obstacle = new Obstacle("cone1");
 	pattern1 = new Pattern1();
 	AddGameObject(pattern1);
+
 	Scene::Init();
 }
 
@@ -66,31 +67,33 @@ void SceneGame::Enter()
 void SceneGame::Update(float dt)
 {
 	Scene::Update(dt);
-
+	
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 	{
 		sf::Vector2i mouse = InputMgr::GetMousePosition();
 		std::cout << mouse.x << ", " << mouse.y << std::endl;
 	}
-	//-------------------------------------------------backgroundScroll
+
+	//--------------------------------------------------backgroundScroll
 
 	bg->Update(dt);
 
 	//-------------------------------------------------stageManagerUpdate
-	//-----------------jellySpawn / platformSpawn
+	//-----------------------------------------jellySpawn / platformSpawn
 
 	pattern1->Update(dt, aniPlayer->GetSpeed());
 
-	//--------------------------------------------collisionCheck
-	
+	//----------------------------------------------------collisionCheck
+
+	std::cout << pattern1->activeJellyList.size() << std::endl;
 	for (auto it = pattern1->activeJellyList.begin(); it != pattern1->activeJellyList.end(); )
 	{
 		if (Utils::CheckCollision((*it)->GetSprite(), aniPlayer->GetSprite()))
 		{
-			/*if (!getMagnet)
+			if (!getMagnet)
 			{
 			    //나중에 해야지
-			}*/
+			}
 			jellyScore += (*it)->GetScore();
 			(*it)->SetActive(false);
 			it = pattern1->activeJellyList.erase(it);
@@ -101,11 +104,28 @@ void SceneGame::Update(float dt)
 			++it;
 		}
 	}
+
+	std::cout << pattern1->activeConeList.size() << std::endl;
+	for (auto it = pattern1->activeConeList.begin(); it != pattern1->activeConeList.end();)
+	{
+		Obstacle* cone = *it;
+		if (Utils::CheckCollision(cone->GetHitBox().rect, aniPlayer->GetHitbox().rect))
+		{
+			std::cout << "GameOver" << std::endl;
+			isGameOver = true;
+			break;
+		}
+		else
+		{
+			++it;
+		}
+	}
 	
 	//-------------------------------------------------nextScene
 
-	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+	if (InputMgr::GetKeyDown(sf::Keyboard::Enter)||isGameOver)
 	{
+		isGameOver = false;
 		SCENE_MGR.ChangeScene(SceneIds::GameOver);
 	}
 }

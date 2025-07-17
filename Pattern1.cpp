@@ -40,11 +40,11 @@ void Pattern1::Init()
 	tileSprite.setTexture(tileTexture);
 	tileSprite.setScale(0.7f, 0.7f);
 
-	float amplitude = -30.f;
+	float amplitude = -44.f;
 	float frequency = 1.5f;
 	int jellyCount = 200;
-	int archStart = 40;
-	int archEnd = 48;
+	int archStart = 18;
+	int archEnd = 26;
 	int archLength = archEnd - archStart;
 	int jellyInterval = 5;
 	for (int i = 0; i < jellyCount; ++i)
@@ -53,6 +53,7 @@ void Pattern1::Init()
 		
 		jellySpawnX += jellySpacing;
 		jellys->SetActive(true);
+		jellys->SetOrigin(Origins::MC);
 		jellys->Init();
 
 		if (i >= archStart && i <= archEnd)
@@ -73,7 +74,7 @@ void Pattern1::Init()
 		activeJellyList.push_back(jellys);
 	}
 
-	int tileCount = 60;
+	int tileCount = 180;
 	for (int i = 0; i < tileCount; ++i)
 	{
 		tiles = new Platform();
@@ -85,13 +86,14 @@ void Pattern1::Init()
 		activeTileList.push_back(tiles);
 	}
 	float spacing = 415.f;
-	int coneCount = 3;
+	int coneCount = 10;
 	for (int i = 0; i < coneCount; ++i)
 	{
 		cones = new Obstacle("cone");
 		cones->SetActive(true);
 		cones->Init();
 		cones->SetPosition({ coneSpawnX + i * spacing, coneSpawnY });
+		cones->SetOrigin(Origins::BC);
 
 		activeConeList.push_back(cones);
 	}
@@ -112,7 +114,6 @@ void Pattern1::Update(float dt, float playerSpeed)
 {
 	float tileWidth = tileSprite.getGlobalBounds().width;
 	float tilePooledTriggerX = FRAMEWORK.GetWindowBounds().width;
-
 	for (auto it = activeTileList.begin(); it != activeTileList.end(); )
 	{
 		auto tile = *it;
@@ -164,7 +165,6 @@ void Pattern1::Update(float dt, float playerSpeed)
 	for (auto it = activeConeList.begin(); it != activeConeList.end(); )
 	{
 		auto cone = *it;
-		//std::cout << cone->GetPosition().x << ", " << cone->GetPosition().y << std::endl;
 		conePos = cone->GetPosition();
 		conePos.x += dt * playerSpeed * dir;
 		cone->SetPosition(conePos);

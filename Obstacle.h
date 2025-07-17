@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "HitBox.h"
 
 class Obstacle :
     public GameObject
@@ -9,6 +10,8 @@ protected:
 	sf::Texture texture;
 
 public:
+	HitBox hitbox;
+
     Obstacle(const std::string& name);
 	virtual ~Obstacle() = default;
 
@@ -45,4 +48,5 @@ public:
 	}
 
 	sf::Sprite GetSprite() { return obstacle; }
+	const HitBox& GetHitBox() const { return hitbox; }
 };
