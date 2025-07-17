@@ -46,6 +46,7 @@ void Pattern1::Init()
 	int archStart = 40;
 	int archEnd = 48;
 	int archLength = archEnd - archStart;
+	int jellyInterval = 5;
 	for (int i = 0; i < jellyCount; ++i)
 	{
 		jellys = new Jelly();
@@ -60,6 +61,13 @@ void Pattern1::Init()
 			float angle = 3.14159265358979323846f * t;
 			jellySpawnY += amplitude * std::sin(frequency * (angle));
 		}
+		if (i >= archStart + jellyInterval && i <= archEnd + jellyInterval)
+		{
+			float t = static_cast<float>(i - archStart+ jellyInterval) / archLength; // 0 ~ 1
+			float angle = 3.14159265358979323846f * t;
+			jellySpawnY += amplitude * std::sin(frequency * (angle));
+		}
+
 		else jellySpawnY = 220.f;
 		jellys->SetPosition({ jellySpawnX, jellySpawnY });
 		activeJellyList.push_back(jellys);
