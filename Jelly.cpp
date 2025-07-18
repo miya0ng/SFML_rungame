@@ -9,40 +9,52 @@ Jelly::Jelly(const std::string& name)
 void Jelly::SetPosition(const sf::Vector2f& pos)
 {
 	GameObject::SetPosition(pos);
-	sprite.setPosition(pos);
+	for (auto& s : sprites) s.setPosition(pos);
 }
 
 void Jelly::SetRotation(float rot)
 {
 	GameObject::SetRotation(rot);
-	sprite.setRotation(rot);
+	for (auto& spr : sprites) spr.setRotation(rot);
 }
 
 void Jelly::SetScale(const sf::Vector2f& s)
 {
 	GameObject::SetScale(s);
-	sprite.setScale(s);
+	for (auto& spr : sprites) spr.setScale(s);
 }
 
 void Jelly::SetOrigin(const sf::Vector2f& o)
 {
 	GameObject::SetOrigin(o);
-	sprite.setOrigin(o);
+	for (auto& spr : sprites) spr.setOrigin(o);
 }
 
 void Jelly::SetOrigin(Origins preset)
 {
 	GameObject::SetOrigin(preset);
 	if (preset != Origins::Custom)
-	{
-		Utils::SetOrigin(sprite, preset);
-	}
+		for (auto& spr : sprites) Utils::SetOrigin(spr, preset);
 }
 
 void Jelly::Init()
 {
-	spriteTexture.loadFromFile("graphics/jelly2.png");
-	sprite.setTexture(spriteTexture);
+	//spriteTexture.loadFromFile("graphics/jelly1.png");
+	//sprite.setTexture(spriteTexture);
+	//sprite.setTexture(TEXTURE_MGR.Get("graphics/jelly1.png"));
+
+	texture1.loadFromFile("graphics/jelly1.png");
+	texture2.loadFromFile("graphics/jelly2.png");
+	texture3.loadFromFile("graphics/jelly3.png");
+	texture4.loadFromFile("graphics/jelly4.png");
+	jellySprite.setTexture(texture1);
+	sprites.push_back(jellySprite);
+	jellySprite.setTexture(texture2);
+	sprites.push_back(jellySprite);
+	jellySprite.setTexture(texture3);
+	sprites.push_back(jellySprite);
+	jellySprite.setTexture(texture4);
+	sprites.push_back(jellySprite);
 }
 
 void Jelly::Release()
@@ -51,11 +63,15 @@ void Jelly::Release()
 
 void Jelly::Reset()
 {
+	SetPosition({ 0.f, 0.f });
+	SetRotation(0.f);
+	SetScale({ 1.f, 1.f });
+	SetActive(true);
 }
 
 void Jelly::Reset(sf::Vector2f spawnPos)
 {
-	position = { spawnPos.x, spawnPos.y };
+	SetPosition({ spawnPos.x, spawnPos.y });
 }
 
 void Jelly::Update(float dt)
@@ -64,6 +80,11 @@ void Jelly::Update(float dt)
 
 void Jelly::Draw(sf::RenderWindow& window)
 {
-	if (GetActive())
-	window.draw(sprite);
+	if (!GetActive()) return;
+	window.draw(sprites[static_cast<size_t>(curType)]);
+}
+
+void Jelly::SetType(JellyType type)
+{
+	curType = type;
 }

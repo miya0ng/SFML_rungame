@@ -21,7 +21,8 @@ protected:
 	float collisionTimer = 0.f;
 	bool getMagnet = false;
 	bool isCollision = false;
-	int playerHp = 1000;
+	int playerHp = 0;
+	int playerMaxHp = 0;
 	int jellyScore = 1000000;
 
 	Jelly* jellyPtr;

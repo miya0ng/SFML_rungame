@@ -40,40 +40,6 @@ void Pattern1::Init()
 	tileSprite.setTexture(tileTexture);
 	tileSprite.setScale(0.7f, 0.7f);
 
-	float amplitude = -48.f;
-	float frequency = 1.5f;
-	int jellyCount = 200;
-	int archStart = 18;
-	int archEnd = 26;
-	int archLength = archEnd - archStart;
-	int jellyInterval = 5;
-	for (int i = 0; i < jellyCount; ++i)
-	{
-		jellys = new Jelly();
-		
-		jellySpawnX += jellySpacing;
-		jellys->SetActive(true);
-		jellys->SetOrigin(Origins::MC);
-		jellys->Init();
-
-		if (i >= archStart && i <= archEnd)
-		{
-			float t = static_cast<float>(i - archStart) / archLength; // 0 ~ 1
-			float angle = 3.14159265358979323846f * t;
-			jellySpawnY += amplitude * std::sin(frequency * (angle));
-		}
-		if (i >= archStart + jellyInterval && i <= archEnd + jellyInterval)
-		{
-			float t = static_cast<float>(i - archStart+ jellyInterval) / archLength; // 0 ~ 1
-			float angle = 3.14159265358979323846f * t;
-			jellySpawnY += amplitude * std::sin(frequency * (angle));
-		}
-
-		else jellySpawnY = 220.f;
-		jellys->SetPosition({ jellySpawnX, jellySpawnY });
-		activeJellyList.push_back(jellys);
-	}
-
 	int tileCount = 180;
 	for (int i = 0; i < tileCount; ++i)
 	{
@@ -86,8 +52,8 @@ void Pattern1::Init()
 		activeTileList.push_back(tiles);
 	}
 
-	float spacing = 415.f;
-	int coneCount = 10;
+	float spacing = 700.f;
+	int coneCount = 5;
 	for (int i = 0; i < coneCount; ++i)
 	{
 		cones = new Obstacle("cone");
@@ -98,7 +64,60 @@ void Pattern1::Init()
 
 		activeConeList.push_back(cones);
 	}
+
+	int jellyCount = 200;
+	int archStart = 8;
+	int archEnd = 16;
+	int archLength = archEnd - archStart;
+	int jellyInterval = 5;
+	int coneIdx = 0;
+	const float radius = 30.f;
+
+	for (int i = 0; i < jellyCount; ++i)
+	{
+		jellys = new Jelly();
+
+		jellySpawnX += jellySpacing;
+		jellys->SetActive(true);
+		jellys->SetOrigin(Origins::MC);
+		jellys->Init();
+
+		while (coneIdx + 1 < activeConeList.size() &&
+			jellySpawnX > activeConeList[coneIdx]->GetPosition().x + spacing)
+		{
+			++coneIdx;
+		}
+
+		if (jellySpawnX > activeConeList[coneIdx]->GetPosition().x - 200.f &&
+			jellySpawnX < activeConeList[coneIdx]->GetPosition().x + spacing)
+		{
+			float t = float(i - archStart) / (archLength - 1);
+			float angle = 3.14159265358979323846f * (1.f - t);
+			jellySpawnY -= radius * std::cos(angle);
+			jellys->SetType(JellyType::Basic);
+			if (i % 3 == 0)
+			{
+				jellys->SetType(JellyType::Yellow);
+				if (i % 10 == 0 || i % 9 == 0)
+				{
+					jellys->SetType(JellyType::Blue);
+				}
+			}
+			if (jellySpawnY <= 100.f)
+			{
+				jellys->SetType(JellyType::Pink);
+			}
+		}
+		else
+		{
+			jellySpawnY = 220.f;
+			jellys->SetType(JellyType::Basic);
+		}
+		jellys->SetPosition({ jellySpawnX, jellySpawnY });
+		activeJellyList.push_back(jellys);
+	}
 }
+
 void Pattern1::Release()
 {
 
@@ -133,6 +152,7 @@ void Pattern1::Update(float dt, float playerSpeed)
 			++it;
 		}
 	}
+
 	//----------------------------------------------------------------------------NextPattern
 	if (tilePos.x < tilePooledTriggerX)
 	{
@@ -143,7 +163,6 @@ void Pattern1::Update(float dt, float playerSpeed)
 	float jellyPooledTriggerX = FRAMEWORK.GetWindowBounds().left - jellyWidth;
 	for (auto it = activeJellyList.begin(); it != activeJellyList.end(); )
 	{
-
 		auto jelly = *it;
 		jellyPos = jelly->GetPosition();
 		jellyPos.x += dt * playerSpeed * dir;
@@ -190,6 +209,7 @@ void Pattern1::Draw(sf::RenderWindow& win)
 		t->Draw(win);
 	}
 
+	//jelly imagefile is not loaded
 	for (auto* t : activeJellyList)
 	{
 		if (jellys->GetActive())

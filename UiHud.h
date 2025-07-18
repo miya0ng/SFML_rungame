@@ -19,12 +19,12 @@ protected:
 	std::vector<sf::String> scoreString;
 
 	sf::Sprite hpBarSprite;
+	sf::Sprite hpBarBG;
 	sf::Sprite slideButton;
 	sf::Sprite jumpButton;
-	sf::Texture hpBarTexture;
-	sf::Texture slideTexture;
-	sf::Texture jumpTexture;
-
+	sf::Sprite jellyScoreIcon;
+	sf::Sprite coinScoreIcon;
+	sf::IntRect fullRect;
 	float scoreGuage = 0.f;
 	int hp;
 	int jellyScore = 0;
@@ -46,8 +46,7 @@ public:
 	void AddMessage(const sf::String Message);
 
 	void SetScoreText(int s);
-	void SetHpBar(int currentHp, int maxHp, const sf::Vector2f& pos);
-	void SetHp(int l) { hp = l; };
+	void SetHpRatio(float r);
 	void Init() override;
 	void Release() override;
 	void Reset() override;

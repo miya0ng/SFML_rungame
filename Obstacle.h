@@ -9,7 +9,7 @@ protected:
 	sf::Sprite obstacle;
 	sf::Texture texture;
 
-	int damage = 10;
+	int damage = 30;
 
 public:
 	HitBox hitbox;

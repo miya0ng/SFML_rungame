@@ -4,6 +4,8 @@
 UiHud::UiHud(const std::string& name)
 	: GameObject(name)
 {
+	sortingLayer = SortingLayers::UI;
+	sortingOrder = 0;
 }
 
 void UiHud::SetPosition(const sf::Vector2f& pos)
@@ -58,35 +60,16 @@ void UiHud::SetScoreText(int s)
 	jellyScore = s;
 }
 
-void UiHud::SetHpBar(int currentHp, int maxHp, const sf::Vector2f& pos)
-{
-	
+void UiHud::SetHpRatio(float r)
+{ 
+	r = Utils::Clamp(r, 0.f, 1.f);
+	sf::IntRect rect = fullRect;
+	rect.width = static_cast<int>(fullRect.width * r);
+	hpBarSprite.setTextureRect(rect);
 }
-
 void UiHud::Init()
 {
-	hpBarTexture.loadFromFile("graphics/lifeBar.png");
-	hpBarSprite.setTexture(hpBarTexture);
-	jumpTexture.loadFromFile("graphics/jumpno.png");
-	jumpButton.setTexture(jumpTexture);
-	slideTexture.loadFromFile("graphics/slideno.png");
-	slideButton.setTexture(slideTexture);
-
-	font.loadFromFile("fonts/DS-DIGIT.TTF");
-	sf::FloatRect bounds = scoreText.getLocalBounds();
-	scoreText.setOrigin({ bounds.width / 2, 0});
-	scoreText.setPosition({ FRAMEWORK.GetWindowBounds().width*0.5f-100.f, 40.f });
-	scoreText.setCharacterSize(30);
-	scoreText.setFillColor(sf::Color::White);
-	scoreText.setFont(font);
-
-	hpBarSprite.setPosition({ FRAMEWORK.GetWindowBounds().width/2, 0.f });
-	hpBarSprite.setOrigin({ hpBarSprite.getGlobalBounds().width / 2, 0.f });
-	hpBarSprite.setScale(0.7f, 0.7f);
-	slideButton.setPosition({ 0, FRAMEWORK.GetWindowBounds().height - 100.f });
-	slideButton.setScale(0.8f, 0.8f);
-	jumpButton.setPosition({ FRAMEWORK.GetWindowBounds().width- 120.f, FRAMEWORK.GetWindowBounds().height-100.f});
-	jumpButton.setScale(0.8f, 0.8f);
+	
 }
 
 void UiHud::Release()
@@ -96,21 +79,53 @@ void UiHud::Release()
 
 void UiHud::Reset()
 {
+	slideButton.setTexture(TEXTURE_MGR.Get("graphics/slideno.png"));
+	jumpButton.setTexture(TEXTURE_MGR.Get("graphics/jumpno.png"));
+	jellyScoreIcon.setTexture(TEXTURE_MGR.Get("graphics/jelly1.png"));
+	coinScoreIcon.setTexture(TEXTURE_MGR.Get("graphics/silverCoin.png"));
+	hpBarSprite.setTexture(TEXTURE_MGR.Get("graphics/lifeBar.png"));
+	hpBarBG.setTexture(TEXTURE_MGR.Get("graphics/lifeBar1.png"));
+	
+	scoreText.setFont(FONT_MGR.Get("fonts/CookieRun Bold.ttf"));
 
+	hpBarBG.setOrigin(hpBarBG.getLocalBounds().width * 0.5f, 0.f);
+	hpBarBG.setPosition(FRAMEWORK.GetWindowBounds().width * 0.5f, 0.f);
+	hpBarBG.setScale(0.7f, 0.7f);
+	hpBarSprite.setOrigin(hpBarSprite.getLocalBounds().width * 0.5f, 0.f);
+	hpBarSprite.setPosition(FRAMEWORK.GetWindowBounds().width * 0.5f, 0.f);
+	hpBarSprite.setScale(0.7f, 0.7f);
+	fullRect = hpBarSprite.getTextureRect();
+
+	sf::FloatRect bounds = scoreText.getLocalBounds();
+	scoreText.setOrigin({ bounds.width / 2, 0 });
+	scoreText.setPosition({ FRAMEWORK.GetWindowBounds().width * 0.5f - 50.f, 40.f });
+	scoreText.setCharacterSize(20);
+	scoreText.setOutlineThickness(2.f);
+	scoreText.setOutlineColor(sf::Color::Black);
+	scoreText.setFillColor(sf::Color::White);
+	jellyScoreIcon.setPosition({ scoreText.getPosition().x - jellyScoreIcon.getGlobalBounds().width, scoreText.getPosition().y});
+	jellyScoreIcon.setScale(0.7f, 0.7f);
+	coinScoreIcon.setPosition({ 10.f, 60.f });
+	coinScoreIcon.setScale(0.3f, 0.3f);
+
+	slideButton.setPosition({ 10, FRAMEWORK.GetWindowBounds().height - 100.f });
+	jumpButton.setPosition({ FRAMEWORK.GetWindowBounds().width - 140.f, FRAMEWORK.GetWindowBounds().height - 100.f });
 }
 
 void UiHud::Update(float dt)
 {
-	scoreText.setString("jelly: " + std::to_string(jellyScore));
+	scoreText.setString(std::to_string(jellyScore));
 }
 
 void UiHud::Draw(sf::RenderWindow& window)
 {
-	//window.setView(uiView);
 	window.draw(scoreText);
+	//window.draw(hpBarBG);
 	window.draw(hpBarSprite);
 	window.draw(jumpButton);
 	window.draw(slideButton);
+	window.draw(jellyScoreIcon);
+	window.draw(coinScoreIcon);
 	/*for (auto e : texts)
 	{
 		window.draw(e);

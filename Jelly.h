@@ -1,15 +1,19 @@
 #pragma once
 #include "GameObject.h"
+enum class JellyType { Basic, Yellow, Pink, Blue };
+
 class Jelly :
     public GameObject
 {
 protected:
-	
-	sf::Texture spriteTexture;
-	int jellyValue = 0;
+	int jellyValue = 112;
+	sf::Texture texture1;
+	sf::Texture texture2;
+	sf::Texture texture3;
+	sf::Texture texture4;
 
 public:
-	sf::Sprite sprite;
+	
 	Jelly(const std::string& name = "");
 	virtual ~Jelly() = default;
 
@@ -19,27 +23,31 @@ public:
 	void SetOrigin(const sf::Vector2f& o) override;
 	void SetOrigin(Origins preset) override;
 
-	sf::Sprite& GetSprite() { return sprite; }
-	int GetScore() { return jellyValue=105; }
-
-	bool GetActive() const { return active; }
+	void SetScore(int s) { jellyValue = s; }
+	int GetScore() { return jellyValue; }
 	void SetActive(bool a) { active = a; }
+	bool GetActive() const { return active; }
 	
-	sf::FloatRect GetLocalBounds() const
-	{
-		return sprite.getLocalBounds();
-	}
-
-	sf::FloatRect GetGlobalBounds() const
-	{
-		return sprite.getGlobalBounds();
-	}
-
 	void Init() override;
 	void Release() override;
 	void Reset() override;
 	void Reset(sf::Vector2f pos);
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+	void SetType(JellyType type);
+	sf::Sprite& GetSprite() { return sprites[static_cast<size_t>(curType)]; }
+	sf::FloatRect GetLocalBounds(JellyType t) const
+	{
+		return sprites[static_cast<size_t>(t)].getLocalBounds();
+	}
+	sf::FloatRect GetGlobalBounds(JellyType t) const
+	{
+		return sprites[static_cast<size_t>(t)].getGlobalBounds();
+	}
+
+protected:
+	std::vector<sf::Sprite> sprites;
+	sf::Sprite jellySprite;
+	JellyType curType{ JellyType::Yellow };
 };
 
