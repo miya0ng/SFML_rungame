@@ -23,6 +23,8 @@ void SceneGame::Init()
 	fontIds.push_back("fonts/CookieRun Bold.ttf");
 
 	// 式式 Texture assets 式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式
+	texIds.push_back("graphics/silverCoin.png");
+	texIds.push_back("graphics/goldCoin.png");
 	texIds.push_back("graphics/jelly1.png");
 	texIds.push_back("graphics/jelly2.png");
 	texIds.push_back("graphics/jelly3.png");

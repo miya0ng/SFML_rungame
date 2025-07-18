@@ -25,6 +25,9 @@ protected:
 	sf::Sprite jellyScoreIcon;
 	sf::Sprite coinScoreIcon;
 	sf::IntRect fullRect;
+	sf::RectangleShape bgRect;
+	sf::Texture* barFillTex{ nullptr };
+
 	float scoreGuage = 0.f;
 	int hp;
 	int jellyScore = 0;
