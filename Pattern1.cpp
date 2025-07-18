@@ -4,8 +4,11 @@
 #include "Jelly.h"
 #include "Platform.h"
 #include "Obstacle.h"
+#include "Coin.h"
 
 Pattern1::Pattern1()
+	: tiles(nullptr), aniPlayer(nullptr), jellys(nullptr),
+	cones(nullptr), coins(nullptr) 
 {
 
 }
@@ -63,6 +66,20 @@ void Pattern1::Init()
 		cones->SetOrigin(Origins::BC);
 
 		activeConeList.push_back(cones);
+	}
+
+	float coinSpacing = 300.f;
+	int coinCount = 120;
+	for (int i = 0; i < coinCount; ++i)
+	{
+		coins = new Coin("coin");
+		coins->SetActive(true);
+		coins->Init();
+		coins->Reset();
+		coins->SetPosition({ coinSpawnX + i * coinSpacing, coinSpawnY });
+		coins->SetOrigin(Origins::BC);
+
+		activeCoinList.push_back(coins);
 	}
 
 	int jellyCount = 200;
@@ -189,11 +206,32 @@ void Pattern1::Update(float dt, float playerSpeed)
 		conePos.x += dt * playerSpeed * dir;
 		cone->SetPosition(conePos);
 
-		if (conePos.x < -coneWidth)
+		if (conePos.x < -conePooledTriggerX)
 		{
 			cone->SetActive(false);
 			pooledConeList.push_back(cone);
 			it = activeConeList.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+
+	//float coneWidth = cones->GetSprite().getGlobalBounds().width;
+	float coinPooledTriggerX = FRAMEWORK.GetWindowBounds().left - 50.f;
+	for (auto it = activeCoinList.begin(); it != activeCoinList.end(); )
+	{
+		auto coin = *it;
+		coinPos = coin->GetPosition();
+		coinPos.x += dt * playerSpeed * dir;
+		coin->SetPosition(coinPos);
+		coin->SetType(CoinType::Gold);
+		if (coinPos.x < coinPooledTriggerX)
+		{
+			coin->SetActive(false);
+			pooledCoinList.push_back(coin);
+			it = activeCoinList.erase(it);
 		}
 		else
 		{
@@ -219,6 +257,11 @@ void Pattern1::Draw(sf::RenderWindow& win)
 	}
 
 	for (auto* t : activeConeList)
+	{
+		t->Draw(win);
+	}
+
+	for (auto* t : activeCoinList)
 	{
 		t->Draw(win);
 	}

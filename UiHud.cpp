@@ -60,6 +60,11 @@ void UiHud::SetScoreText(int s)
 	jellyScore = s;
 }
 
+void UiHud::SetCoinText(int c)
+{
+	coinScore = c;
+}
+
 void UiHud::SetHpRatio(float r)
 { 
 	r = Utils::Clamp(r, 0.f, 1.f);
@@ -86,6 +91,19 @@ void UiHud::Reset()
 	hpBarSprite.setTexture(TEXTURE_MGR.Get("graphics/lifeBar.png"));
 	
 	scoreText.setFont(FONT_MGR.Get("fonts/CookieRun Bold.ttf"));
+	coinText.setFont(FONT_MGR.Get("fonts/CookieRun Bold.ttf"));
+
+	coinScoreIcon.setPosition({ 10.f, 60.f });
+	coinScoreIcon.setScale(0.7f, 0.7f);
+
+	sf::FloatRect coinBounds = coinText.getLocalBounds();
+	coinText.setOrigin({ coinBounds.width / 2, 0 });
+	coinText.setPosition({ coinScoreIcon.getPosition().x + 35.f, coinScoreIcon.getPosition().y });
+	coinText.setCharacterSize(20);
+	coinText.setOutlineThickness(2.f);
+	coinText.setOutlineColor(sf::Color::Black);
+	coinText.setFillColor(sf::Color::White);
+
 
 	hpBarBG.setOrigin(FRAMEWORK.GetWindowBounds().width * 0.5f, 0.f);
 	hpBarBG.setPosition(FRAMEWORK.GetWindowBounds().width * 0.5f, 0.f);
@@ -110,8 +128,7 @@ void UiHud::Reset()
 	scoreText.setFillColor(sf::Color::White);
 	jellyScoreIcon.setPosition({ scoreText.getPosition().x - jellyScoreIcon.getGlobalBounds().width, scoreText.getPosition().y});
 	jellyScoreIcon.setScale(0.7f, 0.7f);
-	coinScoreIcon.setPosition({ 10.f, 60.f });
-	coinScoreIcon.setScale(0.7f, 0.7f);
+
 
 	slideButton.setPosition({ 10, FRAMEWORK.GetWindowBounds().height - 100.f });
 	jumpButton.setPosition({ FRAMEWORK.GetWindowBounds().width - 140.f, FRAMEWORK.GetWindowBounds().height - 100.f });
@@ -120,12 +137,13 @@ void UiHud::Reset()
 void UiHud::Update(float dt)
 {
 	scoreText.setString(std::to_string(jellyScore));
+	coinText.setString(std::to_string(coinScore));
 }
 
 void UiHud::Draw(sf::RenderWindow& window)
 {
 	window.draw(scoreText);
-	//window.draw(hpBarBG);
+	window.draw(coinText);
 	window.draw(bgRect);
 	window.draw(hpBarSprite);
 	window.draw(jumpButton);

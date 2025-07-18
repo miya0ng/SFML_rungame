@@ -6,7 +6,8 @@ class Coin :
     public GameObject
 {
 protected:
-	sf::Sprite sprites[2];
+	std::vector<sf::Sprite> sprites;
+	sf::Sprite sprite;
 	sf::Texture texture1;
 	sf::Texture texture2;
 public:
@@ -25,5 +26,8 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 	void SetType(CoinType type);
+	sf::Sprite GetSprite() { return sprites[static_cast<size_t>(curType)]; }
+	int GetScore() { return (curType == CoinType::Silver) ? 100 : 50;
+	}
 	CoinType curType{ CoinType::Silver };
 };

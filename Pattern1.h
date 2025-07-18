@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-
+class Coin;
 class Obstacle;
 class Jelly;
 class Platform;
@@ -12,6 +12,7 @@ protected:
 	sf::Vector2f tilePos;
 	sf::Vector2f jellyPos;
 	sf::Vector2f conePos;
+	sf::Vector2f coinPos;
 	sf::Texture tileTexture;
 	sf::Sprite tileSprite;
 
@@ -19,12 +20,15 @@ protected:
 	AniPlayer* aniPlayer = nullptr;
 	Jelly* jellys = nullptr;
 	Obstacle* cones = nullptr;
+	Coin* coins = nullptr;
 
 	float dir = -1.f;
 	float tileSpawnX = 0.f;
 	float tileSpawnY = FRAMEWORK.GetWindowBounds().height - 80.f;
 	float jellySpawnX = 300.f;
 	float jellySpawnY = 220.f;
+	float coinSpawnX = 350.f;
+	float coinSpawnY = 220.f;
 	float jellySpacing = 50.f;
 	float coneSpawnX = 1782.f;
 	float coneSpawnY = FRAMEWORK.GetWindowBounds().height - 79.f;
@@ -36,6 +40,8 @@ public:
 	std::vector<Obstacle*> pooledConeList;
 	std::vector<Jelly*> activeJellyList;
 	std::vector<Jelly*> pooledJellyList;
+	std::vector<Coin*> activeCoinList;
+	std::vector<Coin*> pooledCoinList;
 
 	Pattern1();
 	~Pattern1();

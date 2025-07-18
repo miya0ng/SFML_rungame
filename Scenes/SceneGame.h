@@ -24,6 +24,7 @@ protected:
 	int playerHp = 0;
 	int playerMaxHp = 0;
 	int jellyScore = 1000000;
+	int coinScore =0;
 
 	Jelly* jellyPtr;
 	Obstacle* obstacle;

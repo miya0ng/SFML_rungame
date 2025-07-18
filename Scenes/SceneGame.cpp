@@ -8,6 +8,7 @@
 #include "Jelly.h"
 #include "Pattern1.h"
 #include "UiHud.h"	
+#include "Coin.h"
 #include <cmath>
 
 SceneGame::SceneGame()
@@ -94,6 +95,7 @@ void SceneGame::Update(float dt)
 
     // 式式 HUD 式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式
     uiHud->SetScoreText(jellyScore);
+    uiHud->SetCoinText(coinScore);
     uiHud->SetHpRatio(static_cast<float>(playerHp) / playerMaxHp);
 
     // 式式 World updates 式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式
@@ -112,6 +114,27 @@ void SceneGame::Update(float dt)
             jellyScore += (*it)->GetScore();
             (*it)->SetActive(false);
             it = pattern1->activeJellyList.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
+
+    // Coin collisions
+    for (auto it = pattern1->activeCoinList.begin(); it != pattern1->activeCoinList.end(); )
+    {
+            std::cout << "." << coinScore << std::endl;
+        if (Utils::CheckCollision((*it)->GetSprite(), aniPlayer->GetSprite()))
+        {
+            std::cout << "coin: " << (*it)->GetScore() <<", " << coinScore << std::endl;
+            if (!getMagnet)
+            {
+                // TODO: magnet effect
+            }
+            coinScore += (*it)->GetScore();
+            (*it)->SetActive(false);
+            it = pattern1->activeCoinList.erase(it);
         }
         else
         {

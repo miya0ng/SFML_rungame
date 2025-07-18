@@ -15,6 +15,7 @@ protected:
 	std::string fontId;
 	sf::Font font;
 	sf::Text scoreText;
+	sf::Text coinText;
 	std::vector<sf::Vector2f> scorePos;
 	std::vector<sf::String> scoreString;
 
@@ -31,6 +32,7 @@ protected:
 	float scoreGuage = 0.f;
 	int hp;
 	int jellyScore = 0;
+	int coinScore = 0;
 	bool isShowMessage;
 	bool isShowScore;
 
@@ -49,6 +51,7 @@ public:
 	void AddMessage(const sf::String Message);
 
 	void SetScoreText(int s);
+	void SetCoinText(int s);
 	void SetHpRatio(float r);
 	void Init() override;
 	void Release() override;
