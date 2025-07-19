@@ -446,7 +446,7 @@ void Pattern1::SpawnNextChunk()
 {
 	if (jellyQueue.empty()) return;
 
-	JellyPattern p = jellyQueue[currJellyIndex];
+	JellyPattern jp = jellyQueue[currJellyIndex];
 	currJellyIndex = (currJellyIndex + 1) % jellyQueue.size();
 
 	CoinPattern  cp = coinQueue[currCoinIndex];
@@ -465,6 +465,5 @@ void Pattern1::SpawnNextChunk()
 	case CoinPattern::Arch:      SpawnCoinsArch();     break;
 	case CoinPattern::Zigzag:    SpawnCoinsZigzag();   break;
 	}
-
 	/*todo:tile/coin */
 }
