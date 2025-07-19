@@ -6,7 +6,9 @@
 #include "Background.h"
 #include "Obstacle.h"
 #include "Jelly.h"
+#include "PatternBase.h"
 #include "Pattern1.h"
+#include "Pattern2.h"
 #include "UiHud.h"	
 #include "Coin.h"
 #include <cmath>
@@ -69,10 +71,13 @@ void SceneGame::Init()
 	bg->Init();
 
 	obstacle = new Obstacle("cone1");
-	pattern1 = new Pattern1();
-	AddGameObject(pattern1);
+    pattern1 = new Pattern1();
+    pattern2 = new Pattern2();
+    patterns.push_back(pattern1);
+    patterns.push_back(pattern2);
     playerMaxHp = aniPlayer->GetHp();
-
+    for (auto* p : patterns)
+        p->Init();
 	Scene::Init();
 }
 
@@ -100,10 +105,15 @@ void SceneGame::Update(float dt)
 
     // 式式 World updates 式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式
     bg->Update(dt);
-    pattern1->Update(dt, aniPlayer->GetSpeed());
+
+    //pattern2->Update(dt, aniPlayer->GetSpeed());
+    for (auto* pattern : patterns)
+    {
+        pattern->Update(dt, aniPlayer->GetSpeed());
+    }
 
     // Jelly collisions
-    for (auto it = pattern1->activeJellyList.begin(); it != pattern1->activeJellyList.end(); )
+    for (auto it = patterns[0]->GetJellies().begin(); it != patterns[0]->GetJellies().end(); )
     {
         if (Utils::CheckCollision((*it)->GetSprite(), aniPlayer->GetSprite()))
         {
@@ -113,7 +123,7 @@ void SceneGame::Update(float dt)
             }
             jellyScore += (*it)->GetScore();
             (*it)->SetActive(false);
-            it = pattern1->activeJellyList.erase(it);
+            it = patterns[0]->GetJellies().erase(it);
         }
         else
         {
@@ -122,12 +132,12 @@ void SceneGame::Update(float dt)
     }
 
     // Coin collisions
-    for (auto it = pattern1->activeCoinList.begin(); it != pattern1->activeCoinList.end(); )
+    for (auto it = patterns[0]->GetCoins().begin(); it != patterns[0]->GetCoins().end(); )
     {
-            std::cout << "." << coinScore << std::endl;
+        //  std::cout << "." << coinScore << std::endl;
         if (Utils::CheckCollision((*it)->GetSprite(), aniPlayer->GetSprite()))
         {
-            std::cout << "coin: " << (*it)->GetScore() <<", " << coinScore << std::endl;
+            //std::cout << "coin: " << (*it)->GetScore() <<", " << coinScore << std::endl;
             if (!getMagnet)
             {
                 // TODO: magnet effect
@@ -153,7 +163,7 @@ void SceneGame::Update(float dt)
     }
 
     // Cone collisions
-    for (auto it = pattern1->activeConeList.begin(); it != pattern1->activeConeList.end(); )
+    for (auto it = patterns[0]->GetObstacles().begin(); it != patterns[0]->GetObstacles().end(); )
     {
         Obstacle* cone = *it;
 
@@ -166,7 +176,7 @@ void SceneGame::Update(float dt)
         {
             isCollision = true;
             playerHp -= cone->GetDamage();
-            std::cout << "Player Hp: " << playerHp << std::endl;
+            //std::cout << "Player Hp: " << playerHp << std::endl;
 
             if (playerHp <= 0)
             {
@@ -178,7 +188,7 @@ void SceneGame::Update(float dt)
             else
             {
                 aniPlayer->SetHp(playerHp);
-                std::cout << "Player Hp2: " << playerHp << std::endl;
+                //std::cout << "Player Hp2: " << playerHp << std::endl;
             }
         }
         else
@@ -204,6 +214,6 @@ void SceneGame::Update(float dt)
 void SceneGame::Draw(sf::RenderWindow& window)
 {
 	bg->Draw(window);
-	pattern1->Draw(window);
+	patterns[0]->Draw(window);
 	Scene::Draw(window);
 }

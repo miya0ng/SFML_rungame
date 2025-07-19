@@ -5,8 +5,8 @@ class Obstacle;
 class Jelly;
 class Platform;
 class AniPlayer;
-class Pattern1 :
-    public PatternBase
+class Pattern2 :
+	public PatternBase
 {
 protected:
 	sf::Vector2f tilePos;
@@ -43,8 +43,8 @@ public:
 	std::vector<Coin*> activeCoinList;
 	std::vector<Coin*> pooledCoinList;
 
-	Pattern1();
-	~Pattern1();
+	Pattern2();
+	~Pattern2();
 
 	void Init();
 	void Release();

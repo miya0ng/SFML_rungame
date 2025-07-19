@@ -156,6 +156,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Pattern1.cpp" />
+    <ClCompile Include="Pattern2.cpp" />
+    <ClCompile Include="PatternBase.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Scenes\SceneGame.cpp" />
     <ClCompile Include="Scenes\SceneGameOver.cpp" />
@@ -193,6 +195,8 @@
     <ClInclude Include="Jelly.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Pattern1.h" />
+    <ClInclude Include="Pattern2.h" />
+    <ClInclude Include="PatternBase.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="Scenes\SceneGame.h" />
     <ClInclude Include="Scenes\SceneGameOver.h" />

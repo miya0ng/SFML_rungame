@@ -7,7 +7,9 @@ class UiHud;
 class HitBox;	
 class Jelly;
 class Obstacle;
+class PatternBase;
 class Pattern1;
+class Pattern2;
 class AniPlayer;
 class Background;
 class SceneGame :
@@ -26,11 +28,14 @@ protected:
 	int jellyScore = 1000000;
 	int coinScore =0;
 
+	std::vector<PatternBase*> patterns;
+
 	Jelly* jellyPtr;
 	Obstacle* obstacle;
 	AniPlayer* aniPlayer;
 	Background* bg;
 	Pattern1* pattern1;
+	Pattern2* pattern2;
 	UiHud* uiHud;
 
 	bool isGameOver = false;

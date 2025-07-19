@@ -61,7 +61,7 @@ public:
 	virtual void Init() = 0;
 	virtual void Release() = 0;
 	virtual void Reset() = 0;
-
+	virtual void Update(float dt, float speed) {}
 	virtual void Update(float dt) = 0;
 	virtual void Draw(sf::RenderWindow& window) = 0;
 

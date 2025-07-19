@@ -1,19 +1,19 @@
-﻿
 #include "stdafx.h"
+#include "Pattern2.h"
 #include "Pattern1.h"
 #include "Jelly.h"
 #include "Platform.h"
 #include "Obstacle.h"
 #include "Coin.h"
 
-Pattern1::Pattern1()
+Pattern2::Pattern2()
 	: tiles(nullptr), aniPlayer(nullptr), jellys(nullptr),
 	cones(nullptr), coins(nullptr)
 {
 
 }
 
-Pattern1::~Pattern1()
+Pattern2::~Pattern2()
 {
 	for (auto it : pooledJellyList)
 		delete it;
@@ -37,7 +37,7 @@ Pattern1::~Pattern1()
 	activeConeList.clear();
 }
 
-void Pattern1::Init()
+void Pattern2::Init()
 {
 	tileTexture.loadFromFile("graphics/platform.png");
 	tileSprite.setTexture(tileTexture);
@@ -185,19 +185,19 @@ void Pattern1::Init()
 	}
 }
 
-void Pattern1::Release()
+void Pattern2::Release()
 {
 
 }
-void Pattern1::Reset()
+void Pattern2::Reset()
 {
 
 }
-void Pattern1::Update(float dt)
+void Pattern2::Update(float dt)
 {
 
 }
-void Pattern1::Update(float dt, float playerSpeed)
+void Pattern2::Update(float dt, float playerSpeed)
 {
 	float tileWidth = tileSprite.getGlobalBounds().width;
 	float tilePooledTriggerX = FRAMEWORK.GetWindowBounds().width;
@@ -290,7 +290,7 @@ void Pattern1::Update(float dt, float playerSpeed)
 	}
 }
 
-void Pattern1::Draw(sf::RenderWindow& win)
+void Pattern2::Draw(sf::RenderWindow& win)
 {
 	for (auto* t : activeTileList)
 	{
