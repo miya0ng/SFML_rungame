@@ -29,6 +29,11 @@ protected:
 	sf::RectangleShape bgRect;
 	sf::Texture* barFillTex{ nullptr };
 
+	const sf::Texture* texJumpOn = nullptr;
+	const sf::Texture* texJumpOff = nullptr;
+	const sf::Texture* texSlideOn = nullptr;
+	const sf::Texture* texSlideOff = nullptr;
+
 	float scoreGuage = 0.f;
 	int hp;
 	int jellyScore = 0;
@@ -49,6 +54,7 @@ public:
 	void SetCharacterSize(int size);
 	void AddFontId(const sf::String id);
 	void AddMessage(const sf::String Message);
+	void UpdateButtons(bool jumpPressed, bool slidePressed);
 
 	void SetScoreText(int s);
 	void SetCoinText(int s);
@@ -58,4 +64,5 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
 };

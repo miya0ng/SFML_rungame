@@ -1,5 +1,7 @@
 #pragma once
 #include "PatternBase.h"
+#include "Platform.h"
+
 class Coin;
 class Obstacle;
 class Jelly;
@@ -57,6 +59,10 @@ public:
 	std::vector<Coin*>& GetCoins() override { return activeCoinList; }
 	std::vector<Obstacle*>& GetObstacles() override { return activeConeList; }
 	bool IsFinished() const {
-		return activeTileList.empty();
+		if (activeTileList.empty())
+			return true;
+		float lastX = activeTileList.back()->GetPosition().x;
+		float screenW = FRAMEWORK.GetWindowBounds().width;
+		return lastX <= screenW;
 	}
 };

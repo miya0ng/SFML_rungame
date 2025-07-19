@@ -1,5 +1,7 @@
 #pragma once
 #include "PatternBase.h"
+#include "Platform.h"
+#include "Jelly.h"
 class Coin;
 class Obstacle;
 class Jelly;
@@ -9,16 +11,33 @@ class Pattern1 :
     public PatternBase
 {
 protected:
-	enum class JellyPattern { Straight, Arch, Zigzag };
-	enum class CoinPattern { Straight, Arch, Zigzag };
-	std::vector<JellyPattern> jellyQueue{ JellyPattern::Straight,
-										   JellyPattern::Arch,
-										   JellyPattern::Zigzag };
-	std::vector<CoinPattern> coinQueue{ CoinPattern::Straight,
-										   CoinPattern::Arch,
-										   CoinPattern::Zigzag };
+	struct ArchParam
+	{
+		float     radius;   // ¹ÝÁö¸§
+		int       count;    // Á©¸® °³¼ö
+		JellyType type;     // Á©¸® »ö
+	};
+
+	std::vector<ArchParam> archTable{
+		{  60.f, 10, JellyType::Yellow },
+		{ 100.f, 14, JellyType::Blue   },
+		{  80.f, 12, JellyType::Pink   }
+	};
+
+	enum class JellyPattern {
+		Straight, Arch, Zigzag,
+		Wave, StairsUp, StairsDown, CustomArch
+	};
+	enum class CoinPattern {
+		Straight, Arch, Zigzag,
+		Ring, Cluster, VerticalLine
+	};
+
+	std::vector<JellyPattern> jellyQueue;
+	std::vector<CoinPattern> coinQueue;
 	size_t currJellyIndex = 0;
 	size_t currCoinIndex = 0;
+	size_t archIdx = 0;
 
 	sf::Vector2f tilePos;
 	sf::Vector2f jellyPos;
@@ -68,15 +87,26 @@ public:
 	void SpawnStraight();
 	void SpawnArch();
 	void SpawnZigzag();
+	void SpawnStairsUp();
+	void SpawnStairsDown();
+	void SpawnArchJellies();
+
 	void SpawnCoinsStraight();
 	void SpawnCoinsArch();
 	void SpawnCoinsZigzag();
 	void SpawnNextChunk();
+	void SpawnCoinsRing();
+	void SpawnCoinsCluster();
+	void SpawnCoinsVertical();
 
 	std::vector<Jelly*>& GetJellies() override { return activeJellyList; }
 	std::vector<Coin*>& GetCoins() override { return activeCoinList; }
 	std::vector<Obstacle*>& GetObstacles() override { return activeConeList; }
 	bool IsFinished() const {
-		return activeTileList.empty();               
+		if (activeTileList.empty())
+			return true;
+		float lastX = activeTileList.back()->GetPosition().x;
+		float screenW = FRAMEWORK.GetWindowBounds().width;
+		return lastX <= screenW;
 	}
 };

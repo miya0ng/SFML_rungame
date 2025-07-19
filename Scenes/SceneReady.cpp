@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SceneReady.h"
 #include "TextGo.h"
+#include "SpriteGo.h"
 
 SceneReady::SceneReady()
 	: Scene(SceneIds::Ready)
@@ -9,16 +10,13 @@ SceneReady::SceneReady()
 
 void SceneReady::Init()
 {
-	fontIds.push_back("fonts/DS-DIGIT.ttf");
-
-	TextGo* go = new TextGo("fonts/DS-DIGIT.ttf", "Ready");
-	go->SetString("Ready");
-	go->SetCharacterSize(30);
-	go->SetFillColor(sf::Color::White);
-	go->sortingLayer = SortingLayers::UI;
-	go->sortingOrder = 0;
-
-	AddGameObject(go);
+	texIds.push_back("graphics/ready.png");
+	SpriteGo* readySprite = new SpriteGo("graphics/ready.png");
+	TEXTURE_MGR.Load("graphics/ready.png");
+	readySprite->GetSprite().setTexture(
+		TEXTURE_MGR.Get("graphics/ready.png")
+	);
+	AddGameObject(readySprite);
 
 	Scene::Init();
 }
@@ -30,7 +28,7 @@ void SceneReady::Enter()
 	uiView.setSize(size);
 	uiView.setCenter(center);
 	worldView.setSize(size);
-	worldView.setCenter({ 0.f, -200.f });
+	worldView.setCenter(center);
 
 	Scene::Enter();
 }

@@ -131,7 +131,6 @@ void Pattern2::Init()
 		coins->SetOrigin(Origins::BC);
 		activeCoinList.push_back(coins);
 	}
-
 	int jellyCount = 200;
 	int archStart = 8;
 	int archEnd = 16;
@@ -183,6 +182,7 @@ void Pattern2::Init()
 		jellys->SetPosition({ jellySpawnX, jellySpawnY });
 		activeJellyList.push_back(jellys);
 	}
+
 }
 
 void Pattern2::Release()

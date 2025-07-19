@@ -2,7 +2,7 @@
 
 int main()
 {
-    FRAMEWORK.Init(883, 370, "COOKIE RUN!");
+    FRAMEWORK.Init(850, 370, "COOKIE RUN!");
     FRAMEWORK.Do();
     FRAMEWORK.Release();
 

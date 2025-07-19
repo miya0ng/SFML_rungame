@@ -55,6 +55,12 @@ void UiHud::AddMessage(const sf::String Message)
 	textString.push_back(Message);
 }
 
+void UiHud::UpdateButtons(bool jumpPressed, bool slidePressed)
+{
+	jumpButton.setTexture(jumpPressed ? *texJumpOn : *texJumpOff);
+	slideButton.setTexture(slidePressed ? *texSlideOn : *texSlideOff);
+}
+
 void UiHud::SetScoreText(int s)
 {
 	jellyScore = s;
@@ -84,11 +90,15 @@ void UiHud::Release()
 
 void UiHud::Reset()
 {
-	slideButton.setTexture(TEXTURE_MGR.Get("graphics/slideno.png"));
-	jumpButton.setTexture(TEXTURE_MGR.Get("graphics/jumpno.png"));
 	jellyScoreIcon.setTexture(TEXTURE_MGR.Get("graphics/jelly1.png"));
 	coinScoreIcon.setTexture(TEXTURE_MGR.Get("graphics/silverCoin.png"));
 	hpBarSprite.setTexture(TEXTURE_MGR.Get("graphics/lifeBar.png"));
+	texJumpOn = &TEXTURE_MGR.Get("graphics/jumpim.png");
+	texJumpOff = &TEXTURE_MGR.Get("graphics/jumpno.png");
+	texSlideOn = &TEXTURE_MGR.Get("graphics/slideim.png");
+	texSlideOff = &TEXTURE_MGR.Get("graphics/slideno.png");
+	jumpButton.setTexture(*texJumpOff);
+	slideButton.setTexture(*texSlideOff);
 	
 	scoreText.setFont(FONT_MGR.Get("fonts/CookieRun Bold.ttf"));
 	coinText.setFont(FONT_MGR.Get("fonts/CookieRun Bold.ttf"));
@@ -103,7 +113,6 @@ void UiHud::Reset()
 	coinText.setOutlineThickness(2.f);
 	coinText.setOutlineColor(sf::Color::Black);
 	coinText.setFillColor(sf::Color::White);
-
 
 	hpBarBG.setOrigin(FRAMEWORK.GetWindowBounds().width * 0.5f, 0.f);
 	hpBarBG.setPosition(FRAMEWORK.GetWindowBounds().width * 0.5f, 0.f);

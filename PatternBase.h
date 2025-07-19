@@ -21,4 +21,3 @@ class PatternBase :
         virtual std::vector<Obstacle*>& GetObstacles() = 0;
         virtual bool IsFinished() const = 0;
 };
-

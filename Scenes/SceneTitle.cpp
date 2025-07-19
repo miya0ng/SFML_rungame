@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SceneTitle.h"
 #include "TextGo.h"
+#include "SpriteGo.h"
 
 SceneTitle::SceneTitle()
 	: Scene(SceneIds::Title)
@@ -9,16 +10,13 @@ SceneTitle::SceneTitle()
 
 void SceneTitle::Init()
 {
-	fontIds.push_back("fonts/DS-DIGIT.ttf");
-
-	TextGo* go = new TextGo("fonts/DS-DIGIT.ttf","title");
-	go->SetString("Title");
-	go->SetCharacterSize(30);
-	go->SetFillColor(sf::Color::White);
-	go->sortingLayer = SortingLayers::UI;
-	go->sortingOrder = 0;
-	AddGameObject(go);
-
+	texIds.push_back("graphics/intro.png");
+	SpriteGo* titleSprite = new SpriteGo("graphics/intro.png");
+	TEXTURE_MGR.Load("graphics/intro.png");
+	titleSprite->GetSprite().setTexture(
+		TEXTURE_MGR.Get("graphics/intro.png")
+	);
+	AddGameObject(titleSprite);
 	Scene::Init();
 }
 
@@ -29,7 +27,7 @@ void SceneTitle::Enter()
 	uiView.setSize(size);
 	uiView.setCenter(center);
 	worldView.setSize(size);
-	worldView.setCenter({ 0.f, -200.f });
+	worldView.setCenter(center);
 
 	Scene::Enter();
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
-enum class CoinType { Gold, Silver };
+enum class CoinType { Silver, Gold };
 class Coin :
     public GameObject
 {
@@ -27,7 +27,7 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 	void SetType(CoinType type);
 	sf::Sprite GetSprite() { return sprites[static_cast<size_t>(curType)]; }
-	int GetScore() { return (curType == CoinType::Silver) ? 100 : 50;
+	int GetScore() { return (curType == CoinType::Silver) ? 102 : 53;
 	}
 	CoinType curType{ CoinType::Silver };
 };

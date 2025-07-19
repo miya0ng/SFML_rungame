@@ -33,7 +33,6 @@ public:
 		sf::Vector2f size = GetWindowSizeF();
 		return sf::FloatRect(0.f, 0.f, size.x, size.y);
 	}
-
 	float GetTimeScale() const { return timeScale; }
 	void SetTimeScale(float scale) { timeScale = scale; }
 

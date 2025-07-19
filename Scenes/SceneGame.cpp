@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "SceneGame.h"
 #include "TextGo.h"
 #include "SpriteGo.h"
@@ -21,11 +21,11 @@ SceneGame::SceneGame()
 
 void SceneGame::Init()
 {
-	// ¦¡¦¡ Font assets ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+	// â”€â”€ Font assets â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 	fontIds.push_back("fonts/CookieRun Bold.ttf");
 
-	// ¦¡¦¡ Texture assets ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+	// â”€â”€ Texture assets â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 	texIds.push_back("graphics/silverCoin.png");
 	texIds.push_back("graphics/goldCoin.png");
 	texIds.push_back("graphics/jelly1.png");
@@ -35,7 +35,9 @@ void SceneGame::Init()
 	texIds.push_back("graphics/silverCoin.png");
 	texIds.push_back("graphics/lifeBar.png");
 	texIds.push_back("graphics/lifeBar1.png");
+	texIds.push_back("graphics/jumpim.png");
 	texIds.push_back("graphics/jumpno.png");
+	texIds.push_back("graphics/slideno.png");
 	texIds.push_back("graphics/slideno.png");
 	texIds.push_back("graphics/sprite_sheet.png");
 	texIds.push_back("graphics/player_origin.png");
@@ -43,7 +45,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/player_double_jump.png");
 	texIds.push_back("graphics/player_slide.png");
 
-	// ¦¡¦¡ Animation clips ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+	// â”€â”€ Animation clips â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 	ANI_CLIP_MGR.Load("animations/idle.csv");
 	ANI_CLIP_MGR.Load("animations/cookierun.csv");
 	ANI_CLIP_MGR.Load("animations/cookiejump.csv");
@@ -52,7 +54,7 @@ void SceneGame::Init()
 
 	std::cout << "SceneGame Init()" << std::endl;
 
-	// ¦¡¦¡ UI elements ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+	// â”€â”€ UI elements â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 	TextGo* startText = new TextGo("fonts/DS-DIGIT.ttf", "Game");
 	startText->SetString("Start");
 	startText->SetCharacterSize(30);
@@ -64,7 +66,7 @@ void SceneGame::Init()
 	uiHud = new UiHud();
 	AddGameObject(uiHud);
 
-	// ¦¡¦¡ World objects ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+	// â”€â”€ World objects â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 	bg = new Background();
 	aniPlayer = static_cast<AniPlayer*>(AddGameObject(new AniPlayer()));
 	bg->SetPlayer(aniPlayer);
@@ -72,7 +74,7 @@ void SceneGame::Init()
 
 	obstacle = new Obstacle("cone1");
 
-    // ¦¡¦¡ Pattern ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    // â”€â”€ Pattern â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     pattern1 = new Pattern1();
     pattern2 = new Pattern2();
     patterns.push_back(pattern1);
@@ -85,6 +87,7 @@ void SceneGame::Init()
     }
 
     playerMaxHp = aniPlayer->GetHp();
+    playerHp = playerMaxHp;
     currentPattern = patterns.front();
 
 	Scene::Init();
@@ -104,19 +107,28 @@ void SceneGame::Enter()
 
 void SceneGame::Update(float dt)
 {
-    Scene::Update(dt);
-	playerHp = aniPlayer->GetHp();
+    bool jumpPressed = InputMgr::GetKey(sf::Keyboard::W);
+    bool slidePressed = InputMgr::GetKey(sf::Keyboard::S);
 
-    // ¦¡¦¡ HUD ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    uiHud->UpdateButtons(jumpPressed, slidePressed);
+
+    Scene::Update(dt);
+    hpTimer += dt;
+    float ratio = std::max(1.f - hpTimer / hpDrainDuration, 0.f);
+    int drainHp = static_cast<int>(playerMaxHp * std::max(1.f - hpTimer / 60.f, 0.f));
+    if (playerHp > drainHp) playerHp = drainHp;
+
+    // â”€â”€ HUD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     uiHud->SetScoreText(jellyScore);
     uiHud->SetCoinText(coinScore);
     uiHud->SetHpRatio(static_cast<float>(playerHp) / playerMaxHp);
 
-    // ¦¡¦¡ World updates ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    // â”€â”€ World updates â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     bg->Update(dt);
     currentPattern->Update(dt, aniPlayer->GetSpeed());
 
-    //pattern2->Update(dt, aniPlayer->GetSpeed());
+    aniPlayer->SetHp(playerHp);
+    
     if (currentPattern->IsFinished())
     {
         patternQueue.pop();
@@ -125,7 +137,7 @@ void SceneGame::Update(float dt)
         currentPattern->Init();
     }
 
-    // ¦¡¦¡ Check collisions ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    // â”€â”€ Check collisions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     auto& jellies = currentPattern->GetJellies();
     auto& coins = currentPattern->GetCoins();
     auto& obstacles = currentPattern->GetObstacles();
@@ -166,16 +178,17 @@ void SceneGame::Update(float dt)
         {
             isCollision = true;
             playerHp -= cone->GetDamage();
-
-            if (playerHp <= 0)
-            {
-                isGameOver = true;
-                aniPlayer->SetActive(false);
-                aniPlayer->SetSpeed(0.f);
-            }
-            else aniPlayer->SetHp(playerHp);
+            aniPlayer->SetHp(playerHp);
         }
         ++it;
+    }
+    
+    if (aniPlayer->GetHp() <= 50.f)
+    {
+        isGameOver = true;
+        aniPlayer->SetHp(50);
+        aniPlayer->SetActive(false);
+        aniPlayer->SetSpeed(0.f);
     }
 
     // Damage cooldown timer
@@ -188,7 +201,7 @@ void SceneGame::Update(float dt)
         collisionTimer = 0.f;
     }
 
-    // ¦¡¦¡ Scene transitions ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
+    // â”€â”€ Scene transitions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     if (InputMgr::GetKeyDown(sf::Keyboard::Enter) || isGameOver)
     {
         isGameOver = false;

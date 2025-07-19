@@ -39,7 +39,15 @@ void Coin::SetOrigin(Origins preset)
 
 void Coin::Init()
 {
+	sprites.clear();
+	texture1.loadFromFile("graphics/silverCoin.png");
+	texture2.loadFromFile("graphics/goldCoin.png");
+	sprite.setTexture(texture1);
+	sprites.push_back(sprite);
+	sprite.setTexture(texture2);
+	sprites.push_back(sprite);
 
+	curType = CoinType::Silver;
 }
 
 void Coin::Release()
@@ -48,12 +56,7 @@ void Coin::Release()
 
 void Coin::Reset()
 {
-	texture1.loadFromFile("graphics/silverCoin.png");
-	texture2.loadFromFile("graphics/goldCoin.png");
-	sprite.setTexture(texture1);
-	sprites.push_back(sprite);
-	sprite.setTexture(texture2);
-	sprites.push_back(sprite);
+
 }
 
 void Coin::Update(float dt)

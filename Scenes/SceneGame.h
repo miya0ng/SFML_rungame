@@ -16,6 +16,9 @@ class SceneGame :
 	public Scene
 {
 protected:
+	float hpTimer = 0.f;
+	const float hpDrainDuration = 120.f;
+
 	float scrollSpeed = 100.f;
 	float backgroundWidth;
 	float scrollOffset = 0.f;
