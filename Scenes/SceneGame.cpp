@@ -37,7 +37,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/lifeBar1.png");
 	texIds.push_back("graphics/jumpim.png");
 	texIds.push_back("graphics/jumpno.png");
-	texIds.push_back("graphics/slideno.png");
+	texIds.push_back("graphics/slideim.png");
 	texIds.push_back("graphics/slideno.png");
 	texIds.push_back("graphics/sprite_sheet.png");
 	texIds.push_back("graphics/player_origin.png");

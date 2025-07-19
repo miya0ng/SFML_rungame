@@ -321,7 +321,7 @@ void Pattern1::SpawnStairsDown()
 		jellys->SetActive(true);
 
 		jellySpawnX += jellySpacing;
-		float y = 300.f + i * step;
+		float y = 200.f + i * step;
 
 		jellys->SetPosition({ jellySpawnX, y });
 		jellys->SetType(JellyType::Pink);
@@ -373,7 +373,7 @@ void Pattern1::SpawnArchJellies()
 			else jellys->SetType(JellyType::Basic);
 			activeJellyList.push_back(j);
 		}
-		jellySpawnX = startX + radius * 2.f + spacing;
+		jellySpawnX = startX + radius + spacing;
 }
 
 void Pattern1::SpawnCoinsStraight()

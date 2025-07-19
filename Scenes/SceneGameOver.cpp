@@ -9,14 +9,14 @@ SceneGameOver::SceneGameOver()
 
 void SceneGameOver::Init()
 {
-	fontIds.push_back("fonts/DS-DIGIT.ttf");
+	fontIds.push_back("fonts/CookieRun Bold.ttf");
 
-	TextGo* go = new TextGo("fonts/DS-DIGIT.ttf", "GameOver");
-	go->SetString("GameOver");
-	go->SetCharacterSize(30);
+	TextGo* go = new TextGo("fonts/CookieRun Bold.ttf", "GameOver");
+	go->SetString("GAME OVER");
+	go->SetCharacterSize(120);
+	go->SetPosition({ FRAMEWORK.GetWindowBounds().width * 0.5f + 100.f, FRAMEWORK.GetWindowBounds().height });
+	go->SetOrigin(Origins::MC);
 	go->SetFillColor(sf::Color::White);
-	go->sortingLayer = SortingLayers::UI;
-	go->sortingOrder = 0;
 
 	AddGameObject(go);
 	Scene::Init();

@@ -4,7 +4,9 @@ class SceneReady :
     public Scene
 {
 protected:
-
+	sf::Vector2f mouseWorldPos;
+	sf::RectangleShape button;
+	bool isMouseOver;
 public:
 	SceneReady();
 	~SceneReady() = default;

@@ -17,7 +17,9 @@ void SceneReady::Init()
 		TEXTURE_MGR.Get("graphics/ready.png")
 	);
 	AddGameObject(readySprite);
-
+	button.setSize({ 184.f,69.f });
+	button.setPosition({ FRAMEWORK.GetWindowBounds().width - 184.f,FRAMEWORK.GetWindowBounds().height - 69.f });
+	
 	Scene::Init();
 }
 
@@ -36,9 +38,20 @@ void SceneReady::Enter()
 void SceneReady::Update(float dt)
 {
 	Scene::Update(dt);
-
-	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+	sf::RenderWindow& win = FRAMEWORK.GetWindow();
+	mouseWorldPos= win.mapPixelToCoords(sf::Mouse::getPosition(win));
+	isMouseOver = Utils::PointInTransformBounds(button, button.getLocalBounds(), mouseWorldPos);
+		std::cout << mouseWorldPos.x << std::endl;
+	if (isMouseOver)
 	{
-		SCENE_MGR.ChangeScene(SceneIds::Game);
+		button.setFillColor(sf::Color::Black);
+		if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+		{
+			SCENE_MGR.ChangeScene(SceneIds::Game);
+		}
+		else
+		{
+			button.setFillColor(sf::Color::Transparent);
+		}
 	}
 }

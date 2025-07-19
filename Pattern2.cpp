@@ -311,8 +311,8 @@ void Pattern2::Draw(sf::RenderWindow& win)
 		t->Draw(win);
 	}
 
-	for (auto* t : activeCoinList)
+	/*for (auto* t : activeCoinList)
 	{
 		t->Draw(win);
-	}
+	}*/
 }
