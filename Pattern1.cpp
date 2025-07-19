@@ -132,57 +132,70 @@ void Pattern1::Init()
 		activeCoinList.push_back(coins);
 	}
 
-	int jellyCount = 200;
-	int archStart = 8;
-	int archEnd = 16;
-	int archLength = archEnd - archStart;
-	int jellyInterval = 5;
-	int coneIdx = 0;
-	const float jellyradius = 30.f;
+	//int jellyCount = 200;
+	//int archStart = 8;
+	//int archEnd = 16;
+	//int archLength = archEnd - archStart;
+	//int jellyInterval = 5;
+	//int coneIdx = 0;
+	//const float jellyradius = 30.f;
 
-	for (int i = 0; i < jellyCount; ++i)
-	{
-		jellys = new Jelly();
+	//for (int i = 0; i < jellyCount; ++i)
+	//{
+	//	jellys = new Jelly();
 
-		jellySpawnX += jellySpacing;
-		jellys->SetActive(true);
-		jellys->SetOrigin(Origins::MC);
-		jellys->Init();
+	//	jellySpawnX += jellySpacing;
+	//	jellys->SetActive(true);
+	//	jellys->SetOrigin(Origins::MC);
+	//	jellys->Init();
 
-		while (coneIdx + 1 < activeConeList.size() &&
-			jellySpawnX > activeConeList[coneIdx]->GetPosition().x + spacing)
-		{
-			++coneIdx;
-		}
+	//	while (coneIdx + 1 < activeConeList.size() &&
+	//		jellySpawnX > activeConeList[coneIdx]->GetPosition().x + spacing)
+	//	{
+	//		++coneIdx;
+	//	}
 
-		if (jellySpawnX > activeConeList[coneIdx]->GetPosition().x &&
-			jellySpawnX < activeConeList[coneIdx]->GetPosition().x + spacing)
-		{
-			float t = float(i - archStart) / (archLength - 1);
-			float angle = 3.14159265358979323846f * (1.f - t);
-			jellySpawnY -= jellyradius * std::cos(angle);
-			jellySpawnY = std::min(jellySpawnY, 220.f);
-			if (i % 3 == 0)
-			{
-				jellys->SetType(JellyType::Yellow);
-				if (i % 10 == 0 || i % 9 == 0)
-				{
-					jellys->SetType(JellyType::Blue);
-				}
-			}
-			if (!activeJellyList.empty() && activeJellyList.back()->GetPosition().y <= 150.f)
-			{
-				jellys->SetType(JellyType::Pink);
-			}
-		}
-		else
-		{
-			jellySpawnY = 220.f;
-			jellys->SetType(JellyType::Basic);
-		}
-		jellys->SetPosition({ jellySpawnX, jellySpawnY });
-		activeJellyList.push_back(jellys);
-	}
+	//	if (jellySpawnX > activeConeList[coneIdx]->GetPosition().x &&
+	//		jellySpawnX < activeConeList[coneIdx]->GetPosition().x + spacing)
+	//	{
+	//		float t = float(i - archStart) / (archLength - 1);
+	//		float angle = 3.14159265358979323846f * (1.f - t);
+	//		jellySpawnY -= jellyradius * std::cos(angle);
+	//		jellySpawnY = std::min(jellySpawnY, 220.f);
+	//		if (i % 3 == 0)
+	//		{
+	//			jellys->SetType(JellyType::Yellow);
+	//			if (i % 10 == 0 || i % 9 == 0)
+	//			{
+	//				jellys->SetType(JellyType::Blue);
+	//			}
+	//		}
+	//		if (!activeJellyList.empty() && activeJellyList.back()->GetPosition().y <= 150.f)
+	//		{
+	//			jellys->SetType(JellyType::Pink);
+	//		}
+	//	}
+	//	else
+	//	{
+	//		jellySpawnY = 220.f;
+	//		jellys->SetType(JellyType::Basic);
+	//	}
+	//	jellys->SetPosition({ jellySpawnX, jellySpawnY });
+	//	activeJellyList.push_back(jellys);
+	//}
+	jellyQueue.clear();
+	jellyQueue.push_back(JellyPattern::Straight);
+	jellyQueue.push_back(JellyPattern::Arch);
+	jellyQueue.push_back(JellyPattern::Zigzag);
+
+	coinQueue.clear();
+	coinQueue.push_back(CoinPattern::Straight);
+	coinQueue.push_back(CoinPattern::Arch);
+	coinQueue.push_back(CoinPattern::Zigzag);
+	currCoinIndex = 0;
+	currJellyIndex = 0;
+
+	SpawnNextChunk();
 }
 
 void Pattern1::Release()
@@ -226,24 +239,27 @@ void Pattern1::Update(float dt, float playerSpeed)
 		//std::cout << "next pattern" << std::endl;
 	}
 	//----------------------------------------------------------------------------NextPattern
-	float jellyWidth = jellys->GetSprite().getGlobalBounds().width;
-	float jellyPooledTriggerX = FRAMEWORK.GetWindowBounds().left - jellyWidth;
-	for (auto it = activeJellyList.begin(); it != activeJellyList.end(); )
+	if (!activeJellyList.empty())
 	{
-		auto jelly = *it;
-		jellyPos = jelly->GetPosition();
-		jellyPos.x += dt * playerSpeed * dir;
-		jelly->SetPosition(jellyPos);
+		float jellyWidth = activeJellyList.front()->GetSprite()
+			.getGlobalBounds().width;
 
-		if (jellyPos.x < jellyPooledTriggerX)
+		float jellyPooledTriggerX = FRAMEWORK.GetWindowBounds().left - jellyWidth;
+
+		for (auto it = activeJellyList.begin(); it != activeJellyList.end(); )
 		{
-			jelly->SetActive(false);
-			pooledJellyList.push_back(jelly);
-			it = activeJellyList.erase(it);
-		}
-		else
-		{
-			++it;
+			auto jelly = *it;
+			jellyPos = jelly->GetPosition();
+			jellyPos.x += dt * playerSpeed * dir;
+			jelly->SetPosition(jellyPos);
+
+			if (jellyPos.x < jellyPooledTriggerX)
+			{
+				jelly->SetActive(false);
+				pooledJellyList.push_back(jelly);
+				it = activeJellyList.erase(it);
+			}
+			else ++it;
 		}
 	}
 
@@ -288,6 +304,12 @@ void Pattern1::Update(float dt, float playerSpeed)
 			++it;
 		}
 	}
+
+	if (activeJellyList.empty())
+	{
+		jellySpawnX = FRAMEWORK.GetWindowBounds().width + 50.f;
+		SpawnNextChunk();
+	}
 }
 
 void Pattern1::Draw(sf::RenderWindow& win)
@@ -298,11 +320,11 @@ void Pattern1::Draw(sf::RenderWindow& win)
 	}
 
 	//jelly imagefile is not loaded
-	for (auto* t : activeJellyList)
+	for (auto* j : activeJellyList)
 	{
 		if (jellys->GetActive())
 		{
-			t->Draw(win);
+			j->Draw(win);
 		}
 	}
 
@@ -315,4 +337,134 @@ void Pattern1::Draw(sf::RenderWindow& win)
 	{
 		t->Draw(win);
 	}
+}
+void Pattern1::SpawnStraight()
+{
+	const int jellyCount = 50;
+	for (int i = 0; i < jellyCount; ++i)
+	{
+		jellys = new Jelly();
+		jellys->Init();
+		jellySpawnX += jellySpacing;
+		jellySpawnY = 220.f;
+		jellys->SetPosition({ jellySpawnX, jellySpawnY });
+		jellys->SetType(JellyType::Basic);
+		activeJellyList.push_back(jellys);
+	}
+
+	const int coinCount = 50;
+	float y = 260.f;                            // 타일 위 살짝 높이
+	for (int i = 0; i < coinCount; ++i)
+	{
+		coins = new Coin("coin");
+		coins->Init();
+		coinSpawnX += coinSpacing;
+		coins->SetPosition({ coinSpawnX, y });
+		coins->SetType(CoinType::Silver);
+		activeCoinList.push_back(coins);
+	}
+}
+
+void Pattern1::SpawnArch()
+{
+	const int jellyCount = 30;
+	const float jellyRadius = 30.f;
+	for (int i = 0; i < jellyCount; ++i)
+	{
+		jellys = new Jelly();
+		jellys->Init();
+		jellySpawnX += jellySpacing;
+
+		float t = float(i) / (jellyCount - 1);
+		float angle = 3.14159265f * (1.f - t);
+		jellySpawnY = 220.f - jellyRadius * std::cos(angle);
+
+		jellys->SetPosition({ jellySpawnX, jellySpawnY });
+		jellys->SetType(JellyType::Yellow);
+		activeJellyList.push_back(jellys);
+	}
+
+	const int coinCount = 10;
+	const float coinRadius = 5.f;
+	for (int i = 0; i < coinCount; ++i)
+	{
+		coins = new Coin("coin");
+		coins->Init();
+		coinSpawnX += coinSpacing;
+
+		float t = float(i) / (coinCount - 1);
+		float angle = 3.14159265f * t;          // 반원
+		float y = 260.f - coinRadius * std::sin(angle);
+
+		coins->SetPosition({ coinSpawnX, y });
+		coins->SetType(i % 5 == 0 ? CoinType::Gold : CoinType::Silver);
+		activeCoinList.push_back(coins);
+	}
+}
+
+void Pattern1::SpawnZigzag()
+{
+	const int jellyCount = 40;
+	for (int i = 0; i < jellyCount; ++i)
+	{
+		jellys = new Jelly();
+		jellys->Init();
+		jellySpawnX += jellySpacing;
+		jellySpawnY = (i % 2 == 0) ? 200.f : 240.f;
+
+		jellys->SetPosition({ jellySpawnX, jellySpawnY });
+		jellys->SetType(JellyType::Blue);
+		activeJellyList.push_back(jellys);
+	}
+}
+
+void Pattern1::SpawnCoinsStraight()
+{
+
+}
+void Pattern1::SpawnCoinsArch()
+{
+
+}
+void Pattern1::SpawnCoinsZigzag()
+{
+	const int coinCount = 40;
+	for (int i = 0; i < coinCount; ++i)
+	{
+		coins = new Coin("coin");
+		coins->Init();
+		coinSpawnX += coinSpacing;
+		float y = (i % 2 == 0) ? 250.f : 290.f;
+
+		coins->SetPosition({ coinSpawnX, y });
+		coins->SetType(CoinType::Silver);
+		activeCoinList.push_back(coins);
+	}
+}
+
+void Pattern1::SpawnNextChunk()
+{
+	if (jellyQueue.empty()) return;
+
+	JellyPattern p = jellyQueue[currJellyIndex];
+	currJellyIndex = (currJellyIndex + 1) % jellyQueue.size();
+
+	CoinPattern  cp = coinQueue[currCoinIndex];
+	currCoinIndex = (currCoinIndex + 1) % coinQueue.size();
+
+	switch (jp)
+	{
+	case JellyPattern::Straight: SpawnStraight(); break;
+	case JellyPattern::Arch:     SpawnArch();     break;
+	case JellyPattern::Zigzag:   SpawnZigzag();   break;
+	}
+
+	switch (cp)
+	{
+	case CoinPattern::Straight:  SpawnCoinsStraight(); break;
+	case CoinPattern::Arch:      SpawnCoinsArch();     break;
+	case CoinPattern::Zigzag:    SpawnCoinsZigzag();   break;
+	}
+
+	/*todo:tile/coin */
 }

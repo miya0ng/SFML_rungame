@@ -9,6 +9,17 @@ class Pattern1 :
     public PatternBase
 {
 protected:
+	enum class JellyPattern { Straight, Arch, Zigzag };
+	enum class CoinPattern { Straight, Arch, Zigzag };
+	std::vector<JellyPattern> jellyQueue{ JellyPattern::Straight,
+										   JellyPattern::Arch,
+										   JellyPattern::Zigzag };
+	std::vector<CoinPattern> coinQueue{ CoinPattern::Straight,
+										   CoinPattern::Arch,
+										   CoinPattern::Zigzag };
+	size_t currJellyIndex = 0;
+	size_t currCoinIndex = 0;
+
 	sf::Vector2f tilePos;
 	sf::Vector2f jellyPos;
 	sf::Vector2f conePos;
@@ -30,6 +41,7 @@ protected:
 	float coinSpawnX = 350.f;
 	float coinSpawnY = 220.f;
 	float jellySpacing = 50.f;
+	float coinSpacing = 50.f;
 	float coneSpawnX = 1782.f;
 	float coneSpawnY = FRAMEWORK.GetWindowBounds().height - 79.f;
 
@@ -52,6 +64,14 @@ public:
 	void Update(float dt, float playerSpeed);
 	void Update(float dt);
 	void Draw(sf::RenderWindow& window);
+
+	void SpawnStraight();
+	void SpawnArch();
+	void SpawnZigzag();
+	void SpawnCoinsStraight();
+	void SpawnCoinsArch();
+	void SpawnCoinsZigzag();
+	void SpawnNextChunk();
 
 	std::vector<Jelly*>& GetJellies() override { return activeJellyList; }
 	std::vector<Coin*>& GetCoins() override { return activeCoinList; }
