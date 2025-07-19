@@ -71,13 +71,22 @@ void SceneGame::Init()
 	bg->Init();
 
 	obstacle = new Obstacle("cone1");
+
+    // 式式 Pattern 式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式
     pattern1 = new Pattern1();
     pattern2 = new Pattern2();
     patterns.push_back(pattern1);
     patterns.push_back(pattern2);
-    playerMaxHp = aniPlayer->GetHp();
+
     for (auto* p : patterns)
+    {
         p->Init();
+        patternQueue.push(p);
+    }
+
+    playerMaxHp = aniPlayer->GetHp();
+    currentPattern = patterns.front();
+
 	Scene::Init();
 }
 
@@ -105,51 +114,68 @@ void SceneGame::Update(float dt)
 
     // 式式 World updates 式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式
     bg->Update(dt);
+    currentPattern->Update(dt, aniPlayer->GetSpeed());
 
     //pattern2->Update(dt, aniPlayer->GetSpeed());
-    for (auto* pattern : patterns)
+    if (currentPattern->IsFinished())
     {
-        pattern->Update(dt, aniPlayer->GetSpeed());
+        patternQueue.pop();
+        patternQueue.push(currentPattern);
+        currentPattern = patternQueue.front();
+        currentPattern->Init();
     }
+
+    // 式式 Check collisions 式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式
+    auto& jellies = currentPattern->GetJellies();
+    auto& coins = currentPattern->GetCoins();
+    auto& obstacles = currentPattern->GetObstacles();
 
     // Jelly collisions
-    for (auto it = patterns[0]->GetJellies().begin(); it != patterns[0]->GetJellies().end(); )
+    for (auto it = jellies.begin(); it != jellies.end(); )
     {
         if (Utils::CheckCollision((*it)->GetSprite(), aniPlayer->GetSprite()))
         {
-            if (!getMagnet)
-            {
-                // TODO: magnet effect
-            }
             jellyScore += (*it)->GetScore();
             (*it)->SetActive(false);
-            it = patterns[0]->GetJellies().erase(it);
+            it = jellies.erase(it);
         }
-        else
-        {
-            ++it;
-        }
+        else ++it;
     }
 
-    // Coin collisions
-    for (auto it = patterns[0]->GetCoins().begin(); it != patterns[0]->GetCoins().end(); )
+    for (auto it = coins.begin(); it != coins.end(); )
     {
-        //  std::cout << "." << coinScore << std::endl;
         if (Utils::CheckCollision((*it)->GetSprite(), aniPlayer->GetSprite()))
         {
-            //std::cout << "coin: " << (*it)->GetScore() <<", " << coinScore << std::endl;
-            if (!getMagnet)
-            {
-                // TODO: magnet effect
-            }
             coinScore += (*it)->GetScore();
             (*it)->SetActive(false);
-            it = pattern1->activeCoinList.erase(it);
+            it = coins.erase(it);
         }
-        else
+        else ++it;
+    }
+
+    // Cone collisions
+    for (auto it = obstacles.begin(); it != obstacles.end(); )
+    {
+        Obstacle* cone = *it;
+        sf::Vector2f coneOff{ cone->GetSprite().getGlobalBounds().width * 0.5f,
+                               cone->GetSprite().getGlobalBounds().height * 0.5f };
+        sf::Vector2f plyOff{ aniPlayer->GetSprite().getGlobalBounds().width * 0.5f, 0.f };
+
+        if (Utils::Distance(cone->GetPosition() + coneOff,
+            aniPlayer->GetPosition() + plyOff) <= 50.f && !isCollision)
         {
-            ++it;
+            isCollision = true;
+            playerHp -= cone->GetDamage();
+
+            if (playerHp <= 0)
+            {
+                isGameOver = true;
+                aniPlayer->SetActive(false);
+                aniPlayer->SetSpeed(0.f);
+            }
+            else aniPlayer->SetHp(playerHp);
         }
+        ++it;
     }
 
     // Damage cooldown timer
@@ -160,41 +186,6 @@ void SceneGame::Update(float dt)
     {
         isCollision = false;
         collisionTimer = 0.f;
-    }
-
-    // Cone collisions
-    for (auto it = patterns[0]->GetObstacles().begin(); it != patterns[0]->GetObstacles().end(); )
-    {
-        Obstacle* cone = *it;
-
-        sf::Vector2f coneOffset = { cone->GetSprite().getGlobalBounds().width * 0.5f,
-                                      cone->GetSprite().getGlobalBounds().height * 0.5f };
-        sf::Vector2f playerOffset = { aniPlayer->GetSprite().getGlobalBounds().width * 0.5f, 0.f };
-
-        if (Utils::Distance(cone->GetPosition() + coneOffset,
-            aniPlayer->GetPosition() + playerOffset) <= 50.f && !isCollision)
-        {
-            isCollision = true;
-            playerHp -= cone->GetDamage();
-            //std::cout << "Player Hp: " << playerHp << std::endl;
-
-            if (playerHp <= 0)
-            {
-                isGameOver = true;
-                aniPlayer->SetActive(false);
-                aniPlayer->SetSpeed(0.f);
-                std::cout << "GameOver" << playerHp << std::endl;
-            }
-            else
-            {
-                aniPlayer->SetHp(playerHp);
-                //std::cout << "Player Hp2: " << playerHp << std::endl;
-            }
-        }
-        else
-        {
-            ++it;
-        }
     }
 
     // 式式 Scene transitions 式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式
@@ -214,6 +205,6 @@ void SceneGame::Update(float dt)
 void SceneGame::Draw(sf::RenderWindow& window)
 {
 	bg->Draw(window);
-	patterns[0]->Draw(window);
+    currentPattern->Draw(window);
 	Scene::Draw(window);
 }

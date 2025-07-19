@@ -19,5 +19,6 @@ class PatternBase :
         virtual std::vector<Jelly*>& GetJellies() = 0;
         virtual std::vector<Coin*>& GetCoins() = 0;
         virtual std::vector<Obstacle*>& GetObstacles() = 0;
+        virtual bool IsFinished() const = 0;
 };
 

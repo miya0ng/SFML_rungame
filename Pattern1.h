@@ -56,4 +56,7 @@ public:
 	std::vector<Jelly*>& GetJellies() override { return activeJellyList; }
 	std::vector<Coin*>& GetCoins() override { return activeCoinList; }
 	std::vector<Obstacle*>& GetObstacles() override { return activeConeList; }
+	bool IsFinished() const {
+		return activeTileList.empty();               
+	}
 };

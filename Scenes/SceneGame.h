@@ -2,9 +2,9 @@
 #include "Scene.h"
 #include "SpriteGo.h"
 #include "HitBox.h"
+#include <queue>  
 
 class UiHud;
-class HitBox;	
 class Jelly;
 class Obstacle;
 class PatternBase;
@@ -13,12 +13,12 @@ class Pattern2;
 class AniPlayer;
 class Background;
 class SceneGame :
-    public Scene
+	public Scene
 {
 protected:
 	float scrollSpeed = 100.f;
 	float backgroundWidth;
-	float scrollOffset =0.f;
+	float scrollOffset = 0.f;
 	float offsetX = 0;
 	float collisionTimer = 0.f;
 	bool getMagnet = false;
@@ -26,17 +26,20 @@ protected:
 	int playerHp = 0;
 	int playerMaxHp = 0;
 	int jellyScore = 1000000;
-	int coinScore =0;
+	int coinScore = 0;
 
 	std::vector<PatternBase*> patterns;
+	size_t currentIndex = 0;
+	PatternBase* currentPattern = nullptr;
+	std::queue<PatternBase*> patternQueue;
 
-	Jelly* jellyPtr;
-	Obstacle* obstacle;
-	AniPlayer* aniPlayer;
-	Background* bg;
-	Pattern1* pattern1;
-	Pattern2* pattern2;
-	UiHud* uiHud;
+	Jelly* jellyPtr = nullptr;
+	Obstacle* obstacle = nullptr;
+	AniPlayer* aniPlayer = nullptr;
+	Background* bg = nullptr;
+	Pattern1* pattern1 = nullptr;
+	Pattern2* pattern2 = nullptr;
+	UiHud* uiHud = nullptr;
 
 	bool isGameOver = false;
 
