@@ -71,7 +71,7 @@ protected:
 	float coinSpawnY = 220.f;
 	float jellySpacing = 50.f;
 	float coinSpacing = 50.f;
-	float coneSpawnX = 1782.f;
+	float coneSpawnX = 4782.f;
 	float coneSpawnY = FRAMEWORK.GetWindowBounds().height - 79.f;
 
 public:
