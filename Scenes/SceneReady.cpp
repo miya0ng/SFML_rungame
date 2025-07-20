@@ -10,6 +10,8 @@ SceneReady::SceneReady()
 
 void SceneReady::Init()
 {
+	SOUNDBUFFER_MGR.Load("bgm/lobby.wav");
+	soundIds.push_back("bgm/lobby.wav");
 	texIds.push_back("graphics/ready.png");
 	SpriteGo* readySprite = new SpriteGo("graphics/ready.png");
 	TEXTURE_MGR.Load("graphics/ready.png");
@@ -25,6 +27,7 @@ void SceneReady::Init()
 
 void SceneReady::Enter()
 {
+	SOUND_MGR.PlayBgm("bgm/lobby.wav");
 	auto size = FRAMEWORK.GetWindowSizeF();
 	sf::Vector2f center{ size.x * 0.5f, size.y * 0.5f };
 	uiView.setSize(size);

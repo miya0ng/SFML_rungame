@@ -15,6 +15,7 @@ protected:
 
 	std::list<sf::Sound*> playing;
 	std::list<sf::Sound*> waiting;
+	std::map<std::string, sf::SoundBuffer> soundBuffers;
 
 	float sfxVolume = 100.f;
 	float bgmVolume = 100.f;

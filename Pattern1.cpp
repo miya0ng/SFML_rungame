@@ -29,7 +29,7 @@ void Pattern1::Init()
 	tileSprite.setTexture(tileTexture);
 	tileSprite.setScale(0.7f, 0.7f);
 
-	int tileCount = 180;
+	int tileCount = 350;
 	for (int i = 0; i < tileCount; ++i)
 	{
 		tiles = new Platform();
@@ -68,9 +68,9 @@ void Pattern1::Init()
 	coinQueue.push_back(CoinPattern::Arch);
 	coinQueue.push_back(CoinPattern::Arch);
 	coinQueue.push_back(CoinPattern::Straight);
-	coinQueue.push_back(CoinPattern::Zigzag);
-	coinQueue.push_back(CoinPattern::VerticalLine);
-	coinQueue.push_back(CoinPattern::Cluster);
+	//coinQueue.push_back(CoinPattern::Zigzag);
+	//coinQueue.push_back(CoinPattern::VerticalLine);
+	/*coinQueue.push_back(CoinPattern::Cluster);*/
 	coinQueue.push_back(CoinPattern::Ring);
 	coinQueue.push_back(CoinPattern::Ring);
 	coinQueue.push_back(CoinPattern::Ring);
@@ -169,6 +169,7 @@ void Pattern1::Update(float dt, float playerSpeed)
 		auto coin = *it;
 		coinPos = coin->GetPosition();
 		coinPos.x += dt * playerSpeed * dir;
+		
 		coin->SetPosition(coinPos);
 
 		if (coinPos.x < coinPooledTriggerX)
@@ -186,6 +187,7 @@ void Pattern1::Update(float dt, float playerSpeed)
 	if (activeJellyList.back()->GetPosition().x<= FRAMEWORK.GetWindowBounds().width+50.f)
 	{
 		jellySpawnX = FRAMEWORK.GetWindowBounds().width + 50.f;
+		coinSpawnY = 220.f;
 		SpawnNextChunk();
 	}
 }
@@ -321,9 +323,9 @@ void Pattern1::SpawnStairsDown()
 		jellys->SetActive(true);
 
 		jellySpawnX += jellySpacing;
-		float y = 200.f + i * step;
+		jellySpawnY= i * step;
 
-		jellys->SetPosition({ jellySpawnX, y });
+		jellys->SetPosition({ jellySpawnX, jellySpawnY });
 		jellys->SetType(JellyType::Pink);
 		activeJellyList.push_back(jellys);
 	}
@@ -333,16 +335,13 @@ void Pattern1::SpawnArchJellies()
 {
 		const ArchParam& P = archTable[archIdx];
 		archIdx = (archIdx + 1) % archTable.size();
-
-		float startX = jellySpawnX;
-		float baseY = 220.f;
 		float radius = P.radius;
 		int   count = P.count;
 		float spacing = jellySpacing;
 		JellyType tp = P.type;
 
-		float cx = startX + radius;
-		float cy = baseY;
+		float cx = jellySpawnX + radius;
+		float cy = jellySpawnY;
 
 		for (int i = 0; i < count; ++i)
 		{
@@ -373,13 +372,12 @@ void Pattern1::SpawnArchJellies()
 			else jellys->SetType(JellyType::Basic);
 			activeJellyList.push_back(j);
 		}
-		jellySpawnX = startX + radius + spacing;
+		jellySpawnX = jellySpawnX + radius + spacing;
 }
 
 void Pattern1::SpawnCoinsStraight()
 {
-	const int coinCount = 30;
-	float y = 260.f;
+	const int coinCount = 10;
 	for (int i = 0; i < coinCount; ++i)
 	{
 		coins = new Coin("coin");
@@ -387,7 +385,7 @@ void Pattern1::SpawnCoinsStraight()
 		coins->Reset();
 		coins->SetActive(true);
 		coinSpawnX += coinSpacing;
-		coins->SetPosition({ coinSpawnX, y });
+		coins->SetPosition({ coinSpawnX, coinSpawnY });
 		coins->SetType(CoinType::Silver);
 		activeCoinList.push_back(coins);
 	}
@@ -396,7 +394,7 @@ void Pattern1::SpawnCoinsStraight()
 void Pattern1::SpawnCoinsArch()
 {
 	const int coinCount = 10;
-	const float coinRadius = 5.f;
+	const float coinRadius = 50.f;
 	for (int i = 0; i < coinCount; ++i)
 	{
 		coins = new Coin("coin");
@@ -407,9 +405,9 @@ void Pattern1::SpawnCoinsArch()
 
 		float t = float(i) / (coinCount - 1);
 		float angle = 3.14159265f * t;
-		float y = 260.f - coinRadius * std::sin(angle);
+		coinSpawnY = 260.f - coinRadius * std::sin(angle);
 
-		coins->SetPosition({ coinSpawnX, y });
+		coins->SetPosition({ coinSpawnX, coinSpawnY });
 		coins->SetType(i % 2 == 0 ? CoinType::Gold : CoinType::Silver);
 		activeCoinList.push_back(coins);
 	}
@@ -424,11 +422,10 @@ void Pattern1::SpawnCoinsZigzag()
 		coins->Init();
 		coins->Reset();
 		coins->SetActive(true);
-		coinSpawnX += coinSpacing;
-		float y = (i % 2 == 0) ? 250.f : 290.f;
-
-		coins->SetPosition({ coinSpawnX, y });
-		coins->SetType(CoinType::Silver);
+		coinSpawnX += 35;
+		coinSpawnY = (i % 2 == 0) ? 230.f : 270.f;
+		i % 4 == 0 ? coins->SetType(CoinType::Silver) : coins->SetType(CoinType::Gold);
+		coins->SetPosition({ coinSpawnX, coinSpawnY });
 		activeCoinList.push_back(coins);
 	}
 }
@@ -436,7 +433,7 @@ void Pattern1::SpawnCoinsZigzag()
 // ─── Coins: 원형 링 ───────────────────────────────────────────
 void Pattern1::SpawnCoinsRing()
 {
-	const int num = 18;
+	const int num = 12;
 	const float rad = 40.f;
 	const sf::Vector2f center{ coinSpawnX + rad, coinSpawnY - rad };
 
@@ -445,10 +442,10 @@ void Pattern1::SpawnCoinsRing()
 		coins = new Coin("coin"); coins->Init(); coins->SetActive(true);
 
 		float angle = 2 * 3.14159265f * i / num;
-		float x = center.x + rad * std::cos(angle);
-		float y = center.y + rad * std::sin(angle);
+		coinSpawnX = center.x + rad * std::cos(angle);
+		coinSpawnY = center.y + rad * std::sin(angle);
 
-		coins->SetPosition({ x, y });
+		coins->SetPosition({ coinSpawnX, coinSpawnY });
 		coins->SetType(i % 4 == 0 ? CoinType::Gold : CoinType::Silver);
 		activeCoinList.push_back(coins);
 	}
@@ -464,14 +461,14 @@ void Pattern1::SpawnCoinsCluster()
 		{
 			coins = new Coin("coin"); coins->Init(); coins->SetActive(true);
 
-			float x = coinSpawnX + c * spacing;
-			float y = coinSpawnY - r * spacing;
+			coinSpawnX = coinSpawnX + c * spacing;
+			coinSpawnY = coinSpawnY - r * spacing;
 
-			coins->SetPosition({ x, y });
+			coins->SetPosition({ coinSpawnX, coinSpawnY });
 			coins->SetType((r == 1 && c == 1) ? CoinType::Gold : CoinType::Silver);
 			activeCoinList.push_back(coins);
 		}
-	coinSpawnX += 3 * spacing;
+	coinSpawnX += 1.2f * spacing;
 }
 
 // ─── Coins: 세로 줄 ───────────────────────────────────────────
@@ -482,8 +479,8 @@ void Pattern1::SpawnCoinsVertical()
 	{
 		coins = new Coin("coin"); coins->Init(); coins->SetActive(true);
 
-		float y = coinSpawnY - i * 15.f;
-		coins->SetPosition({ coinSpawnX, y });
+		coinSpawnY -= i * 15.f;
+		coins->SetPosition({ coinSpawnX, coinSpawnY });
 		coins->SetType(CoinType::Silver);
 		activeCoinList.push_back(coins);
 	}

@@ -10,18 +10,26 @@ SceneTitle::SceneTitle()
 
 void SceneTitle::Init()
 {
+	soundIds.push_back("bgm/game.wav");
+	SOUNDBUFFER_MGR.Load("bgm/game.wav");
+
 	texIds.push_back("graphics/intro.png");
-	SpriteGo* titleSprite = new SpriteGo("graphics/intro.png");
+	//texIds.push_back("graphics/intro.png");
+	SpriteGo* titleSprite = new SpriteGo("graphics/redBg.png");
+	//SpriteGo* titleSprite = new SpriteGo("graphics/intro.png");
 	TEXTURE_MGR.Load("graphics/intro.png");
 	titleSprite->GetSprite().setTexture(
-		TEXTURE_MGR.Get("graphics/intro.png")
+		//TEXTURE_MGR.Get("graphics/intro.png")
+		TEXTURE_MGR.Get("graphics/redBg.png")
 	);
 	AddGameObject(titleSprite);
+
 	Scene::Init();
 }
 
 void SceneTitle::Enter()
 {
+	SOUND_MGR.PlayBgm("bgm/game.wav");
 	auto size = FRAMEWORK.GetWindowSizeF();
 	sf::Vector2f center{ size.x * 0.5f, size.y * 0.5f };
 	uiView.setSize(size);

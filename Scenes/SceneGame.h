@@ -52,10 +52,11 @@ protected:
 
 public:
 	SceneGame();
-	~SceneGame() = default;
+	~SceneGame();
 
 	void Init() override;
 	void Enter() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window);
+	void Release()override;
 };

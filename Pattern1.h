@@ -24,6 +24,16 @@ protected:
 		{  80.f, 12, JellyType::Pink   }
 	};
 
+	enum class ChunkType { Jelly, Coin };
+
+	struct ChunkPattern {
+		ChunkType type;
+		int patternIndex; // jellyQueue ¶Ç´Â coinQueueÀÇ index
+	};
+
+	std::vector<ChunkPattern> chunkQueue;
+	int currentChunkIndex = 0;
+
 	enum class JellyPattern {
 		Straight, Arch, Zigzag,
 		Wave, StairsUp, StairsDown, CustomArch

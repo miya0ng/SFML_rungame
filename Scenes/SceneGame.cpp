@@ -19,6 +19,11 @@ SceneGame::SceneGame()
 
 }
 
+SceneGame::~SceneGame()
+{
+    Release();
+}
+
 void SceneGame::Init()
 {
 	// ── Font assets ──────────────────────────────────────────────
@@ -45,13 +50,23 @@ void SceneGame::Init()
 	texIds.push_back("graphics/player_double_jump.png");
 	texIds.push_back("graphics/player_slide.png");
 
+    // ── Sound ────────────────────────────────────────────
+    SOUNDBUFFER_MGR.Load("bgm/main.ogg");
+    SOUNDBUFFER_MGR.Load("bgm/end.ogg");
+    SOUNDBUFFER_MGR.Load("bgm/coin.ogg");
+    SOUNDBUFFER_MGR.Load("bgm/jump.ogg");
+    SOUNDBUFFER_MGR.Load("bgm/slide.ogg");
+    soundIds.push_back("bgm/main.ogg");
+    soundIds.push_back("bgm/end.ogg");
+    soundIds.push_back("bgm/coin.ogg");
+    soundIds.push_back("bgm/jump.ogg");
+    soundIds.push_back("bgm/slide.ogg");
 	// ── Animation clips ────────────────────────────────────────────
 	ANI_CLIP_MGR.Load("animations/idle.csv");
 	ANI_CLIP_MGR.Load("animations/cookierun.csv");
 	ANI_CLIP_MGR.Load("animations/cookiejump.csv");
 	ANI_CLIP_MGR.Load("animations/doublejump.csv");
 	ANI_CLIP_MGR.Load("animations/cookieslide.csv");
-
 	std::cout << "SceneGame Init()" << std::endl;
 
 	// ── UI elements ───────────────────────────────────────────────
@@ -89,12 +104,13 @@ void SceneGame::Init()
     playerMaxHp = aniPlayer->GetHp();
     playerHp = playerMaxHp;
     currentPattern = patterns.front();
-
+    
 	Scene::Init();
 }
 
 void SceneGame::Enter()
 {
+    SOUND_MGR.PlayBgm("bgm/game.wav",true);
 	auto size = FRAMEWORK.GetWindowSizeF();
 	sf::Vector2f center{ size.x * 0.5f, size.y * 0.5f };
 	uiView.setSize(size);
@@ -220,4 +236,40 @@ void SceneGame::Draw(sf::RenderWindow& window)
 	bg->Draw(window);
     currentPattern->Draw(window);
 	Scene::Draw(window);
+}
+
+void SceneGame::Release()
+{
+    Scene::Release(); // AddGameObject로 추가한 것들 정리
+
+    // UiHud, Background 정리
+    if (uiHud)
+    {
+        delete uiHud;
+        uiHud = nullptr;
+    }
+
+    if (bg)
+    {
+        delete bg;
+        bg = nullptr;
+    }
+
+    // Obstacle은 사용하지 않는다면 삭제
+    if (obstacle)
+    {
+        delete obstacle;
+        obstacle = nullptr;
+    }
+
+    // Pattern 정리
+    for (auto* p : patterns)
+    {
+        delete p;
+    }
+    patterns.clear();
+
+    // 패턴 큐는 포인터 공유라서 개별 delete X
+    while (!patternQueue.empty())
+        patternQueue.pop();
 }
