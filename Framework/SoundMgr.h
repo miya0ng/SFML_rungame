@@ -21,7 +21,6 @@ protected:
 	float bgmVolume = 100.f;
 
 public:
-
 	void SetBgmVolume(float v)
 	{
 		bgmVolume = v;

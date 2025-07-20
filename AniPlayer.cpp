@@ -65,6 +65,7 @@ bool AniPlayer::cookieJump()
 {
 	if (InputMgr::GetKeyDown(sf::Keyboard::W)&&isGrounded)
 	{
+		SOUND_MGR.PlaySfx("bgm/jump.ogg", false);
 		jumpCount++;
 		velocity.y = -500.f;
 		animator.Play("animations/cookiejump.csv");
@@ -78,6 +79,7 @@ bool AniPlayer::cookieDoubleJump()
 {
 	if (InputMgr::GetKeyDown(sf::Keyboard::W) && jumpCount == 1)
 	{
+		SOUND_MGR.PlaySfx("bgm/jump.ogg", false);
 		jumpCount = 0;
 		velocity.y = -500.f;
 		animator.Play("animations/doublejump.csv");
@@ -90,6 +92,7 @@ bool  AniPlayer::cookieSlide()
 {
 	if (InputMgr::GetKeyDown(sf::Keyboard::S))
 	{
+		SOUND_MGR.PlaySfx("bgm/slide.ogg", false);
 		animator.Play("animations/cookieslide.csv");
 		if (InputMgr::GetKeyUp(sf::Keyboard::S))
 		{

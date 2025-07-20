@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "SoundMgr.h"
 
 void SoundMgr::Init(int totalChannels)
@@ -33,7 +33,7 @@ void SoundMgr::Update(float dt)
 		if ((*it)->getStatus() == sf::Sound::Stopped)
 		{
 			waiting.push_back(*it);
-			playing.erase(it);
+			it = playing.erase(it);
 		}
 		else
 		{
@@ -69,7 +69,12 @@ void SoundMgr::PlaySfx(sf::SoundBuffer& buffer, bool loop)
 {
 	sf::Sound* sound = nullptr;
 
-	if (waiting.empty())
+	if (!waiting.empty())
+	{
+		sound = waiting.front();
+		waiting.pop_front();
+	}
+	else if (!playing.empty())
 	{
 		sound = playing.front();
 		playing.pop_front();
@@ -77,8 +82,8 @@ void SoundMgr::PlaySfx(sf::SoundBuffer& buffer, bool loop)
 	}
 	else
 	{
-		sound = waiting.front();
-		waiting.pop_front();
+		sound = new sf::Sound();
+		sound->setVolume(sfxVolume);
 	}
 
 	sound->setBuffer(buffer);
@@ -86,6 +91,19 @@ void SoundMgr::PlaySfx(sf::SoundBuffer& buffer, bool loop)
 	sound->play();
 	playing.push_back(sound);
 }
+
+//void SoundMgr::LoadBGM(const std::string& filePath, bool t)
+//{
+//		if (!mainBgm.openFromFile(filePath))
+//		{
+//			std::cerr << "음악 파일 열기 실패!" << std::endl;
+//			return;
+//		}
+//
+//		mainBgm.setLoop(t);
+//		mainBgm.setVolume(50.f);
+//		mainBgm.play();
+//}
 
 void SoundMgr::SetSfxVolume(float v)
 {

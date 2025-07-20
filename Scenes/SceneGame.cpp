@@ -49,18 +49,23 @@ void SceneGame::Init()
 	texIds.push_back("graphics/player_jump.png");
 	texIds.push_back("graphics/player_double_jump.png");
 	texIds.push_back("graphics/player_slide.png");
+	texIds.push_back("graphics/redBg.png");
 
     // ── Sound ────────────────────────────────────────────
+    SOUND_MGR.Init(10);
+    
     SOUNDBUFFER_MGR.Load("bgm/main.ogg");
     SOUNDBUFFER_MGR.Load("bgm/end.ogg");
     SOUNDBUFFER_MGR.Load("bgm/coin.ogg");
     SOUNDBUFFER_MGR.Load("bgm/jump.ogg");
     SOUNDBUFFER_MGR.Load("bgm/slide.ogg");
+    SOUNDBUFFER_MGR.Load("bgm/jelly.ogg");
     soundIds.push_back("bgm/main.ogg");
     soundIds.push_back("bgm/end.ogg");
     soundIds.push_back("bgm/coin.ogg");
     soundIds.push_back("bgm/jump.ogg");
     soundIds.push_back("bgm/slide.ogg");
+    soundIds.push_back("bgm/jelly.ogg");
 	// ── Animation clips ────────────────────────────────────────────
 	ANI_CLIP_MGR.Load("animations/idle.csv");
 	ANI_CLIP_MGR.Load("animations/cookierun.csv");
@@ -70,8 +75,9 @@ void SceneGame::Init()
 	std::cout << "SceneGame Init()" << std::endl;
 
 	// ── UI elements ───────────────────────────────────────────────
-	TextGo* startText = new TextGo("fonts/DS-DIGIT.ttf", "Game");
-	startText->SetString("Start");
+	TextGo* startText = new TextGo("fonts/DS-DIGIT.ttf", "BOUNUS TIME");
+	startText->SetString("BOUNUS TIME");
+	startText->SetFontId("fonts/CookieRun Bold.ttf");
 	startText->SetCharacterSize(30);
 	startText->SetFillColor(sf::Color::White);
 	startText->sortingLayer = SortingLayers::UI;
@@ -104,13 +110,13 @@ void SceneGame::Init()
     playerMaxHp = aniPlayer->GetHp();
     playerHp = playerMaxHp;
     currentPattern = patterns.front();
-    
+  
 	Scene::Init();
 }
 
 void SceneGame::Enter()
 {
-    SOUND_MGR.PlayBgm("bgm/game.wav",true);
+    SOUND_MGR.PlayBgm("bgm/main.ogg", true);
 	auto size = FRAMEWORK.GetWindowSizeF();
 	sf::Vector2f center{ size.x * 0.5f, size.y * 0.5f };
 	uiView.setSize(size);
@@ -163,6 +169,7 @@ void SceneGame::Update(float dt)
     {
         if (Utils::CheckCollision((*it)->GetSprite(), aniPlayer->GetSprite()))
         {
+            SOUND_MGR.PlaySfx("bgm/jelly.ogg", false);
             jellyScore += (*it)->GetScore();
             (*it)->SetActive(false);
             it = jellies.erase(it);
@@ -174,6 +181,7 @@ void SceneGame::Update(float dt)
     {
         if (Utils::CheckCollision((*it)->GetSprite(), aniPlayer->GetSprite()))
         {
+            SOUND_MGR.PlaySfx("bgm/coin.ogg", false);
             coinScore += (*it)->GetScore();
             (*it)->SetActive(false);
             it = coins.erase(it);
@@ -199,13 +207,18 @@ void SceneGame::Update(float dt)
         ++it;
     }
     
-    if (aniPlayer->GetHp() <= 50.f)
+    if(aniPlayer->GetHp() <= 120.f)
     {
-        isGameOver = true;
-        aniPlayer->SetHp(50);
-        aniPlayer->SetActive(false);
-        aniPlayer->SetSpeed(0.f);
-    }
+		uiHud->SetRedBg(true);
+        if (aniPlayer->GetHp() <= 90.f)
+        {
+            isGameOver = true;
+            aniPlayer->SetHp(50);
+            aniPlayer->SetActive(false);
+            aniPlayer->SetSpeed(0.f);
+        }
+	}
+   
 
     // Damage cooldown timer
     if (isCollision)
@@ -242,7 +255,6 @@ void SceneGame::Release()
 {
     Scene::Release(); // AddGameObject로 추가한 것들 정리
 
-    // UiHud, Background 정리
     if (uiHud)
     {
         delete uiHud;
@@ -255,21 +267,18 @@ void SceneGame::Release()
         bg = nullptr;
     }
 
-    // Obstacle은 사용하지 않는다면 삭제
     if (obstacle)
     {
         delete obstacle;
         obstacle = nullptr;
     }
 
-    // Pattern 정리
     for (auto* p : patterns)
     {
         delete p;
     }
     patterns.clear();
 
-    // 패턴 큐는 포인터 공유라서 개별 delete X
     while (!patternQueue.empty())
         patternQueue.pop();
 }

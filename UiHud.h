@@ -24,6 +24,7 @@ protected:
 	sf::Sprite slideButton;
 	sf::Sprite jumpButton;
 	sf::Sprite jellyScoreIcon;
+	sf::Sprite redBg;
 	sf::Sprite coinScoreIcon;
 	sf::IntRect fullRect;
 	sf::RectangleShape bgRect;
@@ -40,6 +41,7 @@ protected:
 	int coinScore = 0;
 	bool isShowMessage;
 	bool isShowScore;
+	bool isShowRedBg=false;
 
 public:
 	UiHud(const std::string& name = "");
@@ -52,6 +54,7 @@ public:
 	void SetOrigin(Origins preset) override;
 
 	void SetCharacterSize(int size);
+	void SetRedBg(bool t);
 	void AddFontId(const sf::String id);
 	void AddMessage(const sf::String Message);
 	void UpdateButtons(bool jumpPressed, bool slidePressed);

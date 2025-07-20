@@ -14,13 +14,10 @@ void SceneTitle::Init()
 	SOUNDBUFFER_MGR.Load("bgm/game.wav");
 
 	texIds.push_back("graphics/intro.png");
-	//texIds.push_back("graphics/intro.png");
-	SpriteGo* titleSprite = new SpriteGo("graphics/redBg.png");
-	//SpriteGo* titleSprite = new SpriteGo("graphics/intro.png");
+	SpriteGo* titleSprite = new SpriteGo("graphics/intro.png");
 	TEXTURE_MGR.Load("graphics/intro.png");
 	titleSprite->GetSprite().setTexture(
-		//TEXTURE_MGR.Get("graphics/intro.png")
-		TEXTURE_MGR.Get("graphics/redBg.png")
+		TEXTURE_MGR.Get("graphics/intro.png")
 	);
 	AddGameObject(titleSprite);
 

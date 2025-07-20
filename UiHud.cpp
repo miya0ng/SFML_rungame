@@ -42,6 +42,19 @@ void UiHud::SetCharacterSize(int size)
 {
 }
 
+void UiHud::SetRedBg(bool t)
+{
+	isShowRedBg = t;
+	if (isShowRedBg)
+	{
+		redBg.setTexture(TEXTURE_MGR.Get("graphics/redBg.png"));
+	}
+	else
+	{
+		redBg.setTexture(sf::Texture());
+	}
+}
+
 void UiHud::AddFontId(const sf::String fontId)
 {
 	if (!font.loadFromFile("fonts/DS-DIGIT.TTF"))
@@ -105,6 +118,7 @@ void UiHud::Reset()
 
 	coinScoreIcon.setPosition({ 10.f, 60.f });
 	coinScoreIcon.setScale(0.7f, 0.7f);
+	redBg.setPosition({ 0.f, 0.f });
 
 	sf::FloatRect coinBounds = coinText.getLocalBounds();
 	coinText.setOrigin({ coinBounds.width / 2, 0 });
@@ -159,6 +173,10 @@ void UiHud::Draw(sf::RenderWindow& window)
 	window.draw(slideButton);
 	window.draw(jellyScoreIcon);
 	window.draw(coinScoreIcon);
+	if (isShowRedBg)
+	{
+		window.draw(redBg);
+	}
 	/*for (auto e : texts)
 	{
 		window.draw(e);

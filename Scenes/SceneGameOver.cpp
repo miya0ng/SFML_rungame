@@ -24,6 +24,9 @@ void SceneGameOver::Init()
 
 void SceneGameOver::Enter()
 {
+	soundIds.push_back("bgm/end.ogg");
+	SOUNDBUFFER_MGR.Load("bgm/end.ogg");
+	SOUND_MGR.PlayBgm("bgm/end.ogg", false);
 	Scene::Enter();
 }
 
@@ -33,6 +36,6 @@ void SceneGameOver::Update(float dt)
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
 	{
-		SCENE_MGR.ChangeScene(SceneIds::Title);
+		SCENE_MGR.ChangeScene(SceneIds::Ready);
 	}
 }
