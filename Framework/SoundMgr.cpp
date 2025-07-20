@@ -60,6 +60,21 @@ void SoundMgr::StopBgm()
 	bgm.stop();
 }
 
+sf::Sound* SoundMgr::PlaySsfx(const std::string& id, bool loop)
+{
+	if (waiting.empty()) return nullptr;
+
+	sf::Sound* sfx = waiting.back();
+	waiting.pop_back();
+
+	sfx->setBuffer(SOUNDBUFFER_MGR.Get(id));
+	sfx->setLoop(loop);
+	sfx->play();
+
+	playing.push_back(sfx);  // 매 프레임 Update()에서 회수
+	return sfx;
+}
+
 void SoundMgr::PlaySfx(std::string id, bool loop)
 {
 	PlaySfx(SOUNDBUFFER_MGR.Get(id), loop);
@@ -91,19 +106,6 @@ void SoundMgr::PlaySfx(sf::SoundBuffer& buffer, bool loop)
 	sound->play();
 	playing.push_back(sound);
 }
-
-//void SoundMgr::LoadBGM(const std::string& filePath, bool t)
-//{
-//		if (!mainBgm.openFromFile(filePath))
-//		{
-//			std::cerr << "음악 파일 열기 실패!" << std::endl;
-//			return;
-//		}
-//
-//		mainBgm.setLoop(t);
-//		mainBgm.setVolume(50.f);
-//		mainBgm.play();
-//}
 
 void SoundMgr::SetSfxVolume(float v)
 {

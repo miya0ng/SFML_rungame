@@ -19,11 +19,12 @@ protected:
 	float hpTimer = 0.f;
 	const float hpDrainDuration = 120.f;
 
-	float scrollSpeed = 100.f;
+	float scrollSpeed = 0.f;
 	float backgroundWidth;
 	float scrollOffset = 0.f;
 	float offsetX = 0;
 	float collisionTimer = 0.f;
+	float hpBarTimer = 0.f;
 	bool getMagnet = false;
 	bool isCollision = false;
 	int playerHp = 0;

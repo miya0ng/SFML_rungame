@@ -57,21 +57,21 @@ void Pattern1::Init()
 	jellyQueue.clear();
 	jellyQueue.push_back(JellyPattern::Straight);
 	jellyQueue.push_back(JellyPattern::Arch);
+	//jellyQueue.push_back(JellyPattern::CustomArch);
 	jellyQueue.push_back(JellyPattern::Arch);
 	jellyQueue.push_back(JellyPattern::Arch);
 	jellyQueue.push_back(JellyPattern::StairsDown);
 	jellyQueue.push_back(JellyPattern::Zigzag);
 	jellyQueue.push_back(JellyPattern::StairsUp);
-	jellyQueue.push_back(JellyPattern::CustomArch);
 
 	coinQueue.clear();
 	coinQueue.push_back(CoinPattern::Arch);
 	coinQueue.push_back(CoinPattern::Arch);
 	coinQueue.push_back(CoinPattern::Straight);
+	coinQueue.push_back(CoinPattern::Straight);
 	//coinQueue.push_back(CoinPattern::Zigzag);
 	//coinQueue.push_back(CoinPattern::VerticalLine);
-	/*coinQueue.push_back(CoinPattern::Cluster);*/
-	coinQueue.push_back(CoinPattern::Ring);
+	//coinQueue.push_back(CoinPattern::Cluster);
 	coinQueue.push_back(CoinPattern::Ring);
 	coinQueue.push_back(CoinPattern::Ring);
 	coinQueue.push_back(CoinPattern::Zigzag);
@@ -150,7 +150,7 @@ void Pattern1::Update(float dt, float playerSpeed)
 		conePos.x += dt * playerSpeed * dir;
 		cone->SetPosition(conePos);
 
-		if (conePos.x < -conePooledTriggerX)
+		if (conePos.x < -conePooledTriggerX-200.f)
 		{
 			cone->SetActive(false);
 			pooledConeList.push_back(cone);
@@ -305,7 +305,7 @@ void Pattern1::SpawnStairsUp()
 		jellys->SetActive(true);
 
 		jellySpawnX += jellySpacing;
-		float y = 280.f - i * step;
+		float y = 200.f - i * step;
 
 		jellys->SetPosition({ jellySpawnX, y });
 		jellys->SetType(JellyType::Blue);
@@ -323,7 +323,7 @@ void Pattern1::SpawnStairsDown()
 		jellys->SetActive(true);
 
 		jellySpawnX += jellySpacing;
-		jellySpawnY= i * step;
+		jellySpawnY= 200.f+ i * step;
 
 		jellys->SetPosition({ jellySpawnX, jellySpawnY });
 		jellys->SetType(JellyType::Pink);
@@ -333,46 +333,46 @@ void Pattern1::SpawnStairsDown()
 
 void Pattern1::SpawnArchJellies()
 {
-		const ArchParam& P = archTable[archIdx];
-		archIdx = (archIdx + 1) % archTable.size();
-		float radius = P.radius;
-		int   count = P.count;
-		float spacing = jellySpacing;
-		JellyType tp = P.type;
+	const ArchParam& P = archTable[archIdx];
+	archIdx = (archIdx + 1) % archTable.size();
+	float radius = P.radius;
+	int   count = P.count;
+	float spacing = jellySpacing;
+	JellyType tp = P.type;
 
-		float cx = jellySpawnX + radius;
-		float cy = jellySpawnY;
+	float cx = jellySpawnX + radius;
+	float cy = jellySpawnY;
 
-		for (int i = 0; i < count; ++i)
+	for (int i = 0; i < count; ++i)
+	{
+		Jelly* j = new Jelly();
+		j->Init();  j->SetActive(true);  j->SetOrigin(Origins::MC);
+
+		float t = static_cast<float>(i) / (count - 1);
+		float theta = 3.14159265f * (1.f - t);
+
+		float x = cx + radius * std::cos(theta);
+		float y = cy - radius * std::sin(theta);
+
+		j->SetPosition({ x, y });
+		j->SetType(tp);
+
+		if (i % 3 == 0)
 		{
-			Jelly* j = new Jelly();
-			j->Init();  j->SetActive(true);  j->SetOrigin(Origins::MC);
-
-			float t = static_cast<float>(i) / (count - 1);
-			float theta = 3.14159265f * (1.f - t);
-
-			float x = cx + radius * std::cos(theta);
-			float y = cy - radius * std::sin(theta);
-
-			j->SetPosition({ x, y });
-			j->SetType(tp);
-
-			if (i % 3 == 0)
+			jellys->SetType(JellyType::Yellow);
+			if (i % 10 == 0 || i % 9 == 0)
 			{
-				jellys->SetType(JellyType::Yellow);
-				if (i % 10 == 0 || i % 9 == 0)
-				{
-					jellys->SetType(JellyType::Blue);
-				}
+				jellys->SetType(JellyType::Blue);
 			}
-			if (!activeJellyList.empty() && activeJellyList.back()->GetPosition().y <= 150.f)
-			{
-				jellys->SetType(JellyType::Pink);
-			}
-			else jellys->SetType(JellyType::Basic);
-			activeJellyList.push_back(j);
 		}
-		jellySpawnX = jellySpawnX + radius + spacing;
+		if (!activeJellyList.empty() && activeJellyList.back()->GetPosition().y <= 150.f)
+		{
+			jellys->SetType(JellyType::Pink);
+		}
+		else jellys->SetType(JellyType::Basic);
+		activeJellyList.push_back(j);
+	}
+	jellySpawnX = jellySpawnX + radius + spacing;
 }
 
 void Pattern1::SpawnCoinsStraight()
@@ -405,7 +405,7 @@ void Pattern1::SpawnCoinsArch()
 
 		float t = float(i) / (coinCount - 1);
 		float angle = 3.14159265f * t;
-		coinSpawnY = 260.f - coinRadius * std::sin(angle);
+		coinSpawnY = 200.f - coinRadius * std::sin(angle);
 
 		coins->SetPosition({ coinSpawnX, coinSpawnY });
 		coins->SetType(i % 2 == 0 ? CoinType::Gold : CoinType::Silver);
@@ -423,7 +423,7 @@ void Pattern1::SpawnCoinsZigzag()
 		coins->Reset();
 		coins->SetActive(true);
 		coinSpawnX += 35;
-		coinSpawnY = (i % 2 == 0) ? 230.f : 270.f;
+		coinSpawnY = (i % 2 == 0) ? 200.f : 240.f;
 		i % 4 == 0 ? coins->SetType(CoinType::Silver) : coins->SetType(CoinType::Gold);
 		coins->SetPosition({ coinSpawnX, coinSpawnY });
 		activeCoinList.push_back(coins);

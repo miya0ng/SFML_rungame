@@ -44,14 +44,16 @@ void UiHud::SetCharacterSize(int size)
 
 void UiHud::SetRedBg(bool t)
 {
-	isShowRedBg = t;
-	if (isShowRedBg)
+	if (t)
 	{
+		isShowRedBg = true;
 		redBg.setTexture(TEXTURE_MGR.Get("graphics/redBg.png"));
+		hpBarTimer = hpBarDuration;    // 1.5초 리셋
 	}
 	else
 	{
-		redBg.setTexture(sf::Texture());
+		isShowRedBg = false;
+		hpBarTimer = 0.f;
 	}
 }
 
@@ -161,6 +163,13 @@ void UiHud::Update(float dt)
 {
 	scoreText.setString(std::to_string(jellyScore));
 	coinText.setString(std::to_string(coinScore));
+
+	if (isShowRedBg)
+	{
+		hpBarTimer -= dt;
+		if (hpBarTimer <= 0.f)
+			isShowRedBg = false;
+	}
 }
 
 void UiHud::Draw(sf::RenderWindow& window)

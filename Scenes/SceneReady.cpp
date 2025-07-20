@@ -11,7 +11,9 @@ SceneReady::SceneReady()
 void SceneReady::Init()
 {
 	SOUNDBUFFER_MGR.Load("bgm/lobby.wav");
+	SOUNDBUFFER_MGR.Load("bgm/start.ogg");
 	soundIds.push_back("bgm/lobby.wav");
+	soundIds.push_back("bgm/start.ogg");
 	texIds.push_back("graphics/ready.png");
 	SpriteGo* readySprite = new SpriteGo("graphics/ready.png");
 	TEXTURE_MGR.Load("graphics/ready.png");
@@ -28,6 +30,7 @@ void SceneReady::Init()
 void SceneReady::Enter()
 {
 	SOUND_MGR.PlayBgm("bgm/lobby.wav");
+	SOUND_MGR.SetBgmVolume(50.f);
 	auto size = FRAMEWORK.GetWindowSizeF();
 	sf::Vector2f center{ size.x * 0.5f, size.y * 0.5f };
 	uiView.setSize(size);
@@ -43,18 +46,22 @@ void SceneReady::Update(float dt)
 	Scene::Update(dt);
 	sf::RenderWindow& win = FRAMEWORK.GetWindow();
 	mouseWorldPos= win.mapPixelToCoords(sf::Mouse::getPosition(win));
-	isMouseOver = Utils::PointInTransformBounds(button, button.getLocalBounds(), mouseWorldPos);
-		std::cout << mouseWorldPos.x << std::endl;
-	if (isMouseOver)
+	
+	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 	{
-		button.setFillColor(sf::Color::Black);
-		if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
-		{
+		startSfx = SOUND_MGR.PlaySsfx("bgm/start.ogg", false);
+		isButtonPressed = true;
+		//SCENE_MGR.ChangeScene(SceneIds::Game);
+	}
+	if (isButtonPressed)
+	{
+		//isButtonPressed = false;
+		
+		bool finished =
+			(startSfx == nullptr) ||
+			(startSfx->getStatus() == sf::Sound::Stopped);
+
+		if (finished)
 			SCENE_MGR.ChangeScene(SceneIds::Game);
-		}
-		else
-		{
-			button.setFillColor(sf::Color::Transparent);
-		}
 	}
 }

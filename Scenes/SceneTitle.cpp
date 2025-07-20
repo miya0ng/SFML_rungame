@@ -27,6 +27,7 @@ void SceneTitle::Init()
 void SceneTitle::Enter()
 {
 	SOUND_MGR.PlayBgm("bgm/game.wav");
+	SOUND_MGR.SetBgmVolume(50.f);
 	auto size = FRAMEWORK.GetWindowSizeF();
 	sf::Vector2f center{ size.x * 0.5f, size.y * 0.5f };
 	uiView.setSize(size);

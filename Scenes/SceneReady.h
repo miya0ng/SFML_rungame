@@ -6,7 +6,9 @@ class SceneReady :
 protected:
 	sf::Vector2f mouseWorldPos;
 	sf::RectangleShape button;
-	bool isMouseOver;
+	sf::Sound* startSfx = nullptr;
+	bool isButtonPressed = false;
+
 public:
 	SceneReady();
 	~SceneReady() = default;

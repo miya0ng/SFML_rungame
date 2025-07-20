@@ -42,7 +42,8 @@ protected:
 	bool isShowMessage;
 	bool isShowScore;
 	bool isShowRedBg=false;
-
+	float hpBarTimer = 0.f;
+	const float hpBarDuration = 1.5f;
 public:
 	UiHud(const std::string& name = "");
 	virtual ~UiHud() = default;

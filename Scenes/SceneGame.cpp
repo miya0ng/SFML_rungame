@@ -123,7 +123,7 @@ void SceneGame::Enter()
 	uiView.setCenter(center);
 	worldView.setSize(size);
 	worldView.setCenter({ center });
-	
+    SOUND_MGR.SetBgmVolume(50.f);
 	Scene::Enter();
 }
 
@@ -200,16 +200,21 @@ void SceneGame::Update(float dt)
         if (Utils::Distance(cone->GetPosition() + coneOff,
             aniPlayer->GetPosition() + plyOff) <= 50.f && !isCollision)
         {
+
+            uiHud->SetRedBg(true);
             isCollision = true;
+            scrollSpeed = aniPlayer->GetSpeed();
             playerHp -= cone->GetDamage();
             aniPlayer->SetHp(playerHp);
         }
         ++it;
     }
     
-    if(aniPlayer->GetHp() <= 120.f)
+    if(aniPlayer->GetHp() <= 240.f)
     {
+		hpBarTimer += dt;
 		uiHud->SetRedBg(true);
+
         if (aniPlayer->GetHp() <= 90.f)
         {
             isGameOver = true;
@@ -218,18 +223,22 @@ void SceneGame::Update(float dt)
             aniPlayer->SetSpeed(0.f);
         }
 	}
-   
-
     // Damage cooldown timer
     if (isCollision)
-        collisionTimer += dt;
-
-    if (collisionTimer >= 1.2f)
     {
-        isCollision = false;
-        collisionTimer = 0.f;
+        collisionTimer += dt;
+        aniPlayer->SetSpeed(70.f);
+		std::cout << collisionTimer << std::endl;
     }
-
+      
+    if (collisionTimer >= 1.f)
+    {
+        aniPlayer->SetSpeed(scrollSpeed);
+        uiHud->SetRedBg(false);
+        collisionTimer = 0.f;
+        isCollision = false;
+    }
+  
     // ── Scene transitions ─────────────────────────────────────────
     if (InputMgr::GetKeyDown(sf::Keyboard::Enter) || isGameOver)
     {

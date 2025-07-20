@@ -27,6 +27,7 @@ void SceneGameOver::Enter()
 	soundIds.push_back("bgm/end.ogg");
 	SOUNDBUFFER_MGR.Load("bgm/end.ogg");
 	SOUND_MGR.PlayBgm("bgm/end.ogg", false);
+	SOUND_MGR.SetBgmVolume(50.f);
 	Scene::Enter();
 }
 
